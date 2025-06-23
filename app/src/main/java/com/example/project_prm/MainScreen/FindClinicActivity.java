@@ -1,7 +1,9 @@
-package com.example.project_prm;
+package com.example.project_prm.MainScreen;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.project_prm.R;
 
 public class FindClinicActivity extends AppCompatActivity {
 

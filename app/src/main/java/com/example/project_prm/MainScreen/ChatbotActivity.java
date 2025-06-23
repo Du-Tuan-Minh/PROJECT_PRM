@@ -1,9 +1,12 @@
-package com.example.project_prm;
+package com.example.project_prm.MainScreen;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.project_prm.ChatAIScreen.ChatMessageAdapter;
+import com.example.project_prm.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
