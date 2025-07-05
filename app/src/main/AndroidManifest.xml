@@ -33,7 +33,7 @@
 
         <!-- Main Activity (Dashboard) -->
         <activity
-            android:name=".MainScreen.MainActivity"
+            android:name=".MainActivity"
             android:exported="false" />
 
         <!-- Disease Library Activity -->

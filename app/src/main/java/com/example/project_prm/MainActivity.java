@@ -1,4 +1,4 @@
-package com.example.project_prm.MainScreen;
+package com.example.project_prm;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.project_prm.LoginActivity;
-import com.example.project_prm.R;
+import com.example.project_prm.MainScreen.BookAppointmentActivity;
+import com.example.project_prm.MainScreen.ChatbotActivity;
+import com.example.project_prm.MainScreen.DiseaseLibraryActivity;
+import com.example.project_prm.MainScreen.FindClinicActivity;
 import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity {

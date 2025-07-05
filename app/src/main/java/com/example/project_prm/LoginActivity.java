@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.project_prm.DataManager.DatabaseHelper;
 import com.example.project_prm.DataManager.DAO.UserDAO;
 import com.example.project_prm.DataManager.Entity.User;
-import com.example.project_prm.MainScreen.MainActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
