@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#4CAF50</color> <!-- xanh lá dịu -->
+    <color name="colorAccent">#FFC107</color> <!-- vàng cam -->
+    <color name="primary">#4CAF50</color>         <!-- Xanh lá dịu -->
+    <color name="background">#FAFAFA</color>     <!-- Nền trắng sáng -->
+    <color name="darkText">#212121</color>
+    <color name="gray">#9E9E9E</color>
+</resources>
