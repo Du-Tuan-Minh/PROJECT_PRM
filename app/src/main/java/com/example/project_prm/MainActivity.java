@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.project_prm.DataManager.Entity.FirestoreSeeder;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_prm.MainScreen.BookAppointmentActivity;
@@ -11,12 +14,16 @@ import com.example.project_prm.MainScreen.ChatbotActivity;
 import com.example.project_prm.MainScreen.DiseaseLibraryActivity;
 import com.example.project_prm.MainScreen.FindClinicActivity;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
+        FirestoreSeeder.seedAll();
+        Toast.makeText(this, "Seeding hoàn tất!", Toast.LENGTH_SHORT).show();
 
         // Kiểm tra trạng thái đăng nhập
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);

@@ -16,7 +16,12 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+firebase-bom = "com.google.firebase:firebase-bom:32.7.3"
+firebase-database = "com.google.firebase:firebase-database:20.3.1"
+firebase-firestore = "com.google.firebase:firebase-firestore:24.10.0"
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "agp" }
+
+android-application = { id = "com.android.application", version = "8.1.0" }
+google-services = { id = "com.google.gms.google-services", version = "4.3.15" }
 
