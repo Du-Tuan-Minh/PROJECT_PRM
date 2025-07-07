@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 //            return;
 //        }
 
-        setContentView(R.layout.activity_signin);
+        setContentView(R.layout.activity_main);
         // Hiển thị tên người dùng
 //        String username = prefs.getString("username", "Người dùng");
 //        TextView welcomeText = findViewById(R.id.tv_header);
