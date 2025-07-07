@@ -24,7 +24,7 @@
             android:id="@+id/avatar"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@drawable/ic_general"
             android:background="@drawable/bg_circle_lightblue"
             android:scaleType="centerCrop"
             android:layout_marginEnd="12dp"/>
@@ -54,12 +54,12 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/notifi"
+            android:src="@drawable/ic_notification"
             android:layout_marginEnd="12dp"/>
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/heath"/>
+            android:src="@drawable/ic_health"/>
     </LinearLayout>
 
     <!-- Search bar -->
@@ -68,7 +68,7 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:hint="Search"
-        android:drawableStart="@drawable/search"
+        android:drawableStart="@drawable/ic_search"
         android:background="@drawable/bg_rounded_white"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
@@ -96,7 +96,7 @@
         <ImageView
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@drawable/ic_doctor"
             android:layout_gravity="end|bottom"
             android:layout_margin="8dp"/>
         <LinearLayout
@@ -182,7 +182,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/bg_circle_lightblue"
-                android:src="@drawable/ic_launcher_foreground"
+                android:src="@drawable/ic_general"
                 android:padding="10dp"
                 android:scaleType="centerInside"/>
             <TextView
@@ -207,7 +207,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/bg_circle_lightblue"
-                android:src="@drawable/ic_launcher_foreground"
+                android:src="@drawable/ic_dentist"
                 android:padding="10dp"
                 android:scaleType="centerInside"/>
             <TextView
