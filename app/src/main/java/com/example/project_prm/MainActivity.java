@@ -1,6 +1,8 @@
 package com.example.project_prm;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,5 +77,10 @@ public class MainActivity extends AppCompatActivity {
 //            startActivity(new Intent(this, LoginActivity.class));
 //            finish();
 //        });
+        ImageView ivNotification = findViewById(R.id.ivNotification);
+        ivNotification.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, com.example.project_prm.MainScreen.NotificationActivity.class);
+            startActivity(intent);
+        });
     }
 }

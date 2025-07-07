@@ -51,6 +51,7 @@
         <activity android:name=".MainScreen.FindClinicActivity" android:exported="false" />
         <activity android:name=".MainScreen.BookAppointmentActivity" android:exported="false" />
         <activity android:name=".MainScreen.ChatbotActivity" android:exported="false" />
+        <activity android:name=".MainScreen.NotificationActivity" />
 
     </application>
 
