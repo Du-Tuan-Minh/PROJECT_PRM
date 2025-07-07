@@ -7,7 +7,7 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.project_prm.LoginActivity;
+//import com.example.project_prm.LoginActivity;
 import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 
@@ -32,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(this, Onboarding1Activity.class));
                 prefs.edit().putBoolean("first_time", false).apply();
             } else {
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
             }
 
             finish();
