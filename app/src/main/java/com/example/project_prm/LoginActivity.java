@@ -6,21 +6,16 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.project_prm.DataManager.DatabaseHelper;
-import com.example.project_prm.DataManager.DAO.UserDAO;
-import com.example.project_prm.DataManager.Entity.User;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
     private Button loginButton, goToSignupButton;
-    private DatabaseHelper dbHelper;
-    private UserDAO userDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+>>>>>>> 9eaa2470d2d0e00d60c7953d58d22122bf72a13a
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         if (prefs.getInt("userId", -1) != -1) {
             startActivity(new Intent(this, MainActivity.class));
@@ -35,43 +30,28 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         goToSignupButton = findViewById(R.id.goToSignupButton);
 
-        dbHelper = new DatabaseHelper(this);
-        userDAO = new UserDAO(dbHelper.getWritableDatabase());
-
         loginButton.setOnClickListener(v -> {
             String username = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            User user = userDAO.loginUser(username, password);
-            if (user != null) {
-                Toast.makeText(this, "Đăng nhập thành công: " + user.getName(), Toast.LENGTH_SHORT).show();
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt("userId", user.getId());
-                editor.putString("username", user.getUsername());
+            if (username.equals("minh") && password.equals("123")) {
+                // Lưu userId (giả lập là 1)
+                SharedPreferences.Editor editor = getSharedPreferences("MyAppPrefs", MODE_PRIVATE).edit();
+                editor.putInt("userId", 1);
                 editor.apply();
-                startActivity(new Intent(this, MainActivity.class));
+
+                // Chuyển sang MainActivity
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             } else {
-                Toast.makeText(this, "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu sai", Toast.LENGTH_SHORT).show();
             }
         });
 
+        // Nút chuyển sang màn đăng ký nếu bạn có
         goToSignupButton.setOnClickListener(v -> {
-            startActivity(new Intent(this, SignupActivity.class));
-            finish();
+            // Ví dụ chuyển sang SignupActivity
+            startActivity(new Intent(LoginActivity.this, SignupActivity.class));
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (dbHelper != null) { // Kiểm tra dbHelper không null trước khi đóng
-            dbHelper.close();
-        }
     }
 }

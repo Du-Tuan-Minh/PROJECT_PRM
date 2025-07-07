@@ -1,4 +1,7 @@
-plugins { alias(libs.plugins.android.application) }
+plugins { alias(libs.plugins.android.application)
+
+    alias(libs.plugins.google.services)
+}
 
 android { namespace = "com.example.project_prm"
     compileSdk = 35
@@ -38,4 +41,8 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.10.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core) }
+    androidTestImplementation(libs.espresso.core)
+
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.database)
+}
