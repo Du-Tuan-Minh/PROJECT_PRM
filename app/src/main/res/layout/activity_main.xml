@@ -25,7 +25,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_launcher_background"
-            android:background="@drawable/ic_launcher_background"
+            android:background="@drawable/bg_circle_lightblue"
             android:scaleType="centerCrop"
             android:layout_marginEnd="12dp"/>
 
@@ -69,7 +69,7 @@
         android:layout_height="48dp"
         android:hint="Search"
         android:drawableStart="@drawable/search"
-        android:background="@drawable/ic_launcher_background"
+        android:background="@drawable/bg_rounded_white"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:textSize="16sp"
@@ -83,7 +83,7 @@
         android:id="@+id/banner"
         android:layout_width="0dp"
         android:layout_height="140dp"
-        android:background="@drawable/ic_launcher_background"
+        android:background="@drawable/bg_banner_gradient"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="8dp"
@@ -123,13 +123,12 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:text="Check Now"
                 android:layout_marginTop="10dp"
-                android:backgroundTint="#fff"
+                android:background="@drawable/bg_rounded_white"
+                android:text="Check Now"
                 android:textColor="#1976D2"
                 android:paddingLeft="18dp"
-                android:paddingRight="18dp"
-                android:background="@drawable/ic_launcher_background"/>
+                android:paddingRight="18dp" />
         </LinearLayout>
     </FrameLayout>
 
@@ -143,7 +142,7 @@
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/banner"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"/>
 
     <TextView
@@ -155,7 +154,7 @@
         android:textSize="14sp"
         app:layout_constraintTop_toTopOf="@id/tvDoctorSpeciality"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="20dp"/>
 
     <GridLayout
         android:id="@+id/gridSpeciality"
@@ -167,12 +166,60 @@
         app:layout_constraintTop_toBottomOf="@id/tvDoctorSpeciality"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
 
-        <!-- Thêm các item speciality ở đây, ví dụ: -->
-        <!-- General, Dentist, Ophthalmologist, Nutritionist, ... -->
-        <!-- Mỗi item: ImageView + TextView -->
+        <!-- Example item 1 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:padding="8dp">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_circle_lightblue"
+                android:src="@drawable/ic_launcher_foreground"
+                android:padding="10dp"
+                android:scaleType="centerInside"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="General"
+                android:textSize="13sp"
+                android:textColor="#222"
+                android:gravity="center"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+        <!-- Example item 2 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:padding="8dp">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_circle_lightblue"
+                android:src="@drawable/ic_launcher_foreground"
+                android:padding="10dp"
+                android:scaleType="centerInside"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dentist"
+                android:textSize="13sp"
+                android:textColor="#222"
+                android:gravity="center"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+        <!-- Thêm các item khác tương tự -->
     </GridLayout>
 
     <!-- Top Doctors -->
@@ -185,7 +232,7 @@
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/gridSpeciality"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"/>
 
     <TextView
@@ -197,7 +244,7 @@
         android:textSize="14sp"
         app:layout_constraintTop_toTopOf="@id/tvTopDoctors"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="20dp"/>
 
     <!-- Filter buttons -->
     <LinearLayout
@@ -209,35 +256,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
-
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="All"
             android:textColor="#fff"
-            android:backgroundTint="#1976D2"
+            android:background="@drawable/bg_filter_selected"
             android:layout_marginEnd="8dp"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="General"
-            android:backgroundTint="#fff"
+            android:background="@drawable/bg_filter_unselected"
             android:textColor="#1976D2"
             android:layout_marginEnd="8dp"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dentist"
-            android:backgroundTint="#fff"
+            android:background="@drawable/bg_filter_unselected"
             android:textColor="#1976D2"
             android:layout_marginEnd="8dp"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nutritionist"
-            android:backgroundTint="#fff"
+            android:background="@drawable/bg_filter_unselected"
             android:textColor="#1976D2"/>
     </LinearLayout>
 
@@ -250,7 +296,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
+        android:layout_margin="20dp"/>
 
     <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
