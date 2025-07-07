@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Project_PRM</string>
+
+    <string name="login_title">Login</string>
+    <string name="register_title">Register</string>
+
 </resources>

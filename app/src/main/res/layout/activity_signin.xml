@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<LinearLayout
+    android:paddingTop="10dp"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- Back arrow -->
+
+    <!-- Logo -->
+
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:layout_width="20dp"
+        android:layout_height="24dp"
+        android:contentDescription="Back"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_back" />
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/icon_healthapp"
+        android:contentDescription="Logo"/>
+
+    <!-- Title -->
+
+    <!-- Email Field -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Login to Your Account"
+        android:textColor="@color/text_black"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <com.example.project_prm.widgets.EditTextFieldView
+        android:id="@+id/loginEmailInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:startIconSrc="@drawable/ic_email"
+        app:hintText="Email address"
+        app:inputType="email"
+        />
+
+    <!-- Password Field -->
+    <com.example.project_prm.widgets.EditTextFieldView
+        android:id="@+id/loginPasswordInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:startIconSrc="@drawable/ic_lock"
+        app:hintText="••••••••••••••••"
+        app:inputType="password"
+        app:endIconSrc="@drawable/ic_eye_off"
+        />
+
+    <!-- Remember Me -->
+<!--    <CheckBox-->
+<!--        android:id="@+id/rememberCheck"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:text="Remember me"-->
+<!--        android:textColor="@color/text_black"-->
+<!--        android:fontFamily="@font/poppins_bold"-->
+<!--        android:buttonTint="@color/checkbox_blue"/>-->
+
+    <!-- Sign Up Button -->
+    <Button
+        android:id="@+id/signInButton"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Sign in"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/primary_blue"
+        android:fontFamily="@font/poppins_bold"
+        android:layout_marginTop="36dp"
+        android:elevation="4dp" />
+
+    <!-- Divider -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="------   or continue with   ------"
+        android:textAlignment="center"
+        android:layout_marginTop="32dp"
+        android:textColor="@color/text_gray"
+        android:fontFamily="@font/poppins_regular"/>
+
+    <!-- Social buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
+        android:weightSum="2">
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="8dp"
+            android:src="@drawable/ic_facebook"
+            android:background="@drawable/bg_social"
+            android:padding="12dp" android:layout_width="wrap_content"/>
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="8dp"
+            android:src="@drawable/ic_google"
+            android:background="@drawable/bg_social"
+            android:padding="12dp"
+            android:layout_width="wrap_content"/>
+    </LinearLayout>
+
+    <!-- Sign In Redirect -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="32dp"
+        android:weightSum="3">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Don't have an account? "
+            android:textColor="@color/text_gray" />
+
+        <TextView
+            android:id="@+id/signUpText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign up"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/primary_blue"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>>
+</LinearLayout>
+</ScrollView>

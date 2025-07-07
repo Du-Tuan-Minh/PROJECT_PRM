@@ -18,7 +18,7 @@
 
         <!-- Splash Activity: KHỞI ĐỘNG APP -->
         <activity
-            android:name=".DashBoardScreen.SplashActivity"
+            android:name=".DashBoardScreen.SplashActivity"           
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +35,13 @@
         <activity android:name=".LoginActivity" android:exported="false" />
 
         <!-- Signup Activity -->
-        <activity android:name=".SignupActivity" android:exported="false" />
+        <activity
+            android:name=".ui.auth.SignUpActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.auth.SignInActivity"
+            android:exported="false" />
 
         <!-- Main Activity (Dashboard) -->
         <activity android:name=".MainActivity" android:exported="false" />

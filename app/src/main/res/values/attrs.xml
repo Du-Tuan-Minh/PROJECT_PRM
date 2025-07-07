@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EditTextFieldView">
+        <attr name="startIconSrc" format="reference" />
+        <attr name="hintText" format="string" />
+        <attr name="inputType" format="enum">
+            <enum name="text" value="1"/>
+            <enum name="email" value="2"/>
+            <enum name="password" value="3"/>
+            <enum name="date" value="4"/>
+            <enum name="personName" value="5"/>
+        </attr>
+        <attr name="endIconSrc" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="DropDownFieldView">
+        <attr name="startDropIconSrc" format="reference" />
+        <attr name="endDropIconSrc" format="reference" />
+        <attr name="dropdownHint" format="string" />
+        <!-- Dropdown prompt -->
+        <attr name="dropdownPrompt" format="string" />
+        <!-- Dropdown items (reference to string array) -->
+        <attr name="dropdownItems" format="reference" />
+    </declare-styleable>
+</resources>

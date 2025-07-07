@@ -1,45 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/usernameEditText"
+    <LinearLayout
+        android:paddingTop="10dp"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tên đăng nhập" />
+        tools:ignore="ExtraText">
 
-    <EditText
-        android:id="@+id/passwordEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Mật khẩu"
-        android:inputType="textPassword" />
+        <!-- Back arrow -->
 
-    <EditText
-        android:id="@+id/nameEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Họ và tên" />
+        <!-- Logo -->
 
-    <EditText
-        android:id="@+id/profileEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Hồ sơ (ví dụ: Nam, 30 tuổi)" />
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_width="20dp"
+            android:layout_height="24dp"
+            android:contentDescription="Back"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_back" />
 
-    <Button
-        android:id="@+id/signupButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Đăng ký" />
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/icon_healthapp"
+            android:contentDescription="Logo"/>
 
-    <Button
-        android:id="@+id/goToLoginButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Đã có tài khoản? Đăng nhập" />
+        <!-- Title -->
 
-</LinearLayout>
+        <!-- Email Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Create New Account"
+            android:textColor="@color/text_black"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <com.example.project_prm.widgets.EditTextFieldView
+            android:id="@+id/registerFullNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:startIconSrc="@drawable/ic_fullname"
+            app:hintText="Full Name"
+            app:inputType="personName"
+            />
+
+        <com.example.project_prm.widgets.EditTextFieldView
+            android:id="@+id/registerDateOfBirthInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:startIconSrc="@drawable/ic_date_of_birth"
+            app:endIconSrc="@drawable/ic_calendar"
+            app:hintText="Date of Birth(dd/mm/yyyy)"
+            app:inputType="date"
+            />
+
+        <com.example.project_prm.widgets.DropDownFieldView
+            android:id="@+id/registerGenderInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:startDropIconSrc="@drawable/ic_gender"
+            app:dropdownHint="Select gender"
+            app:dropdownPrompt="Select prompt"
+            app:dropdownItems="@array/gender_options"/>
+
+        <com.example.project_prm.widgets.EditTextFieldView
+            android:id="@+id/registerEmailInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:startIconSrc="@drawable/ic_email"
+            app:hintText="Email address"
+            app:inputType="email"
+            />
+
+        <!-- Password Field -->
+        <com.example.project_prm.widgets.EditTextFieldView
+            android:id="@+id/registerPasswordInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:startIconSrc="@drawable/ic_lock"
+            app:hintText="••••••••••••••••"
+            app:inputType="password"
+            app:endIconSrc="@drawable/ic_eye_off"
+            />
+
+
+        <!-- Sign Up Button -->
+        <Button
+            android:id="@+id/signUpButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Sign up"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/primary_blue"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="24dp"
+            android:elevation="4dp" />
+
+
+
+        <!-- Sign In Redirect -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="32dp"
+            android:weightSum="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Already have an account? "
+                android:textColor="@color/text_gray" />
+
+            <TextView
+                android:id="@+id/signInText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign in"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/primary_blue"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>>
+    </LinearLayout>
+</ScrollView>

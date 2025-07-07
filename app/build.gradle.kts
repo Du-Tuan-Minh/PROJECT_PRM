@@ -45,4 +45,7 @@ dependencies {
 
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.database)
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
+    implementation(libs.recyclerview)
 }
