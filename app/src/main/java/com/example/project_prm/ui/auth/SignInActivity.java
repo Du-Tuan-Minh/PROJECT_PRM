@@ -21,7 +21,7 @@ import com.example.project_prm.widgets.EditTextFieldView;
 public class SignInActivity extends AppCompatActivity {
     private EditTextFieldView loginEmailInput, loginPasswordInput;
     private Button signInButton;
-    private TextView goToSignupText;
+    private TextView goToSignupText, forgetPasswordText;
     private DatabaseHelper dbHelper;
     private UserDAO userDAO;
 
@@ -30,25 +30,36 @@ public class SignInActivity extends AppCompatActivity {
         loginPasswordInput = findViewById(R.id.loginPasswordInput);
         signInButton = findViewById(R.id.signInButton);
         goToSignupText = findViewById(R.id.signUpText);
+        forgetPasswordText = findViewById(R.id.forgetPasswordText);
     }
     private void bindingAction(){
-        loginEmailInput.requestFocus();
         loginPasswordInput.setOnEndIconClickListener(this::onEyeIconClick);
         signInButton.setOnClickListener(this::onSignInClick);
         goToSignupText.setOnClickListener(this::onGoToSignupClick);
+        forgetPasswordText.setOnClickListener(this::onForgetPasswordClick);
+    }
+
+    private void setClearFocus(){
+        loginEmailInput.clearFocus();
+        loginPasswordInput.clearFocus();
+    }
+
+    private void onForgetPasswordClick(View view) {
+        setClearFocus();
+        startActivity(new Intent(this, ForgotPasswordActivity.class));
     }
 
     private void onGoToSignupClick(View view) {
+        setClearFocus();
         startActivity(new Intent(this, SignUpActivity.class));
-        finish();
     }
 
     private void onSignInClick(View view) {
         String username = loginEmailInput.getFieldText();
         String password = loginPasswordInput.getFieldText();
         if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-                return;
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            return;
         }
 //        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
 //        if (prefs.getInt("userId", -1) != -1) {
@@ -95,6 +106,12 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signin);
         bindingView();
         bindingAction();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setClearFocus();
     }
 
     @Override

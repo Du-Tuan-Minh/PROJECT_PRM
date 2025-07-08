@@ -36,6 +36,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
         confirmNewPasswordInput.setOnEndIconClickListener(this::onEndIconClick);
     }
 
+    private void setClearFocus(){
+        oldPasswordInput.clearFocus();
+        newPasswordInput.clearFocus();
+        confirmNewPasswordInput.clearFocus();
+    }
+
     private void onEndIconClick(EditTextFieldView editTextFieldView) {
         EditText editText = editTextFieldView.getEditText();
         ImageView icon = editTextFieldView.getEndIcon();
@@ -59,19 +65,16 @@ public class ChangePasswordActivity extends AppCompatActivity {
         String newPassword = newPasswordInput.getFieldText();
         String confirmNewPassword = confirmNewPasswordInput.getFieldText();
         // handle change password logic here
-        StatusPopup popup = new StatusPopup(this);
-        popup.setPrimaryClick(v -> popup.dismiss());
-        popup.setCancelClick(v -> popup.dismiss());
-
-        // Success Example
-        popup.setErrorPopup();
-        popup.show();
-
-
         if (oldPassword.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
+            StatusPopup popup = new StatusPopup(this);
+            popup.setErrorPopup("Oops, Failed!", "Cant empty...","Oki");
+            popup.show();
             return;
         }
         if (!newPassword.equals(confirmNewPassword)) {
+            StatusPopup popup = new StatusPopup(this);
+            popup.setErrorPopup("Oops, Failed!", "Password not match...","Oki");
+            popup.show();
             return;
         }
     }
@@ -84,6 +87,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_password);
         bindingView();
         bindingAction();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setClearFocus();
     }
 }

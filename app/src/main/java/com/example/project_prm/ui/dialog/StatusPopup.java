@@ -38,24 +38,28 @@ public class StatusPopup extends AppCompatActivity {
         messageText = dialog.findViewById(R.id.messageText);
         primaryButton = dialog.findViewById(R.id.primaryButton);
         cancelButton = dialog.findViewById(R.id.cancelButton);
+
+        // init event dialog here
+        setPrimaryClick(s -> dismiss());
+        setCancelClick(s -> dismiss());
     }
 
     @SuppressLint("ResourceAsColor")
-    public void setSuccessPopup() {
+    public void setSuccessPopup(String title, String message, String primaryText) {
         iconContainer.setBackgroundResource(R.drawable.ic_success_dialog);
-        titleText.setText("Congratulations!");
+        titleText.setText(title);
         titleText.setTextColor(ContextCompat.getColor(context, R.color.blue_dialog));
-        messageText.setText("Appointment successfully booked. You will receive a notification and the doctor you selected will contact you.");
-        primaryButton.setText("View Appointment");
+        messageText.setText(message);
+        primaryButton.setText(primaryText);
     }
 
     @SuppressLint("ResourceAsColor")
-    public void setErrorPopup() {
+    public void setErrorPopup(String title, String message, String primaryText) {
         iconContainer.setBackgroundResource(R.drawable.ic_fail_dialog);
-        titleText.setText("Oops, Failed!");
+        titleText.setText(title);
         titleText.setTextColor(R.color.red_dialog);
-        messageText.setText("Appointment failed. Please check your internet connection then try again.");
-        primaryButton.setText("Try Again");
+        messageText.setText(message);
+        primaryButton.setText(primaryText);
     }
 
     @SuppressLint("ResourceAsColor")

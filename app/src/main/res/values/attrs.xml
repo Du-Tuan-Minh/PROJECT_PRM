@@ -22,4 +22,7 @@
         <!-- Dropdown items (reference to string array) -->
         <attr name="dropdownItems" format="reference" />
     </declare-styleable>
+    <declare-styleable name="BackView">
+        <attr name="textBackView" format="string" />
+    </declare-styleable>
 </resources>

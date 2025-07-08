@@ -52,7 +52,15 @@ public class SignUpActivity extends AppCompatActivity {
         registerDateOfBirthInput.getEditText().setEnabled(false);
         registerGenderInput.setOnItemSelectedListener(this::onGenderIconClick);
         registerRoleInput.setOnItemSelectedListener(this::onRoleIconClick);
-        registerRoleInput.requestFocus();
+    }
+
+    private void setClearFocus(){
+        registerEmailInput.clearFocus();
+        registerFullNameInput.clearFocus();
+        registerDateOfBirthInput.clearFocus();
+        registerGenderInput.clearFocus();
+        registerRoleInput.clearFocus();
+        registerPasswordInput.clearFocus();
     }
 
     private void onRoleIconClick(String s, int i) {
@@ -89,8 +97,8 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void onGoToLoginClick(View view) {
+        setClearFocus();
         startActivity(new Intent(this, SignInActivity.class));
-        finish();
     }
 
     private void onSignUpClick(View view) {
@@ -117,8 +125,8 @@ public class SignUpActivity extends AppCompatActivity {
         long result = userDAO.registerUser(name, profile, username, password);
         if (result != -1) {
             Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+            setClearFocus();
             startActivity(new Intent(this, SignInActivity.class));
-            finish();
         } else {
             Toast.makeText(this, "Đăng ký thất bại, username có thể đã tồn tại", Toast.LENGTH_SHORT).show();
         }
@@ -127,7 +135,7 @@ public class SignUpActivity extends AppCompatActivity {
         popup.setCancelClick(v -> popup.dismiss());
 
         // Success Example
-        popup.setErrorPopup();
+        popup.setErrorPopup("\"Oops, Failed!", "Desvv...","Oki");
         popup.show();
     }
 
@@ -159,6 +167,13 @@ public class SignUpActivity extends AppCompatActivity {
         bindingView();
         bindingAction();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerRoleInput.clearFocus();
+        setClearFocus();
     }
 
     @Override

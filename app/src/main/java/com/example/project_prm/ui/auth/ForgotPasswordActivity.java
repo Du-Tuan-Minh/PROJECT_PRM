@@ -10,6 +10,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_prm.R;
+import com.example.project_prm.ui.dialog.StatusPopup;
 import com.example.project_prm.widgets.EditTextFieldView;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
@@ -27,18 +28,26 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         signInText.setOnClickListener(this::onSignInClick);
     }
 
+    private void setClearFocus(){
+        forgetPasswordEmailInput.clearFocus();
+    }
+
     private void onSignInClick(View view) {
+        setClearFocus();
         startActivity(new Intent(this, SignInActivity.class));
-        finish();
     }
 
     private void onForgetClick(View view) {
         String email = forgetPasswordEmailInput.getFieldText();
         if (email.isEmpty()) {
-            //forgetPasswordEmailInput.setError("Vui lòng nhập email");
+            StatusPopup popup = new StatusPopup(this);
+            popup.setErrorPopup("\"Oops, Failed!", "Desvv...","Oki");
+            popup.show();
             return;
         }
         // handle forget password logic here
+        setClearFocus();
+        startActivity(new Intent(this, ChangePasswordActivity.class));
     }
 
     @Override
@@ -48,5 +57,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
         bindingView();
         bindingAction();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setClearFocus();
     }
 }

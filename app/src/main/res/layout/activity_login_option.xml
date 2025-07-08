@@ -11,23 +11,20 @@
         android:layout_margin="16dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
 
         <!-- Back arrow -->
 
         <!-- Logo -->
 
-        <com.example.project_prm.widgets.BackView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            />
 
         <ImageView
-            android:layout_width="240dp"
-            android:layout_height="240dp"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="24dp"
-            android:src="@drawable/ic_forget_password"
+            android:src="@drawable/ic_login_option"
             android:contentDescription="Logo"/>
 
         <!-- Title -->
@@ -39,42 +36,71 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_bold"
-            android:text="Forget Password"
+            android:text="Let's you in"
             android:textColor="@color/text_black"
-            android:textSize="22sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
-        <com.example.project_prm.widgets.EditTextFieldView
-            android:id="@+id/forgetPasswordEmailInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:startIconSrc="@drawable/ic_email"
-            app:hintText="Email address"
-            app:inputType="email"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+
+
+    <LinearLayout
+        android:id="@+id/gotoFacebookLogin"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_button_black_border"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_facebook"
+            android:gravity="center_horizontal"
+            android:layout_marginEnd="12dp"
             />
 
-        <!-- Sign Up Button -->
-        <Button
-            android:id="@+id/forgetButton"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Continue with Facebook"
+            android:textSize="16sp"
+            android:textColor="@color/text_black"
+            android:fontFamily="@font/poppins_bold"/>
+    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/gotoGoogleLogin"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="Get password"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/primary_blue"
-            android:fontFamily="@font/poppins_bold"
-            android:layout_marginTop="36dp"
-            android:elevation="4dp" />
+            android:background="@drawable/bg_button_black_border"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center">
 
-        <!-- Divider -->
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_google"
+                android:gravity="center_horizontal"
+                android:layout_marginEnd="12dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Continue with Google"
+                android:textSize="16sp"
+                android:textColor="@color/text_black"
+                android:fontFamily="@font/poppins_bold"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginVertical="32dp"
             android:gravity="center_vertical">
 
             <View
@@ -86,7 +112,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="or continue with"
+                android:text="OR"
                 android:textColor="@color/text_gray"
                 android:layout_marginHorizontal="16dp" />
 
@@ -97,33 +123,17 @@
                 android:background="@color/text_gray" />
         </LinearLayout>
 
-        <!-- Social buttons -->
-        <LinearLayout
+
+        <!-- Sign Up Button -->
+        <Button
+            android:id="@+id/goToSignInButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"
-            android:weightSum="2">
-
-            <ImageView
-                android:layout_weight="1"
-                android:layout_height="48dp"
-                android:layout_marginHorizontal="8dp"
-                android:src="@drawable/ic_facebook"
-                android:background="@drawable/bg_social"
-                android:padding="12dp" android:layout_width="wrap_content"/>
-
-            <ImageView
-                android:layout_weight="1"
-                android:layout_height="48dp"
-                android:layout_marginHorizontal="8dp"
-                android:src="@drawable/ic_google"
-                android:background="@drawable/bg_social"
-                android:padding="12dp"
-                android:layout_width="wrap_content"/>
-        </LinearLayout>
+            android:layout_height="56dp"
+            android:text="Sign in with password"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/primary_blue"
+            android:fontFamily="@font/poppins_bold"
+            android:elevation="4dp" />
 
         <!-- Sign In Redirect -->
         <LinearLayout
@@ -131,7 +141,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="32dp"
             android:weightSum="3">
             <TextView
@@ -143,10 +153,10 @@
                 android:textColor="@color/text_gray" />
 
             <TextView
-                android:id="@+id/signInText"
+                android:id="@+id/signUpText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign in"
+                android:text="Sign up"
                 android:layout_marginStart="5dp"
                 android:textColor="@color/primary_blue"
                 android:fontFamily="@font/poppins_bold"
