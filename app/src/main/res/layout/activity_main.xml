@@ -328,6 +328,7 @@
         app:itemIconTint="@color/bottom_nav_selector"
         app:itemTextColor="@color/bottom_nav_selector"
         app:itemIconSize="20dp"
+        app:labelVisibilityMode="labeled"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="4dp"
