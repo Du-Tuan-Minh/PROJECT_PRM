@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialogRoot"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_dialog_rounded"
+    android:padding="24dp"
+    android:gravity="center"
+    android:elevation="10dp">
+
+    <!-- Icon Background -->
+    <LinearLayout
+        android:id="@+id/iconContainer"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/ic_success_dialog"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Oops, Failed!"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/blue_dialog"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Message -->
+    <TextView
+        android:id="@+id/messageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Appointment failed. Please check your internet connection then try again."
+        android:textSize="14sp"
+        android:lineSpacingExtra="2dp"
+        android:gravity="center"
+        android:textColor="#6E6E6E"
+        android:layout_marginBottom="24dp"
+        android:textAlignment="center" />
+
+    <!-- Primary Action Button -->
+    <Button
+        android:id="@+id/primaryButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Try Again"
+        android:backgroundTint="#0066FF"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Cancel Button -->
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Cancel"
+        android:backgroundTint="#F0F2F5"
+        android:textColor="#0066FF"
+        android:textStyle="bold" />
+</LinearLayout>

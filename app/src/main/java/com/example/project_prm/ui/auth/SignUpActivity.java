@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.project_prm.DataManager.DatabaseHelper;
 import com.example.project_prm.DataManager.DAO.UserDAO;
 import com.example.project_prm.R;
+import com.example.project_prm.ui.dialog.StatusPopup;
 import com.example.project_prm.widgets.DropDownFieldView;
 import com.example.project_prm.widgets.EditTextFieldView;
 
@@ -26,7 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
             registerPasswordInput,
             registerFullNameInput,
             registerDateOfBirthInput;
-    private DropDownFieldView registerGenderInput;
+    private DropDownFieldView registerGenderInput, registerRoleInput;
     private Button signUpButton;
     private TextView signInText;
     private DatabaseHelper dbHelper;
@@ -40,6 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
         registerFullNameInput = findViewById(R.id.registerFullNameInput);
         registerDateOfBirthInput = findViewById(R.id.registerDateOfBirthInput);
         registerGenderInput = findViewById(R.id.registerGenderInput);
+        registerRoleInput = findViewById(R.id.registerRoleInput);
     }
     private void bindingAction(){
         registerPasswordInput.setOnEndIconClickListener(this::onEyeIconClick);
@@ -48,6 +51,16 @@ public class SignUpActivity extends AppCompatActivity {
         registerDateOfBirthInput.setOnEndIconClickListener(this::onDateOfBirthIconClick);
         registerDateOfBirthInput.getEditText().setEnabled(false);
         registerGenderInput.setOnItemSelectedListener(this::onGenderIconClick);
+        registerRoleInput.setOnItemSelectedListener(this::onRoleIconClick);
+        registerRoleInput.requestFocus();
+    }
+
+    private void onRoleIconClick(String s, int i) {
+        Toast.makeText(this, "Role selected: " + s, Toast.LENGTH_SHORT).show();
+        // Handle role selection here
+        if(s != null){
+            registerRoleInput.getDropdownItems().setHintEnabled(false);
+        }
     }
 
     private void onGenderIconClick(String s, int i) {
@@ -109,6 +122,13 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Đăng ký thất bại, username có thể đã tồn tại", Toast.LENGTH_SHORT).show();
         }
+        StatusPopup popup = new StatusPopup(this);
+        popup.setPrimaryClick(v -> popup.dismiss());
+        popup.setCancelClick(v -> popup.dismiss());
+
+        // Success Example
+        popup.setErrorPopup();
+        popup.show();
     }
 
     private void onEyeIconClick(EditTextFieldView editTextFieldView) {
@@ -138,6 +158,7 @@ public class SignUpActivity extends AppCompatActivity {
         userDAO = new UserDAO(dbHelper.getWritableDatabase());
         bindingView();
         bindingAction();
+
     }
 
     @Override

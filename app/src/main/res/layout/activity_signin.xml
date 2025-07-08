@@ -69,17 +69,6 @@ android:layout_height="match_parent">
         app:endIconSrc="@drawable/ic_eye_off"
         />
 
-    <!-- Remember Me -->
-<!--    <CheckBox-->
-<!--        android:id="@+id/rememberCheck"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:text="Remember me"-->
-<!--        android:textColor="@color/text_black"-->
-<!--        android:fontFamily="@font/poppins_bold"-->
-<!--        android:buttonTint="@color/checkbox_blue"/>-->
-
     <!-- Sign Up Button -->
     <Button
         android:id="@+id/signInButton"

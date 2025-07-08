@@ -49,6 +49,16 @@
             android:textSize="22sp"
             android:textStyle="bold" />
 
+        <com.example.project_prm.widgets.DropDownFieldView
+            android:id="@+id/registerRoleInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:startDropIconSrc="@drawable/ic_user_role"
+            app:dropdownHint="Select role"
+            app:dropdownPrompt="Select role"
+            app:dropdownItems="@array/user_role_options"/>
+
         <com.example.project_prm.widgets.EditTextFieldView
             android:id="@+id/registerFullNameInput"
             android:layout_width="match_parent"

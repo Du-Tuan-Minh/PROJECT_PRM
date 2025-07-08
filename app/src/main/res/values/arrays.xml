@@ -5,4 +5,9 @@
         <item>Female</item>
         <item>Other</item>
     </string-array>
+
+    <string-array name="user_role_options">
+        <item>Personal</item>
+        <item>Clinic</item>
+    </string-array>
 </resources>

@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.project_prm" />
+                  <option name="mobileSdkAppId" value="1:995460561373:android:ad1187c5942514b0481e34" />
+                  <option name="projectId" value="physicalexamination-ffd65" />
+                  <option name="projectNumber" value="995460561373" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

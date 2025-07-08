@@ -108,7 +108,7 @@ public class DropDownFieldView extends LinearLayout {
                 ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                         context,
                         dropdownItemsResId,
-                        android.R.layout.simple_dropdown_item_1line
+                        R.layout.item_dropdown_option
                 );
                 dropdownField.setAdapter(adapter);
             }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.project_prm.DataManager.DatabaseHelper;
 import com.example.project_prm.DataManager.DAO.UserDAO;
 import com.example.project_prm.R;
+import com.example.project_prm.widgets.DropDownFieldView;
 import com.example.project_prm.widgets.EditTextFieldView;
 
 public class SignInActivity extends AppCompatActivity {
@@ -30,6 +32,7 @@ public class SignInActivity extends AppCompatActivity {
         goToSignupText = findViewById(R.id.signUpText);
     }
     private void bindingAction(){
+        loginEmailInput.requestFocus();
         loginPasswordInput.setOnEndIconClickListener(this::onEyeIconClick);
         signInButton.setOnClickListener(this::onSignInClick);
         goToSignupText.setOnClickListener(this::onGoToSignupClick);

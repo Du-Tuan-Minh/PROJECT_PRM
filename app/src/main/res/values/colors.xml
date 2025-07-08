@@ -16,4 +16,6 @@
     <color name="text_gray">#9E9E9E</color>
     <color name="checkbox_blue">#2979FF</color>
 
+    <color name="red_dialog">#FF5E75</color>
+    <color name="blue_dialog">#2F72FE</color>
 </resources>
