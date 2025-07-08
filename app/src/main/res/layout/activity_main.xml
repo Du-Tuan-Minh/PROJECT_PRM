@@ -92,7 +92,7 @@
             <FrameLayout
                 android:id="@+id/banner"
                 android:layout_width="0dp"
-                android:layout_height="140dp"
+                android:layout_height="170dp"
                 android:background="@drawable/bg_banner_gradient"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
@@ -114,7 +114,8 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:layout_gravity="start|center_vertical"
-                    android:padding="18dp">
+                    android:padding="18dp"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -130,15 +131,16 @@
                         android:textColor="#F0F0F0"
                         android:textSize="13sp"
                         android:layout_marginTop="4dp"/>
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_rounded_white"
+                        android:backgroundTint="#FFFFFF"
+                        app:cornerRadius="18dp"
                         android:text="Kiểm Tra Ngay"
                         android:textColor="#1976D2"
                         android:paddingLeft="18dp"
-                        android:paddingRight="18dp" />
+                        android:paddingRight="18dp"/>
                 </LinearLayout>
             </FrameLayout>
 
