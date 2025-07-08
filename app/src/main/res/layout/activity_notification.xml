@@ -5,16 +5,7 @@
     android:orientation="vertical"
     android:background="#FFF">
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Thông báo"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:padding="16dp"
-        android:textColor="#222"/>
+    <include layout="@layout/toolbar_notification"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvNotifications"

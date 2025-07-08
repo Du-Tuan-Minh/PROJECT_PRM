@@ -1,6 +1,8 @@
 package com.example.project_prm.MainScreen;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +19,15 @@ public class NotificationActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+
+        // Xử lý nút back trên toolbar
+        ImageView ivBack = findViewById(R.id.ivBack);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         RecyclerView recyclerView = findViewById(R.id.rvNotifications);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
