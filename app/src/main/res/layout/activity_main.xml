@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Nội dung có thể cuộn -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -18,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Header -->
             <LinearLayout
                 android:id="@+id/header"
                 android:layout_width="0dp"
@@ -76,7 +74,6 @@
                     android:src="@drawable/ic_health"/>
             </LinearLayout>
 
-            <!-- Thanh tìm kiếm -->
             <EditText
                 android:id="@+id/etSearch"
                 android:layout_width="0dp"
@@ -92,7 +89,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="20dp"/>
 
-            <!-- Banner -->
             <FrameLayout
                 android:id="@+id/banner"
                 android:layout_width="0dp"
@@ -146,7 +142,6 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <!-- Chuyên môn bác sĩ -->
             <TextView
                 android:id="@+id/tvDoctorSpeciality"
                 android:layout_width="wrap_content"
@@ -183,7 +178,6 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp">
 
-                <!-- Mục ví dụ 1 -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -208,7 +202,6 @@
                         android:gravity="center"
                         android:layout_marginTop="4dp"/>
                 </LinearLayout>
-                <!-- Mục ví dụ 2 -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -233,10 +226,8 @@
                         android:gravity="center"
                         android:layout_marginTop="4dp"/>
                 </LinearLayout>
-                <!-- Thêm các mục khác tương tự -->
             </GridLayout>
 
-            <!-- Bác sĩ hàng đầu -->
             <TextView
                 android:id="@+id/tvTopDoctors"
                 android:layout_width="wrap_content"
@@ -260,7 +251,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="20dp"/>
 
-            <!-- Nút lọc -->
             <LinearLayout
                 android:id="@+id/filterButtons"
                 android:layout_width="0dp"
@@ -301,7 +291,6 @@
                     android:textColor="#1976D2"/>
             </LinearLayout>
 
-            <!-- Danh sách Bác sĩ Hàng đầu -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTopDoctors"
                 android:layout_width="0dp"
@@ -314,7 +303,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="0dp"

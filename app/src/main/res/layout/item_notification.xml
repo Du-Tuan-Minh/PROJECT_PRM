@@ -6,13 +6,11 @@
     android:padding="16dp"
     android:background="@android:color/white">
 
-    <!-- Dòng trên: icon + nội dung -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!-- Icon tròn lớn -->
         <FrameLayout
             android:layout_width="35dp"
             android:layout_height="35dp"
@@ -31,7 +29,6 @@
                 android:src="@drawable/ic_close" />
         </FrameLayout>
 
-        <!-- Nội dung: title, time, new -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -39,7 +36,6 @@
             android:orientation="vertical"
             android:layout_marginStart="12dp">
 
-            <!-- Tiêu đề + New -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,7 +68,6 @@
                     android:visibility="gone"/>
             </LinearLayout>
 
-            <!-- Thời gian -->
             <TextView
                 android:id="@+id/tvTime"
                 android:layout_width="wrap_content"
@@ -84,7 +79,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Mô tả: bắt đầu ngay dưới icon -->
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="match_parent"

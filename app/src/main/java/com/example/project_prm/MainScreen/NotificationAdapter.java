@@ -29,11 +29,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         Notification notification = notifications.get(position);
         holder.tvTitle.setText(notification.getTitle());
         holder.tvDescription.setText(notification.getDescription());
-        // Hiển thị thời gian dạng Today, Yesterday, hoặc dd MMM, yyyy
         holder.tvTime.setText(formatTime(notification.getTimestamp()));
-        // Hiển thị nhãn New nếu là thông báo mới
         holder.tvNew.setVisibility(notification.isNew() ? View.VISIBLE : View.GONE);
-        // Đặt icon và màu nền icon theo iconType
         int iconRes = R.drawable.ic_calendar;
         int bgRes = R.drawable.bg_circle_lightblue;
         switch (notification.getIconType()) {
@@ -81,7 +78,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         Date date = new Date(timestamp);
         SimpleDateFormat sdfDate = new SimpleDateFormat("dd MMM, yyyy", Locale.getDefault());
         SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        // Xác định Today, Yesterday
         Date now = new Date();
         long diff = now.getTime() - date.getTime();
         if (diff < 24 * 60 * 60 * 1000 && now.getDate() == date.getDate()) {
