@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Status Badge -->
+        <TextView
+            android:id="@+id/tv_appointment_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_status_badge"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Sắp tới"
+            tools:backgroundTint="@color/primary_blue" />
+
+        <!-- Clinic Icon -->
+        <ImageView
+            android:id="@+id/iv_clinic_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_clinic"
+            android:background="@drawable/bg_icon_circle"
+            android:padding="12dp"
+            app:tint="@color/primary_blue"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Clinic Name -->
+        <TextView
+            android:id="@+id/tv_clinic_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_black"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintTop_toTopOf="@id/iv_clinic_icon"
+            app:layout_constraintStart_toEndOf="@id/iv_clinic_icon"
+            app:layout_constraintEnd_toStartOf="@id/tv_appointment_status"
+            tools:text="Phòng khám Đa khoa ABC" />
+
+        <!-- Doctor Name -->
+        <TextView
+            android:id="@+id/tv_doctor_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="14sp"
+            android:textColor="@color/text_gray"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:drawablePadding="4dp"
+            app:drawableStartCompat="@drawable/ic_doctor"
+            app:drawableTint="@color/text_gray"
+            app:layout_constraintTop_toBottomOf="@id/tv_clinic_name"
+            app:layout_constraintStart_toStartOf="@id/tv_clinic_name"
+            app:layout_constraintEnd_toEndOf="@id/tv_clinic_name"
+            tools:text="BS. Nguyễn Văn A" />
+
+        <!-- Appointment Type -->
+        <TextView
+            android:id="@+id/tv_appointment_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textSize="12sp"
+            android:textColor="@color/primary_blue"
+            android:background="@drawable/bg_type_chip"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/tv_doctor_name"
+            app:layout_constraintStart_toStartOf="@id/tv_clinic_name"
+            app:layout_constraintEnd_toEndOf="@id/tv_clinic_name"
+            tools:text="Khám tổng quát" />
+
+        <!-- Divider -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/divider_color"
+            app:layout_constraintTop_toBottomOf="@id/iv_clinic_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Date and Time Row -->
+        <LinearLayout
+            android:id="@+id/date_time_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Date -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_calendar"
+                    app:tint="@color/text_gray" />
+
+                <TextView
+                    android:id="@+id/tv_appointment_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_black"
+                    tools:text="15/12/2024" />
+
+            </LinearLayout>
+
+            <!-- Time -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_time"
+                    app:tint="@color/text_gray" />
+
+                <TextView
+                    android:id="@+id/tv_appointment_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_black"
+                    tools:text="09:30" />
+
+            </LinearLayout>
+
+            <!-- Fee -->
+            <TextView
+                android:id="@+id/tv_appointment_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_blue"
+                tools:text="200,000đ" />
+
+        </LinearLayout>
+
+        <!-- Patient Info (if different from user) -->
+        <TextView
+            android:id="@+id/tv_patient_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="12sp"
+            android:textColor="@color/text_gray"
+            android:visibility="gone"
+            android:drawablePadding="4dp"
+            app:drawableStartCompat="@drawable/ic_person"
+            app:drawableTint="@color/text_gray"
+            app:layout_constraintTop_toBottomOf="@id/date_time_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Bệnh nhân: Nguyễn Văn B, 25 tuổi"
+            tools:visibility="visible" />
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:id="@+id/action_buttons_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:gravity="end"
+            app:layout_constraintTop_toBottomOf="@id/tv_patient_info"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Cancel Button (for Upcoming) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Hủy"
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                android:layout_marginEnd="8dp"
+                app:backgroundTint="@color/error_red"
+                android:textColor="@android:color/white"
+                app:cornerRadius="18dp"
+                style="@style/Widget.MaterialComponents.Button"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <!-- Reschedule Button (for Upcoming) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_reschedule"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Đổi lịch"
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                android:layout_marginEnd="8dp"
+                app:backgroundTint="@color/warning_orange"
+                android:textColor="@android:color/white"
+                app:cornerRadius="18dp"
+                style="@style/Widget.MaterialComponents.Button"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <!-- Book Again Button (for Completed/Cancelled) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_book_again"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Đặt lại"
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                android:layout_marginEnd="8dp"
+                app:backgroundTint="@color/primary_blue"
+                android:textColor="@android:color/white"
+                app:cornerRadius="18dp"
+                style="@style/Widget.MaterialComponents.Button"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <!-- Review Button (for Completed) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_review"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Đánh giá"
+                android:textAllCaps="false"
+                android:textSize="12sp"
+                app:backgroundTint="@color/success_green"
+                android:textColor="@android:color/white"
+                app:cornerRadius="18dp"
+                style="@style/Widget.MaterialComponents.Button"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

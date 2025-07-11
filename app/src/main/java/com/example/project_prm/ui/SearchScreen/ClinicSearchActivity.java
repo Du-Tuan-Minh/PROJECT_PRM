@@ -1,4 +1,3 @@
-// NEW FILE: app/src/main/java/com/example/project_prm/ui/SearchScreen/ClinicSearchActivity.java
 package com.example.project_prm.ui.SearchScreen;
 
 import android.content.Intent;
@@ -8,7 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android:widget.Toast;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.project_prm.DataManager.SearchManager.ClinicSearchManager;
 import com.example.project_prm.R;
 import com.example.project_prm.Services.HealthcareService;
+import com.example.project_prm.ui.BookingScreen.AppointmentBookingActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -45,16 +45,25 @@ public class ClinicSearchActivity extends AppCompatActivity {
         // Get search parameters from intent
         String searchSpecialty = getIntent().getStringExtra("search_specialty");
         String diseaseName = getIntent().getStringExtra("disease_name");
+        String searchQuery = getIntent().getStringExtra("search_query");
 
         initViews();
         setupRecyclerView();
         setupSearchListeners();
         loadSpecialties();
 
+        // Pre-fill search if parameters provided
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            etSearchClinic.setText(searchQuery);
+            currentSearchQuery = searchQuery;
+        }
+
         // If launched from disease detail, pre-fill specialty
         if (searchSpecialty != null) {
             actvSpecialty.setText(searchSpecialty);
             currentSpecialty = searchSpecialty;
+            searchClinics();
+        } else if (searchQuery != null && !searchQuery.isEmpty()) {
             searchClinics();
         } else {
             loadAllClinics();
@@ -112,7 +121,9 @@ public class ClinicSearchActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 currentSearchQuery = s.toString().trim();
-                searchClinics();
+                // Add small delay to avoid too many requests
+                etSearchClinic.removeCallbacks(searchRunnable);
+                etSearchClinic.postDelayed(searchRunnable, 300);
             }
         });
 
@@ -122,6 +133,13 @@ public class ClinicSearchActivity extends AppCompatActivity {
             searchClinics();
         });
     }
+
+    private final Runnable searchRunnable = new Runnable() {
+        @Override
+        public void run() {
+            searchClinics();
+        }
+    };
 
     private void loadSpecialties() {
         service.getAvailableSpecialties(new ClinicSearchManager.OnSpecialtiesListener() {
@@ -142,9 +160,19 @@ public class ClinicSearchActivity extends AppCompatActivity {
                 // Use default specialties
                 runOnUiThread(() -> {
                     String[] defaultSpecialties = {
-                            "Khám tổng quát", "Tim mạch", "Da liễu", "Nhãn khoa",
-                            "Tai - Mũi - Họng", "Cơ xương khớp", "Nội tiết",
-                            "Thần kinh", "Ung bướu", "Sản phụ khoa"
+                            "Tất cả chuyên khoa",
+                            "Khám tổng quát",
+                            "Tim mạch",
+                            "Da liễu",
+                            "Nhãn khoa",
+                            "Tai - Mũi - Họng",
+                            "Cơ xương khớp",
+                            "Nội tiết",
+                            "Thần kinh",
+                            "Ung bướu",
+                            "Sản phụ khoa",
+                            "Nhi khoa",
+                            "Răng hàm mặt"
                     };
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(
                             ClinicSearchActivity.this,
@@ -160,7 +188,7 @@ public class ClinicSearchActivity extends AppCompatActivity {
     private void searchClinics() {
         showLoading(true);
 
-        if (currentSearchQuery.isEmpty() && currentSpecialty.isEmpty()) {
+        if (currentSearchQuery.isEmpty() && (currentSpecialty.isEmpty() || currentSpecialty.equals("Tất cả chuyên khoa"))) {
             loadAllClinics();
             return;
         }
@@ -168,7 +196,12 @@ public class ClinicSearchActivity extends AppCompatActivity {
         // Create search filter
         ClinicSearchManager.SearchFilter filter = new ClinicSearchManager.SearchFilter();
         filter.name = currentSearchQuery.isEmpty() ? null : currentSearchQuery;
-        filter.specialty = currentSpecialty.isEmpty() ? null : currentSpecialty;
+
+        // Don't filter by specialty if "Tất cả chuyên khoa" is selected
+        if (!currentSpecialty.isEmpty() && !currentSpecialty.equals("Tất cả chuyên khoa")) {
+            filter.specialty = currentSpecialty;
+        }
+
         filter.sortBy = "rating"; // Sort by rating by default
 
         service.searchClinicsWithFilters(filter, new ClinicSearchManager.OnClinicSearchListener() {
@@ -184,8 +217,9 @@ public class ClinicSearchActivity extends AppCompatActivity {
             public void onError(String error) {
                 runOnUiThread(() -> {
                     showLoading(false);
-                    showError("Search failed: " + error);
-                    showEmptyState(true);
+                    showError("Không thể tìm kiếm: " + error);
+                    // Don't show empty state on error, keep current results
+                    updateSearchResults(new ArrayList<>());
                 });
             }
         });
@@ -207,7 +241,7 @@ public class ClinicSearchActivity extends AppCompatActivity {
             public void onError(String error) {
                 runOnUiThread(() -> {
                     showLoading(false);
-                    showError("Failed to load clinics: " + error);
+                    showError("Không thể tải danh sách phòng khám: " + error);
                     showEmptyState(true);
                 });
             }
@@ -220,19 +254,42 @@ public class ClinicSearchActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         showEmptyState(results.isEmpty());
+
+        // Update empty state message based on search criteria
+        updateEmptyStateMessage();
+    }
+
+    private void updateEmptyStateMessage() {
+        if (emptyStateView.getVisibility() == View.VISIBLE) {
+            // You can customize empty state message here
+            // For now, we'll keep it generic
+        }
     }
 
     private void showLoading(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        rvSearchResults.setVisibility(show ? View.GONE : View.VISIBLE);
+        if (progressBar != null && rvSearchResults != null) {
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            rvSearchResults.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     private void showEmptyState(boolean show) {
-        emptyStateView.setVisibility(show ? View.VISIBLE : View.GONE);
-        rvSearchResults.setVisibility(show ? View.GONE : View.VISIBLE);
+        if (emptyStateView != null && rvSearchResults != null) {
+            emptyStateView.setVisibility(show ? View.VISIBLE : View.GONE);
+            rvSearchResults.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     private void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Clean up any pending search
+        if (etSearchClinic != null) {
+            etSearchClinic.removeCallbacks(searchRunnable);
+        }
     }
 }

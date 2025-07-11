@@ -1,4 +1,3 @@
-// NEW FILE: app/src/main/java/com/example/project_prm/ui/AppointmentScreen/CancelledAppointmentsFragment.java
 package com.example.project_prm.ui.AppointmentScreen;
 
 import android.content.Intent;
@@ -17,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.project_prm.DataManager.HistoryManager.AppointmentHistoryManager;
 import com.example.project_prm.R;
 import com.example.project_prm.Services.HealthcareService;
+import com.example.project_prm.ui.BookingScreen.AppointmentBookingActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,26 +50,34 @@ public class CancelledAppointmentsFragment extends Fragment {
         emptyStateView = view.findViewById(R.id.empty_state_view);
         progressBar = view.findViewById(R.id.progress_bar);
 
-        service = HealthcareService.getInstance(requireContext());
+        service = HealthcareService.getInstance(getContext());
         appointmentList = new ArrayList<>();
 
         // Update empty state for cancelled appointments
+        updateEmptyStateText(view);
+    }
+
+    private void updateEmptyStateText(View view) {
         if (view.findViewById(R.id.tv_empty_title) != null) {
-            ((android.widget.TextView) view.findViewById(R.id.tv_empty_title)).setText("No cancelled appointments");
-            ((android.widget.TextView) view.findViewById(R.id.tv_empty_description)).setText("Your cancelled appointments will appear here");
+            ((android.widget.TextView) view.findViewById(R.id.tv_empty_title))
+                    .setText("Chưa có lịch hẹn bị hủy");
+            ((android.widget.TextView) view.findViewById(R.id.tv_empty_description))
+                    .setText("Các lịch hẹn đã hủy sẽ hiển thị ở đây");
         }
     }
 
     private void setupRecyclerView() {
-        adapter = new AppointmentAdapter(appointmentList, new AppointmentAdapter.OnAppointmentActionListener() {
+        adapter = new AppointmentAdapter(appointmentList, AppointmentAdapter.TYPE_CANCELLED);
+
+        adapter.setOnActionClickListener(new AppointmentAdapter.OnActionClickListener() {
             @Override
             public void onCancelClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                // Not used in cancelled
+                // Not applicable for cancelled appointments
             }
 
             @Override
             public void onRescheduleClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                // Not used in cancelled
+                // Not applicable for cancelled appointments
             }
 
             @Override
@@ -78,13 +86,14 @@ public class CancelledAppointmentsFragment extends Fragment {
             }
 
             @Override
-            public void onLeaveReviewClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                // Not used in cancelled
+            public void onReviewClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
+                // Not applicable for cancelled appointments
             }
 
             @Override
-            public void onContactClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                contactClinic(item);
+            public void onItemClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
+                // Navigate to Appointment Detail
+                viewAppointmentDetail(item);
             }
         });
 
@@ -95,7 +104,7 @@ public class CancelledAppointmentsFragment extends Fragment {
     private void loadCancelledAppointments() {
         showLoading(true);
 
-        int userId = 1; // TODO: Get actual user ID from SharedPreferences
+        int userId = getCurrentUserId();
 
         service.getCancelledAppointments(userId, new AppointmentHistoryManager.OnHistoryListener() {
             @Override
@@ -113,7 +122,7 @@ public class CancelledAppointmentsFragment extends Fragment {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         showLoading(false);
-                        showError("Không thể tải lịch hẹn: " + error);
+                        showError("Không thể tải lịch hẹn đã hủy: " + error);
                         showEmptyState(true);
                     });
                 }
@@ -132,12 +141,13 @@ public class CancelledAppointmentsFragment extends Fragment {
     private void bookAgain(AppointmentHistoryManager.AppointmentHistoryItem item) {
         service.getBookAgainTemplate(item.appointment.getId(), new AppointmentHistoryManager.OnBookAgainListener() {
             @Override
-            public void onSuccess(AppointmentHistoryManager.AppointmentTemplate template) {
+            public void onSuccess(AppointmentHistoryManager.BookAgainTemplate template) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         // Navigate to booking screen with pre-filled data
                         Intent intent = new Intent(getContext(), AppointmentBookingActivity.class);
                         intent.putExtra("clinic_id", template.clinicId);
+                        intent.putExtra("clinic_name", template.clinicName);
                         intent.putExtra("doctor_name", template.doctorName);
                         intent.putExtra("patient_name", template.patientName);
                         intent.putExtra("patient_phone", template.patientPhone);
@@ -145,7 +155,15 @@ public class CancelledAppointmentsFragment extends Fragment {
                         intent.putExtra("patient_gender", template.patientGender);
                         intent.putExtra("symptoms", template.symptoms);
                         intent.putExtra("medical_history", template.medicalHistory);
+                        intent.putExtra("appointment_type", template.appointmentType);
+
+                        // Flag to indicate this is "book again" from cancelled
+                        intent.putExtra("is_book_again", true);
+                        intent.putExtra("original_appointment_id", item.appointment.getId());
+
                         startActivity(intent);
+
+                        Toast.makeText(getContext(), "Thông tin đã được điền sẵn", Toast.LENGTH_SHORT).show();
                     });
                 }
             }
@@ -162,31 +180,74 @@ public class CancelledAppointmentsFragment extends Fragment {
     }
 
     private void contactClinic(AppointmentHistoryManager.AppointmentHistoryItem item) {
-        // Show contact options dialog or navigate to contact screen
-        String clinicPhone = item.appointment.getPatientPhone(); // This should be clinic phone
+        // Try to get clinic phone from the appointment data
+        // Since we don't have direct clinic phone in appointment,
+        // we'll show a dialog with clinic info and suggest calling
 
-        if (clinicPhone != null && !clinicPhone.isEmpty()) {
-            // Open phone dialer
-            Intent intent = new Intent(Intent.ACTION_DIAL);
-            intent.setData(android.net.Uri.parse("tel:" + clinicPhone));
-            startActivity(intent);
-        } else {
-            Toast.makeText(getContext(), "Thông tin liên hệ không có sẵn", Toast.LENGTH_SHORT).show();
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+        builder.setTitle("Liên hệ phòng khám")
+                .setMessage("Phòng khám: " + item.appointment.getClinic() +
+                        "\n\nBạn có thể tìm số điện thoại của phòng khám trong danh sách tìm kiếm phòng khám.")
+                .setPositiveButton("Tìm phòng khám", (dialog, which) -> {
+                    // Navigate to clinic search
+                    Intent intent = new Intent(getContext(), com.example.project_prm.ui.SearchScreen.ClinicSearchActivity.class);
+                    intent.putExtra("search_query", item.appointment.getClinic());
+                    startActivity(intent);
+                })
+                .setNegativeButton("Đóng", null)
+                .show();
+    }
+
+    private void viewAppointmentDetail(AppointmentHistoryManager.AppointmentHistoryItem item) {
+        // Show appointment info with cancellation reason
+        String info = String.format("Phòng khám: %s\nBác sĩ: %s\nNgày: %s\nGiờ: %s\nTrạng thái: Đã hủy",
+                item.appointment.getClinic(),
+                item.appointment.getDoctor(),
+                item.appointment.getDate(),
+                item.appointment.getTime());
+
+        if (item.appointment.getCancellationReason() != null && !item.appointment.getCancellationReason().isEmpty()) {
+            info += "\nLý do hủy: " + item.appointment.getCancellationReason();
         }
+
+        Toast.makeText(getContext(), info, Toast.LENGTH_LONG).show();
+
+        // TODO: Uncomment when AppointmentDetailActivity is created
+        /*
+        Intent intent = new Intent(getContext(), AppointmentDetailActivity.class);
+        intent.putExtra("appointment_id", item.appointment.getId());
+        startActivity(intent);
+        */
+    }
+
+    private int getCurrentUserId() {
+        // Get from SharedPreferences
+        if (getContext() != null) {
+            android.content.SharedPreferences prefs = getContext()
+                    .getSharedPreferences("MyAppPrefs", android.content.Context.MODE_PRIVATE);
+            return prefs.getInt("userId", 1); // Default to 1 for demo
+        }
+        return 1;
     }
 
     private void showLoading(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+        if (progressBar != null && recyclerView != null) {
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     private void showEmptyState(boolean show) {
-        emptyStateView.setVisibility(show ? View.VISIBLE : View.GONE);
-        recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+        if (emptyStateView != null && recyclerView != null) {
+            emptyStateView.setVisibility(show ? View.VISIBLE : View.GONE);
+            recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     private void showError(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        if (getContext() != null) {
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

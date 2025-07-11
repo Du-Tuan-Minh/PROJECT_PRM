@@ -15,7 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_prm.DataManager.HistoryManager.AppointmentHistoryManager;
 import com.example.project_prm.R;
-import com.example.project_prm.Services.TungFeaturesService;
+import com.example.project_prm.Services.HealthcareService;
+import com.example.project_prm.ui.BookingScreen.AppointmentBookingActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class UpcomingAppointmentsFragment extends Fragment {
     private View emptyStateView;
     private View progressBar;
 
-    private TungFeaturesService service;
+    private HealthcareService service;
     private List<AppointmentHistoryManager.AppointmentHistoryItem> appointmentList;
 
     @Override
@@ -49,47 +50,32 @@ public class UpcomingAppointmentsFragment extends Fragment {
         emptyStateView = view.findViewById(R.id.empty_state_view);
         progressBar = view.findViewById(R.id.progress_bar);
 
-        service = TungFeaturesService.getInstance(requireContext());
+        service = HealthcareService.getInstance(getContext());
         appointmentList = new ArrayList<>();
-
-        // Setup empty state for upcoming appointments
-        if (view.findViewById(R.id.tv_empty_title) != null) {
-            ((android.widget.TextView) view.findViewById(R.id.tv_empty_title)).setText("You don't have an appointment yet");
-            ((android.widget.TextView) view.findViewById(R.id.tv_empty_description)).setText("You don't have a doctor's appointment scheduled at the moment");
-        }
     }
 
     private void setupRecyclerView() {
-        adapter = new AppointmentAdapter(appointmentList, new AppointmentAdapter.OnAppointmentActionListener() {
+        adapter = new AppointmentAdapter(appointmentList, AppointmentAdapter.TYPE_UPCOMING);
+
+        adapter.setOnActionClickListener(new AppointmentAdapter.OnActionClickListener() {
             @Override
             public void onCancelClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                // Navigate to Cancel Appointment Activity
-                Intent intent = new Intent(getContext(), CancelAppointmentActivity.class);
-                intent.putExtra("appointment_id", item.appointment.getId());
-                startActivity(intent);
+                cancelAppointment(item);
             }
 
             @Override
             public void onRescheduleClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                // Navigate to Reschedule Activity
-                Intent intent = new Intent(getContext(), RescheduleActivity.class);
-                intent.putExtra("appointment_id", item.appointment.getId());
-                startActivity(intent);
+                rescheduleAppointment(item);
             }
 
             @Override
             public void onBookAgainClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                // Not used in upcoming
+                // Not applicable for upcoming
             }
 
             @Override
-            public void onLeaveReviewClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                // Not used in upcoming
-            }
-
-            @Override
-            public void onContactClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                // Not used in upcoming
+            public void onReviewClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
+                // Not applicable for upcoming
             }
 
             @Override
@@ -108,23 +94,15 @@ public class UpcomingAppointmentsFragment extends Fragment {
     private void loadUpcomingAppointments() {
         showLoading(true);
 
-        // Use service to get real data from database
-        service.getUpcomingAppointments(new AppointmentHistoryManager.OnHistoryListener() {
+        int userId = 1; // TODO: Get actual user ID from SharedPreferences
+
+        service.getUpcomingAppointments(userId, new AppointmentHistoryManager.OnHistoryListener() {
             @Override
             public void onSuccess(List<AppointmentHistoryManager.AppointmentHistoryItem> items) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         showLoading(false);
-                        appointmentList.clear();
-                        appointmentList.addAll(items);
-                        adapter.notifyDataSetChanged();
-
-                        showEmptyState(items.isEmpty());
-
-                        // Show success message if data loaded
-                        if (!items.isEmpty()) {
-                            Toast.makeText(getContext(), "Loaded " + items.size() + " upcoming appointments", Toast.LENGTH_SHORT).show();
-                        }
+                        updateAppointmentList(items);
                     });
                 }
             }
@@ -134,8 +112,88 @@ public class UpcomingAppointmentsFragment extends Fragment {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         showLoading(false);
-                        showError("Error loading appointments: " + error);
+                        showError("Không thể tải lịch hẹn sắp tới: " + error);
                         showEmptyState(true);
+                    });
+                }
+            }
+        });
+    }
+
+    private void updateAppointmentList(List<AppointmentHistoryManager.AppointmentHistoryItem> items) {
+        appointmentList.clear();
+        appointmentList.addAll(items);
+        adapter.notifyDataSetChanged();
+
+        showEmptyState(items.isEmpty());
+    }
+
+    private void cancelAppointment(AppointmentHistoryManager.AppointmentHistoryItem item) {
+        // Show confirmation dialog first
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+        builder.setTitle("Hủy lịch hẹn")
+                .setMessage("Bạn có chắc chắn muốn hủy lịch hẹn này?")
+                .setPositiveButton("Hủy lịch", (dialog, which) -> {
+                    performCancelAppointment(item);
+                })
+                .setNegativeButton("Không", null)
+                .show();
+    }
+
+    private void performCancelAppointment(AppointmentHistoryManager.AppointmentHistoryItem item) {
+        service.cancelAppointment(item.appointment.getId(), "Hủy bởi người dùng",
+                new AppointmentHistoryManager.OnCancelListener() {
+                    @Override
+                    public void onSuccess() {
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(() -> {
+                                Toast.makeText(getContext(), "Đã hủy lịch hẹn thành công", Toast.LENGTH_SHORT).show();
+                                loadUpcomingAppointments(); // Refresh list
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(() -> {
+                                showError("Không thể hủy lịch hẹn: " + error);
+                            });
+                        }
+                    }
+                });
+    }
+
+    private void rescheduleAppointment(AppointmentHistoryManager.AppointmentHistoryItem item) {
+        service.getRescheduleTemplate(item.appointment.getId(), new AppointmentHistoryManager.OnRescheduleListener() {
+            @Override
+            public void onSuccess(AppointmentHistoryManager.RescheduleTemplate template) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        // Navigate to booking screen with pre-filled data for rescheduling
+                        Intent intent = new Intent(getContext(), AppointmentBookingActivity.class);
+                        intent.putExtra("is_reschedule", true);
+                        intent.putExtra("original_appointment_id", item.appointment.getId());
+                        intent.putExtra("clinic_id", template.clinicId);
+                        intent.putExtra("clinic_name", template.clinicName);
+                        intent.putExtra("doctor_name", template.doctorName);
+                        intent.putExtra("patient_name", template.patientName);
+                        intent.putExtra("patient_phone", template.patientPhone);
+                        intent.putExtra("patient_age", template.patientAge);
+                        intent.putExtra("patient_gender", template.patientGender);
+                        intent.putExtra("symptoms", template.symptoms);
+                        intent.putExtra("medical_history", template.medicalHistory);
+                        intent.putExtra("appointment_type", template.appointmentType);
+                        startActivity(intent);
+                    });
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        showError("Không thể đổi lịch: " + error);
                     });
                 }
             }
@@ -146,7 +204,6 @@ public class UpcomingAppointmentsFragment extends Fragment {
         if (progressBar != null && recyclerView != null) {
             progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
             recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
-            emptyStateView.setVisibility(View.GONE);
         }
     }
 
@@ -166,7 +223,6 @@ public class UpcomingAppointmentsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Refresh data when fragment becomes visible
-        loadUpcomingAppointments();
+        loadUpcomingAppointments(); // Refresh when fragment becomes visible
     }
 }
