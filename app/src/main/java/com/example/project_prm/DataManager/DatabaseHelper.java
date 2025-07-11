@@ -1,3 +1,4 @@
+// UPDATED FILE: app/src/main/java/com/example/project_prm/DataManager/DatabaseHelper.java
 package com.example.project_prm.DataManager;
 
 import android.content.ContentValues;
@@ -11,7 +12,7 @@ import org.json.JSONObject;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "HealthcareApp.db";
-    private static final int DATABASE_VERSION = 2; // Tăng version do thay đổi schema
+    private static final int DATABASE_VERSION = 3; // Tăng version từ 2 lên 3
 
     // Bảng Disease
     public static final String TABLE_DISEASE = "disease";
@@ -27,10 +28,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_USER_NAME = "name";
     public static final String COLUMN_USER_PROFILE = "profile";
     public static final String COLUMN_USER_SYMPTOM_HISTORY = "symptom_history";
-    public static final String COLUMN_USER_USERNAME = "username"; // Thêm cột username
-    public static final String COLUMN_USER_PASSWORD = "password"; // Thêm cột password
+    public static final String COLUMN_USER_USERNAME = "username";
+    public static final String COLUMN_USER_PASSWORD = "password";
 
-    // Bảng Appointment
+    // Bảng Appointment (UPDATED)
     public static final String TABLE_APPOINTMENT = "appointment";
     public static final String COLUMN_APPOINTMENT_ID = "id";
     public static final String COLUMN_APPOINTMENT_USER_ID = "user_id";
@@ -38,6 +39,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_APPOINTMENT_DOCTOR = "doctor";
     public static final String COLUMN_APPOINTMENT_DATE = "date";
     public static final String COLUMN_APPOINTMENT_TIME = "time";
+
+    // NEW APPOINTMENT COLUMNS
+    public static final String COLUMN_PATIENT_NAME = "patient_name";
+    public static final String COLUMN_PATIENT_PHONE = "patient_phone";
+    public static final String COLUMN_PATIENT_AGE = "patient_age";
+    public static final String COLUMN_PATIENT_GENDER = "patient_gender";
+    public static final String COLUMN_APPOINTMENT_SYMPTOMS = "symptoms";
+    public static final String COLUMN_MEDICAL_HISTORY = "medical_history";
+    public static final String COLUMN_APPOINTMENT_TYPE = "appointment_type";
+    public static final String COLUMN_APPOINTMENT_FEE = "appointment_fee";
+    public static final String COLUMN_APPOINTMENT_NOTES = "notes";
+    public static final String COLUMN_APPOINTMENT_STATUS = "status";
+    public static final String COLUMN_CANCELLATION_REASON = "cancellation_reason";
+    public static final String COLUMN_RATING = "rating";
+    public static final String COLUMN_FEEDBACK = "feedback";
+    public static final String COLUMN_ORIGINAL_APPOINTMENT_ID = "original_appointment_id";
+    public static final String COLUMN_CREATED_AT = "created_at";
+    public static final String COLUMN_UPDATED_AT = "updated_at";
 
     // Bảng Care Recommendation
     public static final String TABLE_CARE_RECOMMENDATION = "care_recommendation";
@@ -68,11 +87,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_USER_NAME + " TEXT, " +
                 COLUMN_USER_PROFILE + " TEXT, " +
                 COLUMN_USER_SYMPTOM_HISTORY + " TEXT, " +
-                COLUMN_USER_USERNAME + " TEXT UNIQUE, " + // UNIQUE để tránh trùng username
+                COLUMN_USER_USERNAME + " TEXT UNIQUE, " +
                 COLUMN_USER_PASSWORD + " TEXT)";
         db.execSQL(createUserTable);
 
-        // Tạo bảng Appointment
+        // Tạo bảng Appointment với tất cả columns mới
         String createAppointmentTable = "CREATE TABLE " + TABLE_APPOINTMENT + " (" +
                 COLUMN_APPOINTMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_APPOINTMENT_USER_ID + " INTEGER, " +
@@ -80,6 +99,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_APPOINTMENT_DOCTOR + " TEXT, " +
                 COLUMN_APPOINTMENT_DATE + " TEXT, " +
                 COLUMN_APPOINTMENT_TIME + " TEXT, " +
+                COLUMN_PATIENT_NAME + " TEXT, " +
+                COLUMN_PATIENT_PHONE + " TEXT, " +
+                COLUMN_PATIENT_AGE + " TEXT, " +
+                COLUMN_PATIENT_GENDER + " TEXT, " +
+                COLUMN_APPOINTMENT_SYMPTOMS + " TEXT, " +
+                COLUMN_MEDICAL_HISTORY + " TEXT, " +
+                COLUMN_APPOINTMENT_TYPE + " TEXT DEFAULT 'consultation', " +
+                COLUMN_APPOINTMENT_FEE + " REAL DEFAULT 0.0, " +
+                COLUMN_APPOINTMENT_NOTES + " TEXT, " +
+                COLUMN_APPOINTMENT_STATUS + " TEXT DEFAULT 'pending', " +
+                COLUMN_CANCELLATION_REASON + " TEXT, " +
+                COLUMN_RATING + " INTEGER DEFAULT 0, " +
+                COLUMN_FEEDBACK + " TEXT, " +
+                COLUMN_ORIGINAL_APPOINTMENT_ID + " TEXT, " +
+                COLUMN_CREATED_AT + " TEXT, " +
+                COLUMN_UPDATED_AT + " TEXT, " +
                 "FOREIGN KEY (" + COLUMN_APPOINTMENT_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
         db.execSQL(createAppointmentTable);
 
@@ -97,25 +132,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
-            // Thêm cột username và password vào bảng user
+            // Upgrade từ version 1 lên 2 (thêm username, password)
             db.execSQL("ALTER TABLE " + TABLE_USER + " ADD COLUMN " + COLUMN_USER_USERNAME + " TEXT");
             db.execSQL("ALTER TABLE " + TABLE_USER + " ADD COLUMN " + COLUMN_USER_PASSWORD + " TEXT");
-            // Thêm ràng buộc UNIQUE cho username (cần tạo bảng tạm thời)
-            db.execSQL("CREATE TABLE temp_user AS SELECT * FROM " + TABLE_USER);
-            db.execSQL("DROP TABLE " + TABLE_USER);
-            db.execSQL("CREATE TABLE " + TABLE_USER + " (" +
-                    COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_USER_NAME + " TEXT, " +
-                    COLUMN_USER_PROFILE + " TEXT, " +
-                    COLUMN_USER_SYMPTOM_HISTORY + " TEXT, " +
-                    COLUMN_USER_USERNAME + " TEXT UNIQUE, " +
-                    COLUMN_USER_PASSWORD + " TEXT)");
-            db.execSQL("INSERT INTO " + TABLE_USER + " (" +
-                    COLUMN_USER_ID + ", " + COLUMN_USER_NAME + ", " + COLUMN_USER_PROFILE + ", " +
-                    COLUMN_USER_SYMPTOM_HISTORY + ", " + COLUMN_USER_USERNAME + ", " + COLUMN_USER_PASSWORD +
-                    ") SELECT " + COLUMN_USER_ID + ", " + COLUMN_USER_NAME + ", " + COLUMN_USER_PROFILE + ", " +
-                    COLUMN_USER_SYMPTOM_HISTORY + ", NULL, NULL FROM temp_user");
-            db.execSQL("DROP TABLE temp_user");
+        }
+
+        if (oldVersion < 3) {
+            // Upgrade từ version 2 lên 3 (thêm các columns mới cho appointment)
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_PATIENT_NAME + " TEXT");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_PATIENT_PHONE + " TEXT");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_PATIENT_AGE + " TEXT");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_PATIENT_GENDER + " TEXT");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_APPOINTMENT_SYMPTOMS + " TEXT");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_MEDICAL_HISTORY + " TEXT");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_APPOINTMENT_TYPE + " TEXT DEFAULT 'consultation'");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_APPOINTMENT_FEE + " REAL DEFAULT 0.0");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_APPOINTMENT_NOTES + " TEXT");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_APPOINTMENT_STATUS + " TEXT DEFAULT 'pending'");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_CANCELLATION_REASON + " TEXT");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_RATING + " INTEGER DEFAULT 0");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_FEEDBACK + " TEXT");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_ORIGINAL_APPOINTMENT_ID + " TEXT");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_CREATED_AT + " TEXT");
+            db.execSQL("ALTER TABLE " + TABLE_APPOINTMENT + " ADD COLUMN " + COLUMN_UPDATED_AT + " TEXT");
         }
     }
 
