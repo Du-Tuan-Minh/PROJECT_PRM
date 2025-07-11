@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
+import android.widget.ImageView;
 
 public class AllUtilitiesActivity extends AppCompatActivity {
     private String[] utilityNames = {"Thông tin đặt lịch", "Articles", "History", "Chat AI", "Appointment"};
@@ -21,6 +22,8 @@ public class AllUtilitiesActivity extends AppCompatActivity {
 
         EditText etSearchAll = findViewById(R.id.etSearchAll);
         GridLayout gridAllUtilities = findViewById(R.id.gridAllUtilities);
+        ImageView ivBack = findViewById(R.id.ivBack);
+        ivBack.setOnClickListener(v -> finish());
 
         showUtilities(gridAllUtilities, "");
 
