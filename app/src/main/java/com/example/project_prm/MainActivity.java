@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.project_prm.Article.ArticlesFragment;
 import com.example.project_prm.DataManager.Entity.FirestoreSeeder;
 import com.example.project_prm.MainScreen.BookAppointmentActivity;
 import com.example.project_prm.MainScreen.ChatbotActivity;
@@ -15,6 +16,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.FirebaseApp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FirebaseApp.initializeApp(this);
-        FirestoreSeeder.seedAll();
-        Toast.makeText(this, "Seeding hoàn tất!", Toast.LENGTH_SHORT).show();
+//        FirebaseApp.initializeApp(this);
+//        FirestoreSeeder.seedAll();
+//        Toast.makeText(this, "Seeding hoàn tất!", Toast.LENGTH_SHORT).show();
         // Kiểm tra trạng thái đăng nhập
 //        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
 //        int userId = prefs.getInt("userId", -1);
@@ -34,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
 //            return;
 //        }
 
-        setContentView(R.layout.activity_signin);
+        setContentView(R.layout.article_main);
+        // Gọi ArticlesFragment ngay khi mở app
+        loadFragment(new ArticlesFragment());
         // Hiển thị tên người dùng
 //        String username = prefs.getString("username", "Người dùng");
 //        TextView welcomeText = findViewById(R.id.tv_header);
@@ -76,4 +80,14 @@ public class MainActivity extends AppCompatActivity {
 //            finish();
 //        });
     }
+
+
+    public void loadFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment) // fragment_container là ID trong layout XML
+                .addToBackStack(null)
+                .commit();
+    }
+
 }

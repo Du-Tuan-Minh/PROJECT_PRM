@@ -58,7 +58,7 @@
                     android:id="@+id/search_button"
                     android:layout_width="40dp"
                     android:layout_height="35dp"
-                    android:src="@drawable/ic_Search"
+                    android:src="@drawable/ic_search"
                     android:background="@android:color/transparent"
                     android:scaleType="centerInside"
                     android:layout_marginEnd="8dp"

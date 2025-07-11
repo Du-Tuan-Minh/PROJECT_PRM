@@ -18,4 +18,11 @@
 
     <color name="red_dialog">#FF5E75</color>
     <color name="blue_dialog">#2F72FE</color>
+
+    <color name="category_health">#4CAF50</color>
+    <color name="category_covid">#FF5722</color>
+    <color name="category_lifestyle">#3F51B5</color>
+    <color name="category_medical">#009688</color>
+    <color name="category_default">#9E9E9E</color>
+
 </resources>
