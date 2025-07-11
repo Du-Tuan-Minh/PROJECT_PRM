@@ -1,14 +1,10 @@
-// NEW FILE: app/src/main/java/com/example/project_prm/UI/AppointmentScreen/CompletedAppointmentsFragment.java
 package com.example.project_prm.ui.AppointmentScreen;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -57,9 +53,10 @@ public class CompletedAppointmentsFragment extends Fragment {
         appointmentList = new ArrayList<>();
 
         // Update empty state for completed appointments
-        view.findViewById(R.id.tv_empty_title).setVisibility(View.VISIBLE);
-        ((android.widget.TextView) view.findViewById(R.id.tv_empty_title)).setText("No completed appointments");
-        ((android.widget.TextView) view.findViewById(R.id.tv_empty_description)).setText("Your completed appointments will appear here");
+        if (view.findViewById(R.id.tv_empty_title) != null) {
+            ((android.widget.TextView) view.findViewById(R.id.tv_empty_title)).setText("No completed appointments");
+            ((android.widget.TextView) view.findViewById(R.id.tv_empty_description)).setText("Your completed appointments will appear here");
+        }
     }
 
     private void setupRecyclerView() {
@@ -81,12 +78,24 @@ public class CompletedAppointmentsFragment extends Fragment {
 
             @Override
             public void onLeaveReviewClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                showReviewDialog(item);
+                // Navigate to Review Activity
+                Intent intent = new Intent(getContext(), ReviewActivity.class);
+                intent.putExtra("appointment_id", item.appointment.getId());
+                intent.putExtra("doctor_name", item.appointment.getDoctor());
+                startActivity(intent);
             }
 
             @Override
             public void onContactClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
                 // Not used in completed
+            }
+
+            @Override
+            public void onItemClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
+                // Navigate to Appointment Detail
+                Intent intent = new Intent(getContext(), AppointmentDetailActivity.class);
+                intent.putExtra("appointment_id", item.appointment.getId());
+                startActivity(intent);
             }
         });
 
@@ -105,7 +114,11 @@ public class CompletedAppointmentsFragment extends Fragment {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         showLoading(false);
-                        updateAppointmentList(items);
+                        appointmentList.clear();
+                        appointmentList.addAll(items);
+                        adapter.notifyDataSetChanged();
+
+                        showEmptyState(items.isEmpty());
                     });
                 }
             }
@@ -115,7 +128,7 @@ public class CompletedAppointmentsFragment extends Fragment {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         showLoading(false);
-                        showError("Không thể tải lịch hẹn: " + error);
+                        showError("Error loading completed appointments: " + error);
                         showEmptyState(true);
                     });
                 }
@@ -123,24 +136,17 @@ public class CompletedAppointmentsFragment extends Fragment {
         });
     }
 
-    private void updateAppointmentList(List<AppointmentHistoryManager.AppointmentHistoryItem> items) {
-        appointmentList.clear();
-        appointmentList.addAll(items);
-        adapter.notifyDataSetChanged();
-
-        showEmptyState(items.isEmpty());
-    }
-
     private void bookAgain(AppointmentHistoryManager.AppointmentHistoryItem item) {
         service.getBookAgainTemplate(item.appointment.getId(), new AppointmentHistoryManager.OnBookAgainListener() {
             @Override
-            public void onSuccess(AppointmentHistoryManager.AppointmentTemplate template) {
+            public void onSuccess(AppointmentHistoryManager.BookAgainTemplate template) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
-                        // Navigate to booking screen with pre-filled data
-                        Intent intent = new Intent(getContext(), AppointmentBookingActivity.class);
-                        intent.putExtra("clinic_id", template.clinicId);
+                        // Navigate to book appointment with pre-filled data
+                        Intent intent = new Intent(getContext(), BookAppointmentActivity.class);
                         intent.putExtra("doctor_name", template.doctorName);
+                        intent.putExtra("clinic_name", template.clinicName);
+                        intent.putExtra("appointment_type", template.appointmentType);
                         intent.putExtra("patient_name", template.patientName);
                         intent.putExtra("patient_phone", template.patientPhone);
                         intent.putExtra("patient_age", template.patientAge);
@@ -156,54 +162,7 @@ public class CompletedAppointmentsFragment extends Fragment {
             public void onError(String error) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
-                        showError("Không thể tạo lịch mới: " + error);
-                    });
-                }
-            }
-        });
-    }
-
-    private void showReviewDialog(AppointmentHistoryManager.AppointmentHistoryItem item) {
-        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_leave_review, null);
-
-        RatingBar ratingBar = dialogView.findViewById(R.id.rating_bar);
-        EditText etReview = dialogView.findViewById(R.id.et_review);
-
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Leave a Review")
-                .setView(dialogView)
-                .setPositiveButton("Submit", (dialog, which) -> {
-                    int rating = (int) ratingBar.getRating();
-                    String review = etReview.getText().toString().trim();
-
-                    if (rating == 0) {
-                        Toast.makeText(getContext(), "Please select a rating", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    submitReview(item, rating, review);
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
-    }
-
-    private void submitReview(AppointmentHistoryManager.AppointmentHistoryItem item, int rating, String review) {
-        service.addAppointmentFeedback(item.appointment.getId(), rating, review, new AppointmentHistoryManager.OnActionListener() {
-            @Override
-            public void onSuccess(String message) {
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        Toast.makeText(getContext(), "Review submitted successfully!", Toast.LENGTH_SHORT).show();
-                        loadCompletedAppointments(); // Refresh list
-                    });
-                }
-            }
-
-            @Override
-            public void onError(String error) {
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        showError("Failed to submit review: " + error);
+                        showError("Cannot create new appointment: " + error);
                     });
                 }
             }
@@ -211,22 +170,28 @@ public class CompletedAppointmentsFragment extends Fragment {
     }
 
     private void showLoading(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+        if (progressBar != null && recyclerView != null) {
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     private void showEmptyState(boolean show) {
-        emptyStateView.setVisibility(show ? View.VISIBLE : View.GONE);
-        recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+        if (emptyStateView != null && recyclerView != null) {
+            emptyStateView.setVisibility(show ? View.VISIBLE : View.GONE);
+            recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     private void showError(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        if (getContext() != null) {
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        loadCompletedAppointments();
+        loadCompletedAppointments(); // Refresh when fragment becomes visible
     }
 }

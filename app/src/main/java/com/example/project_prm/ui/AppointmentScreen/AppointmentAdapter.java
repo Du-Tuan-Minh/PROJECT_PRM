@@ -1,4 +1,3 @@
-// NEW FILE: app/src/main/java/com/example/project_prm/UI/AppointmentScreen/AppointmentAdapter.java
 package com.example.project_prm.ui.AppointmentScreen;
 
 import android.view.LayoutInflater;
@@ -8,20 +7,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_prm.DataManager.Entity.AppointmentStatus;
+import com.example.project_prm.DataManager.Entity.Doctor;
 import com.example.project_prm.DataManager.HistoryManager.AppointmentHistoryManager;
+import com.example.project_prm.DataManager.Repository.DoctorRepository;
 import com.example.project_prm.R;
 import com.google.android.material.button.MaterialButton;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.AppointmentViewHolder> {
 
-    private final List<AppointmentHistoryManager.AppointmentHistoryItem> appointmentList;
-    private final OnAppointmentActionListener listener;
+    private List<AppointmentHistoryManager.AppointmentHistoryItem> appointmentList;
+    private OnAppointmentActionListener listener;
+    private DoctorRepository doctorRepository;
 
     public interface OnAppointmentActionListener {
         void onCancelClick(AppointmentHistoryManager.AppointmentHistoryItem item);
@@ -29,12 +34,14 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         void onBookAgainClick(AppointmentHistoryManager.AppointmentHistoryItem item);
         void onLeaveReviewClick(AppointmentHistoryManager.AppointmentHistoryItem item);
         void onContactClick(AppointmentHistoryManager.AppointmentHistoryItem item);
+        void onItemClick(AppointmentHistoryManager.AppointmentHistoryItem item);
     }
 
     public AppointmentAdapter(List<AppointmentHistoryManager.AppointmentHistoryItem> appointmentList,
                               OnAppointmentActionListener listener) {
         this.appointmentList = appointmentList;
         this.listener = listener;
+        this.doctorRepository = DoctorRepository.getInstance();
     }
 
     @NonNull
@@ -48,7 +55,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     @Override
     public void onBindViewHolder(@NonNull AppointmentViewHolder holder, int position) {
         AppointmentHistoryManager.AppointmentHistoryItem item = appointmentList.get(position);
-        holder.bind(item, listener);
+        holder.bind(item, listener, doctorRepository);
     }
 
     @Override
@@ -57,46 +64,54 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     }
 
     static class AppointmentViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView ivDoctorAvatar;
-        private final TextView tvDoctorName;
-        private final TextView tvSpecialty;
-        private final TextView tvStatus;
-        private final TextView tvAppointmentDateTime;
-        private final MaterialButton btnActionPrimary;
-        private final MaterialButton btnActionSecondary;
-        private final MaterialButton btnActionMain;
-        private final ImageView ivContactIcon;
-        private final ImageView ivVideoIcon;
-        private final ImageView ivMessageIcon;
+        private ImageView ivDoctorAvatar, ivVideoIcon, ivMessageIcon, ivContactIcon;
+        private TextView tvDoctorName, tvSpecialty, tvAppointmentDateTime, tvStatusChip;
+        private MaterialButton btnActionMain, btnActionSecondary, btnActionPrimary;
 
         public AppointmentViewHolder(@NonNull View itemView) {
             super(itemView);
+
             ivDoctorAvatar = itemView.findViewById(R.id.iv_doctor_avatar);
-            tvDoctorName = itemView.findViewById(R.id.tv_doctor_name);
-            tvSpecialty = itemView.findViewById(R.id.tv_specialty);
-            tvStatus = itemView.findViewById(R.id.tv_status);
-            tvAppointmentDateTime = itemView.findViewById(R.id.tv_appointment_datetime);
-            btnActionPrimary = itemView.findViewById(R.id.btn_action_primary);
-            btnActionSecondary = itemView.findViewById(R.id.btn_action_secondary);
-            btnActionMain = itemView.findViewById(R.id.btn_action_main);
-            ivContactIcon = itemView.findViewById(R.id.iv_contact_icon);
             ivVideoIcon = itemView.findViewById(R.id.iv_video_icon);
             ivMessageIcon = itemView.findViewById(R.id.iv_message_icon);
+            ivContactIcon = itemView.findViewById(R.id.iv_contact_icon);
+
+            tvDoctorName = itemView.findViewById(R.id.tv_doctor_name);
+            tvSpecialty = itemView.findViewById(R.id.tv_specialty);
+            tvAppointmentDateTime = itemView.findViewById(R.id.tv_appointment_date_time);
+            tvStatusChip = itemView.findViewById(R.id.tv_status_chip);
+
+            btnActionMain = itemView.findViewById(R.id.btn_action_main);
+            btnActionSecondary = itemView.findViewById(R.id.btn_action_secondary);
+            btnActionPrimary = itemView.findViewById(R.id.btn_action_primary);
         }
 
-        public void bind(AppointmentHistoryManager.AppointmentHistoryItem item, OnAppointmentActionListener listener) {
+        public void bind(AppointmentHistoryManager.AppointmentHistoryItem item,
+                         OnAppointmentActionListener listener,
+                         DoctorRepository doctorRepository) {
+
+            // Get doctor information from repository
+            Doctor doctor = doctorRepository.getDoctorByName(item.appointment.getDoctor());
+
             // Set doctor info
             tvDoctorName.setText(item.appointment.getDoctor());
 
-            // Set specialty based on appointment type
-            String specialty = getSpecialtyDisplay(item.appointment.getAppointmentType());
-            tvSpecialty.setText(specialty);
+            if (doctor != null) {
+                // Use real doctor specialty
+                tvSpecialty.setText(doctor.getSpecialty());
 
-            // Set status
-            tvStatus.setText(item.status.getDisplayName());
-            setStatusChipStyle(tvStatus, item.status);
+                // Set doctor avatar based on doctor data
+                setDoctorAvatar(doctor);
+            } else {
+                // Fallback to appointment type based specialty
+                tvSpecialty.setText(getSpecialtyFromAppointmentType(item.appointment.getAppointmentType()));
+                ivDoctorAvatar.setImageResource(R.drawable.default_doctor_avatar);
+            }
 
-            // Set date and time
+            // Set status chip
+            setStatusChipStyle(tvStatusChip, item.status);
+
+            // Format and set date time
             String dateTime = formatDateTime(item.appointment.getDate(), item.appointment.getTime());
             tvAppointmentDateTime.setText(dateTime);
 
@@ -105,6 +120,62 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
             // Set communication icons based on appointment type
             configureCommIcons(item.appointment.getAppointmentType());
+
+            // Set item click listener
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onItemClick(item);
+                }
+            });
+        }
+
+        private void setDoctorAvatar(Doctor doctor) {
+            // You can implement avatar loading logic here
+            // For now, use specialty-based avatars or default
+            String avatarResource = doctor.getAvatarResource();
+
+            if (avatarResource != null) {
+                // Try to get resource ID by name
+                int resourceId = itemView.getContext().getResources().getIdentifier(
+                        avatarResource, "drawable", itemView.getContext().getPackageName());
+
+                if (resourceId != 0) {
+                    ivDoctorAvatar.setImageResource(resourceId);
+                } else {
+                    // Use specialty-based avatar
+                    setAvatarBySpecialty(doctor.getSpecialtyCode());
+                }
+            } else {
+                setAvatarBySpecialty(doctor.getSpecialtyCode());
+            }
+        }
+
+        private void setAvatarBySpecialty(String specialtyCode) {
+            int avatarResource;
+            switch (specialtyCode.toLowerCase()) {
+                case "dermatology":
+                    avatarResource = R.drawable.avatar_dermatologist;
+                    break;
+                case "neurology":
+                    avatarResource = R.drawable.avatar_neurologist;
+                    break;
+                case "cardiology":
+                    avatarResource = R.drawable.avatar_cardiologist;
+                    break;
+                case "pediatrics":
+                    avatarResource = R.drawable.avatar_pediatrician;
+                    break;
+                case "orthopedics":
+                    avatarResource = R.drawable.avatar_orthopedist;
+                    break;
+                case "gastroenterology":
+                    avatarResource = R.drawable.avatar_gastroenterologist;
+                    break;
+                default:
+                    avatarResource = R.drawable.default_doctor_avatar;
+                    break;
+            }
+            ivDoctorAvatar.setImageResource(avatarResource);
         }
 
         private void configureUIForStatus(AppointmentHistoryManager.AppointmentHistoryItem item, OnAppointmentActionListener listener) {
@@ -112,7 +183,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
             // Hide all initially
             btnActionPrimary.setVisibility(View.GONE);
-            ivContactIcon.setVisibility(View.GONE);
+            btnActionSecondary.setVisibility(View.GONE);
+            btnActionMain.setVisibility(View.GONE);
 
             switch (status) {
                 case UPCOMING:
@@ -187,16 +259,19 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             }
         }
 
-        private String getSpecialtyDisplay(String appointmentType) {
-            if (appointmentType == null) return "General";
+        private String getSpecialtyFromAppointmentType(String appointmentType) {
+            // Fallback method when doctor not found in repository
+            if (appointmentType == null) return "General Practice";
 
             switch (appointmentType.toLowerCase()) {
-                case "consultation": return "Consultation";
-                case "checkup": return "Health Checkup";
-                case "followup": return "Follow-up";
-                case "specialist": return "Specialist";
-                case "emergency": return "Emergency";
-                default: return "Voice Call"; // Default from design
+                case "messaging":
+                    return "Dermatologist";
+                case "video call":
+                    return "Neurologist";
+                case "voice call":
+                    return "Cardiologist";
+                default:
+                    return "General Practice";
             }
         }
 
@@ -206,50 +281,65 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             switch (status) {
                 case UPCOMING:
                 case CONFIRMED:
-                    backgroundColor = ContextCompat.getColor(itemView.getContext(), R.color.primary_blue);
-                    textColor = ContextCompat.getColor(itemView.getContext(), R.color.white);
+                    backgroundColor = R.color.status_upcoming_bg;
+                    textColor = R.color.status_upcoming_text;
+                    statusView.setText("Upcoming");
                     break;
                 case COMPLETED:
-                    backgroundColor = ContextCompat.getColor(itemView.getContext(), R.color.success_green);
-                    textColor = ContextCompat.getColor(itemView.getContext(), R.color.white);
+                    backgroundColor = R.color.status_completed_bg;
+                    textColor = R.color.status_completed_text;
+                    statusView.setText("Completed");
                     break;
                 case CANCELLED:
-                    backgroundColor = ContextCompat.getColor(itemView.getContext(), R.color.error_red);
-                    textColor = ContextCompat.getColor(itemView.getContext(), R.color.white);
+                    backgroundColor = R.color.status_cancelled_bg;
+                    textColor = R.color.status_cancelled_text;
+                    statusView.setText("Cancelled");
                     break;
                 case PENDING:
-                    backgroundColor = ContextCompat.getColor(itemView.getContext(), R.color.warning_orange);
-                    textColor = ContextCompat.getColor(itemView.getContext(), R.color.white);
+                    backgroundColor = R.color.status_pending_bg;
+                    textColor = R.color.status_pending_text;
+                    statusView.setText("Pending");
                     break;
                 default:
-                    backgroundColor = ContextCompat.getColor(itemView.getContext(), R.color.text_gray);
-                    textColor = ContextCompat.getColor(itemView.getContext(), R.color.white);
+                    backgroundColor = R.color.status_default_bg;
+                    textColor = R.color.status_default_text;
+                    statusView.setText("Unknown");
                     break;
             }
 
-            statusView.setBackgroundTintList(android.content.res.ColorStateList.valueOf(backgroundColor));
-            statusView.setTextColor(textColor);
+            statusView.setBackgroundResource(backgroundColor);
+            statusView.setTextColor(itemView.getContext().getColor(textColor));
         }
 
         private String formatDateTime(String date, String time) {
-            // Convert date format from yyyy-MM-dd to readable format
             try {
-                String[] dateParts = date.split("-");
-                if (dateParts.length == 3) {
-                    int month = Integer.parseInt(dateParts[1]);
-                    int day = Integer.parseInt(dateParts[2]);
-                    int year = Integer.parseInt(dateParts[0]);
+                // Parse the date
+                SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Date dateObj = inputDateFormat.parse(date);
 
-                    String[] monthNames = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+                // Check if it's today
+                SimpleDateFormat todayFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                String today = todayFormat.format(new Date());
 
-                    return monthNames[month] + " " + day + ", " + year + " | " + time;
+                String displayDate;
+                if (date.equals(today)) {
+                    displayDate = "Today";
+                } else {
+                    SimpleDateFormat outputDateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+                    displayDate = outputDateFormat.format(dateObj);
                 }
-            } catch (Exception e) {
-                // Fall back to original format if parsing fails
-            }
 
-            return date + " | " + time;
+                // Format time (assuming time is in HH:mm format)
+                SimpleDateFormat inputTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                Date timeObj = inputTimeFormat.parse(time);
+                SimpleDateFormat outputTimeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+                String formattedTime = outputTimeFormat.format(timeObj);
+
+                return displayDate + " | " + formattedTime;
+            } catch (ParseException e) {
+                // If parsing fails, return raw date and time
+                return date + " | " + time;
+            }
         }
     }
 }

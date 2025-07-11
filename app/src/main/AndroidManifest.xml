@@ -68,5 +68,46 @@
             android:name=".MainScreen.ChatbotActivity"
             android:exported="false" />
     </application>
+    <!-- Thêm các activity này vào AndroidManifest.xml trong <application> tag -->
 
+    <!-- Demo Main Activity (launcher) -->
+    <activity
+        android:name=".DemoMainActivity"
+        android:exported="true"
+        android:theme="@style/Theme.Project_prm">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+
+    <!-- My Appointment Activity -->
+    <activity
+        android:name=".ui.AppointmentScreen.MyAppointmentActivity"
+        android:exported="false"
+        android:theme="@style/Theme.Project_prm" />
+
+    <!-- Appointment Detail Activity -->
+    <activity
+        android:name=".ui.AppointmentScreen.AppointmentDetailActivity"
+        android:exported="false"
+        android:theme="@style/Theme.Project_prm" />
+
+    <!-- Reschedule Activity -->
+    <activity
+        android:name=".ui.AppointmentScreen.RescheduleActivity"
+        android:exported="false"
+        android:theme="@style/Theme.Project_prm" />
+
+    <!-- Cancel Appointment Activity -->
+    <activity
+        android:name=".ui.AppointmentScreen.CancelAppointmentActivity"
+        android:exported="false"
+        android:theme="@style/Theme.Project_prm" />
+
+    <!-- Review Activity -->
+    <activity
+        android:name=".ui.AppointmentScreen.ReviewActivity"
+        android:exported="false"
+        android:theme="@style/Theme.Project_prm" />
 </manifest>

@@ -1,7 +1,6 @@
-// NEW FILE: app/src/main/java/com/example/project_prm/UI/AppointmentScreen/UpcomingAppointmentsFragment.java
 package com.example.project_prm.ui.AppointmentScreen;
 
-import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,18 +51,30 @@ public class UpcomingAppointmentsFragment extends Fragment {
 
         service = TungFeaturesService.getInstance(requireContext());
         appointmentList = new ArrayList<>();
+
+        // Setup empty state for upcoming appointments
+        if (view.findViewById(R.id.tv_empty_title) != null) {
+            ((android.widget.TextView) view.findViewById(R.id.tv_empty_title)).setText("You don't have an appointment yet");
+            ((android.widget.TextView) view.findViewById(R.id.tv_empty_description)).setText("You don't have a doctor's appointment scheduled at the moment");
+        }
     }
 
     private void setupRecyclerView() {
         adapter = new AppointmentAdapter(appointmentList, new AppointmentAdapter.OnAppointmentActionListener() {
             @Override
             public void onCancelClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                showCancelDialog(item);
+                // Navigate to Cancel Appointment Activity
+                Intent intent = new Intent(getContext(), CancelAppointmentActivity.class);
+                intent.putExtra("appointment_id", item.appointment.getId());
+                startActivity(intent);
             }
 
             @Override
             public void onRescheduleClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                showRescheduleDialog(item);
+                // Navigate to Reschedule Activity
+                Intent intent = new Intent(getContext(), RescheduleActivity.class);
+                intent.putExtra("appointment_id", item.appointment.getId());
+                startActivity(intent);
             }
 
             @Override
@@ -80,6 +91,14 @@ public class UpcomingAppointmentsFragment extends Fragment {
             public void onContactClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
                 // Not used in upcoming
             }
+
+            @Override
+            public void onItemClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
+                // Navigate to Appointment Detail
+                Intent intent = new Intent(getContext(), AppointmentDetailActivity.class);
+                intent.putExtra("appointment_id", item.appointment.getId());
+                startActivity(intent);
+            }
         });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -89,16 +108,23 @@ public class UpcomingAppointmentsFragment extends Fragment {
     private void loadUpcomingAppointments() {
         showLoading(true);
 
-        // Get user ID from SharedPreferences or pass as parameter
-        int userId = 1; // TODO: Get actual user ID
-
-        service.getUpcomingAppointments(userId, new AppointmentHistoryManager.OnHistoryListener() {
+        // Use service to get real data from database
+        service.getUpcomingAppointments(new AppointmentHistoryManager.OnHistoryListener() {
             @Override
             public void onSuccess(List<AppointmentHistoryManager.AppointmentHistoryItem> items) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         showLoading(false);
-                        updateAppointmentList(items);
+                        appointmentList.clear();
+                        appointmentList.addAll(items);
+                        adapter.notifyDataSetChanged();
+
+                        showEmptyState(items.isEmpty());
+
+                        // Show success message if data loaded
+                        if (!items.isEmpty()) {
+                            Toast.makeText(getContext(), "Loaded " + items.size() + " upcoming appointments", Toast.LENGTH_SHORT).show();
+                        }
                     });
                 }
             }
@@ -108,7 +134,7 @@ public class UpcomingAppointmentsFragment extends Fragment {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         showLoading(false);
-                        showError("Không thể tải lịch hẹn: " + error);
+                        showError("Error loading appointments: " + error);
                         showEmptyState(true);
                     });
                 }
@@ -116,70 +142,31 @@ public class UpcomingAppointmentsFragment extends Fragment {
         });
     }
 
-    private void updateAppointmentList(List<AppointmentHistoryManager.AppointmentHistoryItem> items) {
-        appointmentList.clear();
-        appointmentList.addAll(items);
-        adapter.notifyDataSetChanged();
-
-        showEmptyState(items.isEmpty());
-    }
-
-    private void showCancelDialog(AppointmentHistoryManager.AppointmentHistoryItem item) {
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Hủy lịch hẹn")
-                .setMessage("Bạn có chắc chắn muốn hủy lịch hẹn với " + item.appointment.getDoctor() + "?")
-                .setPositiveButton("Hủy lịch", (dialog, which) -> {
-                    cancelAppointment(item, "Người dùng hủy");
-                })
-                .setNegativeButton("Không", null)
-                .show();
-    }
-
-    private void showRescheduleDialog(AppointmentHistoryManager.AppointmentHistoryItem item) {
-        // TODO: Implement reschedule dialog with date/time picker
-        Toast.makeText(getContext(), "Chức năng đổi lịch đang được phát triển", Toast.LENGTH_SHORT).show();
-    }
-
-    private void cancelAppointment(AppointmentHistoryManager.AppointmentHistoryItem item, String reason) {
-        service.cancelAppointment(item.appointment.getId(), reason, new AppointmentHistoryManager.OnActionListener() {
-            @Override
-            public void onSuccess(String message) {
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                        loadUpcomingAppointments(); // Refresh list
-                    });
-                }
-            }
-
-            @Override
-            public void onError(String error) {
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        showError("Không thể hủy lịch: " + error);
-                    });
-                }
-            }
-        });
-    }
-
     private void showLoading(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+        if (progressBar != null && recyclerView != null) {
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+            emptyStateView.setVisibility(View.GONE);
+        }
     }
 
     private void showEmptyState(boolean show) {
-        emptyStateView.setVisibility(show ? View.VISIBLE : View.GONE);
-        recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+        if (emptyStateView != null && recyclerView != null) {
+            emptyStateView.setVisibility(show ? View.VISIBLE : View.GONE);
+            recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     private void showError(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        if (getContext() != null) {
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        loadUpcomingAppointments(); // Refresh when fragment becomes visible
+        // Refresh data when fragment becomes visible
+        loadUpcomingAppointments();
     }
 }
