@@ -17,7 +17,7 @@ import com.example.project_prm.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final int SPLASH_TIME = 2000; // 2 giây
+    private static final int SPLASH_TIME = 3000; // 2 giây
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
