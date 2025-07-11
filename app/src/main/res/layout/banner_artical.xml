@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_banner_gradient"
+    android:elevation="4dp"
+    android:clipToOutline="true">
+
+    <!-- Nội dung bên trái -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:padding="18dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bài Viết Sức Khỏe"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="19sp"/>
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Khám phá các bài viết hữu ích về sức khỏe, cập nhật kiến thức mỗi ngày."
+            android:textColor="#F0F0F0"
+            android:textSize="13sp"
+            android:layout_marginTop="4dp"/>
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="39dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#FFFFFF"
+            app:cornerRadius="18dp"
+            android:text="Xem Bài Viết"
+            android:textColor="#1976D2"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"/>
+    </LinearLayout>
+
+    <!-- Ảnh hoặc icon bên phải -->
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/doc1"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_vertical"/>
+</LinearLayout> 

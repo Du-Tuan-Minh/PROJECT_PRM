@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.GridLayout;
+import androidx.viewpager2.widget.ViewPager2;
+import java.util.Arrays;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +25,8 @@ import com.example.project_prm.MainScreen.DiseaseLibraryActivity;
 import com.example.project_prm.MainScreen.FindClinicActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.FirebaseApp;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -123,5 +127,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        ViewPager2 bannerViewPager = findViewById(R.id.bannerViewPager);
+        BannerAdapter bannerAdapter = new BannerAdapter(Arrays.asList(
+            R.layout.banner_kiem_tra_y_te,
+            R.layout.banner_artical,
+            R.layout.banner_chat_ai
+        ));
+        bannerViewPager.setAdapter(bannerAdapter);
+        TabLayout bannerIndicator = findViewById(R.id.bannerIndicator);
+        new TabLayoutMediator(bannerIndicator, bannerViewPager, (tab, position) -> {
+            // Không cần set text/icon cho tab
+        }).attach();
     }
 }

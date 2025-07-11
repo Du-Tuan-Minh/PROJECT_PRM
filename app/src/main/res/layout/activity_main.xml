@@ -85,62 +85,31 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="1dp"/>
 
-            <LinearLayout
-                android:id="@+id/banner"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/bannerViewPager"
                 android:layout_width="0dp"
                 android:layout_height="170dp"
-                android:orientation="horizontal"
-                android:background="@drawable/bg_banner_gradient"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@id/etSearch"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/bannerIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabSelectedTextColor="@android:color/white"
+                app:tabTextColor="#80FFFFFF"
+                app:tabIndicatorHeight="0dp"
+                app:tabBackground="@android:color/transparent"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintTop_toBottomOf="@id/bannerViewPager"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:elevation="4dp"
-                android:clipToOutline="true">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_vertical"
-                    android:padding="18dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Kiểm Tra Y Tế!"
-                        android:textColor="#FFFFFF"
-                        android:textStyle="bold"
-                        android:textSize="19sp"/>
-                    <TextView
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:text="Kiểm tra tình trạng sức khỏe thường xuyên để giảm thiểu nguy cơ mắc bệnh trong tương lai."
-                        android:textColor="#F0F0F0"
-                        android:textSize="13sp"
-                        android:layout_marginTop="4dp"/>
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="39dp"
-                        android:layout_marginTop="10dp"
-                        android:backgroundTint="#FFFFFF"
-                        app:cornerRadius="18dp"
-                        android:text="Đặt lịch khám"
-                        android:textColor="#1976D2"
-                        android:paddingLeft="18dp"
-                        android:paddingRight="18dp"/>
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/doc2"
-                    android:scaleType="centerCrop"
-                    android:layout_gravity="center_vertical"/>
-            </LinearLayout>
+                android:layout_marginTop="8dp"/>
 
             <TextView
                 android:id="@+id/tvDoctorSpeciality"
@@ -149,7 +118,7 @@
                 android:text="Tiện ích"
                 android:textStyle="bold"
                 android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@id/banner"
+                app:layout_constraintTop_toBottomOf="@id/bannerViewPager"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"/>
