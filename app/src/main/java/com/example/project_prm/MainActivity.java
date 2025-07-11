@@ -27,6 +27,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.FirebaseApp;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -134,9 +135,7 @@ public class MainActivity extends AppCompatActivity {
             R.layout.banner_chat_ai
         ));
         bannerViewPager.setAdapter(bannerAdapter);
-        TabLayout bannerIndicator = findViewById(R.id.bannerIndicator);
-        new TabLayoutMediator(bannerIndicator, bannerViewPager, (tab, position) -> {
-            // Không cần set text/icon cho tab
-        }).attach();
+        DotsIndicator bannerIndicator = findViewById(R.id.bannerIndicator);
+        bannerIndicator.setViewPager2(bannerViewPager);
     }
 }
