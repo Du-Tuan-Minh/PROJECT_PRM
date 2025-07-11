@@ -137,5 +137,9 @@ public class MainActivity extends AppCompatActivity {
         bannerViewPager.setAdapter(bannerAdapter);
         DotsIndicator bannerIndicator = findViewById(R.id.bannerIndicator);
         bannerIndicator.setViewPager2(bannerViewPager);
+        TextView tvSeeAllSpeciality = findViewById(R.id.tvSeeAllSpeciality);
+        tvSeeAllSpeciality.setOnClickListener(v -> {
+            startActivity(new android.content.Intent(MainActivity.this, AllUtilitiesActivity.class));
+        });
     }
 }
