@@ -68,10 +68,6 @@
                     android:layout_height="24dp"
                     android:src="@drawable/ic_notification"
                     android:layout_marginEnd="12dp"/>
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_health"/>
             </LinearLayout>
 
             <EditText
@@ -152,7 +148,7 @@
                 android:id="@+id/tvDoctorSpeciality"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chuyên Môn Bác Sĩ"
+                android:text="Tiện ích"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@id/banner"
@@ -176,7 +172,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:columnCount="4"
-                android:rowCount="2"
+                android:rowCount="1"
                 android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@id/tvDoctorSpeciality"
                 app:layout_constraintStart_toStartOf="parent"
@@ -184,6 +180,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp">
 
+                <!-- Xem thông tin đặt lịch chi tiết -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -196,18 +193,20 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/bg_circle_lightblue"
-                        android:src="@drawable/ic_general"
+                        android:src="@drawable/ic_calendar"
                         android:padding="10dp"
                         android:scaleType="centerInside"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tổng Quát"
+                        android:text="Thông tin đặt lịch"
                         android:textSize="13sp"
                         android:textColor="#222"
                         android:gravity="center"
                         android:layout_marginTop="4dp"/>
                 </LinearLayout>
+
+                <!-- Artical -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -220,91 +219,71 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/bg_circle_lightblue"
-                        android:src="@drawable/ic_dentist"
+                        android:src="@drawable/ic_article"
                         android:padding="10dp"
                         android:scaleType="centerInside"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nha Sĩ"
+                        android:text="Artical"
+                        android:textSize="13sp"
+                        android:textColor="#222"
+                        android:gravity="center"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+
+                <!-- Xem lịch sử đặt lịch khám -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:padding="8dp">
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_circle_lightblue"
+                        android:src="@drawable/ic_history"
+                        android:padding="10dp"
+                        android:scaleType="centerInside"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lịch sử đặt lịch"
+                        android:textSize="13sp"
+                        android:textColor="#222"
+                        android:gravity="center"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+
+                <!-- Chat AI -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:padding="8dp">
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_circle_lightblue"
+                        android:src="@drawable/ic_chat_ai"
+                        android:padding="10dp"
+                        android:scaleType="centerInside"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chat AI"
                         android:textSize="13sp"
                         android:textColor="#222"
                         android:gravity="center"
                         android:layout_marginTop="4dp"/>
                 </LinearLayout>
             </GridLayout>
-
-            <TextView
-                android:id="@+id/tvTopDoctors"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bác Sĩ Hàng Đầu"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@id/gridSpeciality"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"/>
-
-            <TextView
-                android:id="@+id/tvSeeAllDoctors"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Xem Tất Cả"
-                android:textColor="#1976D2"
-                android:textSize="14sp"
-                app:layout_constraintTop_toTopOf="@id/tvTopDoctors"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="20dp"/>
-
-            <LinearLayout
-                android:id="@+id/filterButtons"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/tvTopDoctors"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tất Cả"
-                    android:textColor="#fff"
-                    android:background="@drawable/bg_filter_selected"
-                    android:layout_marginEnd="8dp"/>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tổng Quát"
-                    android:background="@drawable/bg_filter_unselected"
-                    android:textColor="#1976D2"
-                    android:layout_marginEnd="8dp"/>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nha Sĩ"
-                    android:background="@drawable/bg_filter_unselected"
-                    android:textColor="#1976D2"
-                    android:layout_marginEnd="8dp"/>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chuyên Gia Dinh Dưỡng"
-                    android:background="@drawable/bg_filter_unselected"
-                    android:textColor="#1976D2"/>
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvTopDoctors"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/filterButtons"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="20dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
