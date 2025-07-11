@@ -100,7 +100,6 @@
                 android:elevation="4dp"
                 android:clipToOutline="true">
 
-                <!-- Nội dung bên trái -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -135,7 +134,6 @@
                         android:paddingRight="18dp"/>
                 </LinearLayout>
 
-                <!-- Ảnh bác sĩ bên phải, không có nền trắng -->
                 <ImageView
                     android:layout_width="120dp"
                     android:layout_height="match_parent"
@@ -180,7 +178,6 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp">
 
-                <!-- Xem thông tin đặt lịch chi tiết -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -206,7 +203,6 @@
                         android:layout_marginTop="4dp"/>
                 </LinearLayout>
 
-                <!-- Artical -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -232,7 +228,6 @@
                         android:layout_marginTop="4dp"/>
                 </LinearLayout>
 
-                <!-- Xem lịch sử đặt lịch khám -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -258,7 +253,6 @@
                         android:layout_marginTop="4dp"/>
                 </LinearLayout>
 
-                <!-- Chat AI -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -283,7 +277,6 @@
                         android:gravity="center"
                         android:layout_marginTop="4dp"/>
                 </LinearLayout>
-                <!-- Đặt lịch khám -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

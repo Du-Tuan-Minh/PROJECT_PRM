@@ -5,6 +5,14 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+import android.view.ViewGroup;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.GridLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -81,6 +89,39 @@ public class MainActivity extends AppCompatActivity {
         ivNotification.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, com.example.project_prm.MainScreen.NotificationActivity.class);
             startActivity(intent);
+        });
+        EditText etSearch = findViewById(R.id.etSearch);
+        GridLayout gridSpeciality = findViewById(R.id.gridSpeciality);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                String keyword = s.toString().trim().toLowerCase();
+                for (int i = 0; i < gridSpeciality.getChildCount(); i++) {
+                    View child = gridSpeciality.getChildAt(i);
+                    if (child instanceof LinearLayout) {
+                        TextView tv = null;
+                        for (int j = 0; j < ((LinearLayout) child).getChildCount(); j++) {
+                            View sub = ((LinearLayout) child).getChildAt(j);
+                            if (sub instanceof TextView) {
+                                tv = (TextView) sub;
+                                break;
+                            }
+                        }
+                        if (tv != null) {
+                            String name = tv.getText().toString().toLowerCase();
+                            if (keyword.isEmpty() || name.contains(keyword)) {
+                                child.setVisibility(View.VISIBLE);
+                            } else {
+                                child.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                }
+            }
         });
     }
 }

@@ -3,7 +3,7 @@ package com.example.project_prm.MainScreen;
 public class Notification {
     private String title;
     private String description;
-    private String iconType; // Ví dụ: cancel, calendar, success, service, credit
+    private String iconType;
     private long timestamp;
     private boolean isNew;
 
