@@ -128,7 +128,7 @@
                         android:layout_marginTop="10dp"
                         android:backgroundTint="#FFFFFF"
                         app:cornerRadius="18dp"
-                        android:text="Kiểm Tra Ngay"
+                        android:text="Đặt lịch khám"
                         android:textColor="#1976D2"
                         android:paddingLeft="18dp"
                         android:paddingRight="18dp"/>
@@ -190,7 +190,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/bg_circle_lightblue"
-                        android:src="@drawable/ic_calendar"
+                        android:src="@drawable/ic_info_booking"
                         android:padding="10dp"
                         android:scaleType="centerInside"/>
                     <TextView
