@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.project_prm.DataManager.DAO.UserDAO;
 import com.example.project_prm.R;
 import com.example.project_prm.ui.dialog.StatusPopup;
 import com.example.project_prm.widgets.DropDownFieldView;
@@ -29,8 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     private DropDownFieldView registerGenderInput, registerRoleInput;
     private Button signUpButton;
     private TextView signInText;
-    private DatabaseHelper dbHelper;
-    private UserDAO userDAO;
+
 
     private void bindingView(){
         registerEmailInput = findViewById(R.id.registerEmailInput);
@@ -120,14 +118,6 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        long result = userDAO.registerUser(name, profile, username, password);
-        if (result != -1) {
-            Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-            setClearFocus();
-            startActivity(new Intent(this, SignInActivity.class));
-        } else {
-            Toast.makeText(this, "Đăng ký thất bại, username có thể đã tồn tại", Toast.LENGTH_SHORT).show();
-        }
         StatusPopup popup = new StatusPopup(this);
         popup.setPrimaryClick(v -> popup.dismiss());
         popup.setCancelClick(v -> popup.dismiss());
@@ -160,8 +150,7 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        dbHelper = new DatabaseHelper(this);
-        userDAO = new UserDAO(dbHelper.getWritableDatabase());
+
         bindingView();
         bindingAction();
 
@@ -177,6 +166,6 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dbHelper.close();
+
     }
 }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.project_prm.DataManager.DAO.UserDAO;
+import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.example.project_prm.widgets.EditTextFieldView;
 
@@ -19,8 +19,6 @@ public class SignInActivity extends AppCompatActivity {
     private EditTextFieldView loginEmailInput, loginPasswordInput;
     private Button signInButton;
     private TextView goToSignupText, forgetPasswordText;
-    private DatabaseHelper dbHelper;
-    private UserDAO userDAO;
 
     private void bindingView(){
         loginEmailInput = findViewById(R.id.loginEmailInput);
@@ -51,33 +49,55 @@ public class SignInActivity extends AppCompatActivity {
         startActivity(new Intent(this, SignUpActivity.class));
     }
 
-    private void onSignInClick(View view) {
-        String username = loginEmailInput.getFieldText();
-        String password = loginPasswordInput.getFieldText();
-        if (username.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-            return;
-        }
-//        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-//        if (prefs.getInt("userId", -1) != -1) {
-//            startActivity(new Intent(this, MainActivity.class));
-//            finish();
+//    private void onSignInClick(View view) {
+//        String username = loginEmailInput.getFieldText();
+//        String password = loginPasswordInput.getFieldText();
+//        if (username.isEmpty() || password.isEmpty()) {
+//            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
 //            return;
 //        }
-//
-//            User user = userDAO.loginUser(username, password);
-//            if (user != null) {
-//                Toast.makeText(this, "Đăng nhập thành công: " + user.getName(), Toast.LENGTH_SHORT).show();
-//                SharedPreferences.Editor editor = prefs.edit();
-//                editor.putInt("userId", user.getId());
-//                editor.putString("username", user.getUsername());
-//                editor.apply();
-//                startActivity(new Intent(this, MainActivity.class));
-//                finish();
-//            } else {
-//                Toast.makeText(this, "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
-//            }
+////        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+////        if (prefs.getInt("userId", -1) != -1) {
+////            startActivity(new Intent(this, MainActivity.class));
+////            finish();
+////            return;
+////        }
+////
+////            User user = userDAO.loginUser(username, password);
+////            if (user != null) {
+////                Toast.makeText(this, "Đăng nhập thành công: " + user.getName(), Toast.LENGTH_SHORT).show();
+////                SharedPreferences.Editor editor = prefs.edit();
+////                editor.putInt("userId", user.getId());
+////                editor.putString("username", user.getUsername());
+////                editor.apply();
+////                startActivity(new Intent(this, MainActivity.class));
+////                finish();
+////            } else {
+////                Toast.makeText(this, "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+////            }
+//    }
+
+private void onSignInClick(View view) {
+    String username = loginEmailInput.getFieldText();
+    String password = loginPasswordInput.getFieldText();
+
+    // Kiểm tra đầu vào rỗng
+    if (username.isEmpty() || password.isEmpty()) {
+        Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+        return;
     }
+
+    // Kiểm tra tài khoản và mật khẩu cứng
+    if (username.equals("minh") && password.equals("123")) {
+        Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    } else {
+        Toast.makeText(this, "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+    }
+}
+
 
     private void onEyeIconClick(EditTextFieldView editTextFieldView) {
         EditText editText = editTextFieldView.getEditText();
@@ -114,8 +134,6 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (dbHelper != null) { // Kiểm tra dbHelper không null trước khi đóng
-            dbHelper.close();
-        }
+
     }
 }
