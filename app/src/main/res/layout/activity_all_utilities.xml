@@ -50,4 +50,28 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"/>
 
+    <ImageView
+        android:id="@+id/ivEmptyState"
+        android:layout_marginTop="50dp"
+        android:layout_width="260dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_empty_state"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/searchBarContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvEmptyStateMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Không tìm thấy tiện ích nào"
+        android:textColor="#888888"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/ivEmptyState"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout> 
