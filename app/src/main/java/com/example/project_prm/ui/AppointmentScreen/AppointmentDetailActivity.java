@@ -1,3 +1,4 @@
+// File: app/src/main/java/com/example/project_prm/ui/AppointmentScreen/AppointmentDetailActivity.java
 package com.example.project_prm.ui.AppointmentScreen;
 
 import android.content.Intent;
@@ -26,7 +27,7 @@ public class AppointmentDetailActivity extends AppCompatActivity {
 
     // UI Components
     private ImageView ivBack, ivDoctorAvatar, ivMore, ivPackageIcon;
-    private TextView tvDoctorName, tvSpecialty, tvExperience, tvScheduledAppointment, tvDateTime;
+    private TextView tvDoctorName, tvSpecialty, tvScheduledAppointment, tvDateTime;
     private TextView tvPatientName, tvPatientPhone, tvPatientAge, tvPatientGender;
     private TextView tvSymptoms, tvPackageName, tvPackagePrice;
     private MaterialButton btnPrimaryAction;
@@ -119,15 +120,16 @@ public class AppointmentDetailActivity extends AppCompatActivity {
             tvSpecialty.setText(doctor.getSpecialty());
             setDoctorAvatar(doctor);
 
-            // Add experience info if available
+            // FIXED: Add experience info if available - check if view exists first
             TextView tvExperienceView = findViewById(R.id.tv_experience);
-            if (tvExperienceView != null) {
+            if (tvExperienceView != null && doctor.getExperience() != null) {
                 tvExperienceView.setText(doctor.getExperience());
             }
         } else {
             // Fallback to appointment type based specialty
             tvSpecialty.setText(getSpecialtyFromType(appointment.getAppointmentType()));
-            ivDoctorAvatar.setImageResource(R.drawable.default_doctor_avatar);
+            // FIXED: Use default avatar instead of problematic resources
+            ivDoctorAvatar.setImageResource(R.drawable.ic_doctor_default);
         }
 
         // Scheduled Appointment
@@ -170,210 +172,223 @@ public class AppointmentDetailActivity extends AppCompatActivity {
 
     private void setAvatarBySpecialty(String specialtyCode) {
         int avatarResource;
-        switch (specialtyCode.toLowerCase()) {
-            case "dermatology":
-                avatarResource = R.drawable.avatar_dermatologist;
-                break;
-            case "neurology":
-                avatarResource = R.drawable.avatar_neurologist;
-                break;
-            case "cardiology":
-                avatarResource = R.drawable.avatar_cardiologist;
-                break;
-            case "pediatrics":
-                avatarResource = R.drawable.avatar_pediatrician;
-                break;
-            case "orthopedics":
-                avatarResource = R.drawable.avatar_orthopedist;
-                break;
-            case "gastroenterology":
-                avatarResource = R.drawable.avatar_gastroenterologist;
-                break;
-            default:
-                avatarResource = R.drawable.default_doctor_avatar;
-                break;
-        }
-        ivDoctorAvatar.setImageResource(avatarResource);
-    }
 
-    private void displayPackageInformation(Appointment appointment) {
-        String appointmentType = appointment.getAppointmentType() != null ? appointment.getAppointmentType() : "Messaging";
-        tvPackageName.setText(appointmentType);
-
-        // Set package icon based on type
-        int iconResource;
-        switch (appointmentType.toLowerCase()) {
-            case "messaging":
-                iconResource = R.drawable.ic_message;
-                break;
-            case "video call":
-                iconResource = R.drawable.ic_video_call;
-                break;
-            case "voice call":
-                iconResource = R.drawable.ic_phone;
-                break;
-            default:
-                iconResource = R.drawable.ic_message;
-                break;
-        }
-        ivPackageIcon.setImageResource(iconResource);
-
-        // Calculate real fee using doctor repository
-        double fee;
-        if (doctor != null) {
-            fee = doctorRepository.getAppointmentFee(doctor.getName(), appointmentType);
+        // FIXED: Use safe specialty checking and fallback to default
+        if (specialtyCode == null) {
+            avatarResource = R.drawable.ic_doctor_default;
         } else {
-            fee = appointment.getAppointmentFee();
-            if (fee <= 0) {
-                fee = getDefaultFee(appointmentType);
+            switch (specialtyCode.toLowerCase()) {
+                case "dermatology":
+                    // FIXED: Check if resource exists, fallback to default
+                    avatarResource = getResourceIdSafely("avatar_dermatologist");
+                    break;
+                case "neurology":
+                    avatarResource = getResourceIdSafely("avatar_neurologist");
+                    break;
+                case "cardiology":
+                    avatarResource = getResourceIdSafely("avatar_cardiologist");
+                    break;
+                case "pediatrics":
+                    avatarResource = getResourceIdSafely("avatar_pediatrician");
+                    break;
+                case "orthopedics":
+                    avatarResource = getResourceIdSafely("avatar_orthopedist");
+                    break;
+                case "gastroenterology":
+                    avatarResource = getResourceIdSafely("avatar_gastroenterologist");
+                    break;
+                default:
+                    avatarResource = R.drawable.ic_doctor_default;
+                    break;
             }
         }
 
-        tvPackagePrice.setText("$" + (int)fee);
+        ivDoctorAvatar.setImageResource(avatarResource);
     }
 
-    private double getDefaultFee(String appointmentType) {
-        switch (appointmentType.toLowerCase()) {
-            case "messaging":
-                return 25.0;
-            case "voice call":
-                return 35.0;
-            case "video call":
-                return 45.0;
-            default:
-                return 30.0;
+    // FIXED: Helper method to safely get resource ID
+    private int getResourceIdSafely(String resourceName) {
+        try {
+            int resourceId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
+            return resourceId != 0 ? resourceId : R.drawable.ic_doctor_default;
+        } catch (Exception e) {
+            return R.drawable.ic_doctor_default;
+        }
+    }
+
+    private void displayPackageInformation(Appointment appointment) {
+        String appointmentType = appointment.getAppointmentType() != null ?
+                appointment.getAppointmentType() : "General Consultation";
+        double fee = appointment.getFee() > 0 ? appointment.getFee() : 100000.0;
+
+        tvPackageName.setText(appointmentType);
+        tvPackagePrice.setText(String.format(Locale.getDefault(), "%.0f VND", fee));
+
+        // Set package icon based on type
+        if (appointmentType.toLowerCase().contains("emergency")) {
+            ivPackageIcon.setImageResource(R.drawable.ic_emergency);
+        } else if (appointmentType.toLowerCase().contains("consultation")) {
+            ivPackageIcon.setImageResource(R.drawable.ic_consultation);
+        } else {
+            ivPackageIcon.setImageResource(R.drawable.ic_medical_package);
         }
     }
 
     private void configurePrimaryActionButton(Appointment appointment) {
-        String status = appointment.getStatus();
-        String appointmentType = appointment.getAppointmentType();
+        AppointmentStatus status = appointment.getStatus();
 
-        if (status != null && status.equals(AppointmentStatus.UPCOMING.getValue())) {
-            // For upcoming appointments, show appropriate action based on type
-            if (appointmentType != null) {
-                switch (appointmentType.toLowerCase()) {
-                    case "messaging":
-                        btnPrimaryAction.setText("Message (Start at " + appointment.getTime() + ")");
-                        btnPrimaryAction.setVisibility(View.VISIBLE);
-                        break;
-                    case "video call":
-                        btnPrimaryAction.setText("Join Video Call (Start at " + appointment.getTime() + ")");
-                        btnPrimaryAction.setVisibility(View.VISIBLE);
-                        break;
-                    case "voice call":
-                        btnPrimaryAction.setText("Voice Call (Start at " + appointment.getTime() + ")");
-                        btnPrimaryAction.setVisibility(View.VISIBLE);
-                        break;
-                    default:
-                        btnPrimaryAction.setVisibility(View.GONE);
-                        break;
-                }
-            } else {
-                btnPrimaryAction.setVisibility(View.GONE);
-            }
-        } else {
-            btnPrimaryAction.setVisibility(View.GONE);
+        switch (status) {
+            case UPCOMING:
+                btnPrimaryAction.setText("Message (Start at 10:00 PM)");
+                btnPrimaryAction.setBackgroundTintList(getColorStateList(R.color.primary_blue));
+                break;
+            case COMPLETED:
+                btnPrimaryAction.setText("Leave a Review");
+                btnPrimaryAction.setBackgroundTintList(getColorStateList(R.color.success_green));
+                break;
+            case CANCELLED:
+                btnPrimaryAction.setText("Book Again");
+                btnPrimaryAction.setBackgroundTintList(getColorStateList(R.color.primary_blue));
+                break;
+            default:
+                btnPrimaryAction.setText("View Details");
+                btnPrimaryAction.setBackgroundTintList(getColorStateList(R.color.text_gray));
+                break;
         }
     }
 
     private void handlePrimaryAction() {
-        if (appointment != null) {
-            String appointmentType = appointment.getAppointmentType();
-            if (appointmentType != null) {
-                switch (appointmentType.toLowerCase()) {
-                    case "messaging":
-                        startMessaging();
-                        break;
-                    case "video call":
-                        startVideoCall();
-                        break;
-                    case "voice call":
-                        startVoiceCall();
-                        break;
-                }
-            }
+        if (appointment == null) return;
+
+        AppointmentStatus status = appointment.getStatus();
+
+        switch (status) {
+            case UPCOMING:
+                // Handle messaging functionality
+                Toast.makeText(this, "Messaging will be available at appointment time", Toast.LENGTH_SHORT).show();
+                break;
+            case COMPLETED:
+                // Navigate to review screen
+                Intent reviewIntent = new Intent(this, ReviewActivity.class);
+                reviewIntent.putExtra("appointment_id", appointmentId);
+                reviewIntent.putExtra("doctor_name", appointment.getDoctor());
+                startActivity(reviewIntent);
+                break;
+            case CANCELLED:
+                // Navigate to booking screen to book again
+                Intent bookIntent = new Intent(this, RescheduleActivity.class);
+                bookIntent.putExtra("appointment_id", appointmentId);
+                startActivity(bookIntent);
+                break;
         }
-    }
-
-    private void startMessaging() {
-        String doctorName = doctor != null ? doctor.getName() : appointment.getDoctor();
-        Toast.makeText(this, "Starting messaging session with " + doctorName + "...", Toast.LENGTH_SHORT).show();
-        // TODO: Implement messaging functionality
-    }
-
-    private void startVideoCall() {
-        String doctorName = doctor != null ? doctor.getName() : appointment.getDoctor();
-        Toast.makeText(this, "Starting video call with " + doctorName + "...", Toast.LENGTH_SHORT).show();
-        // TODO: Implement video call functionality
-    }
-
-    private void startVoiceCall() {
-        String doctorName = doctor != null ? doctor.getName() : appointment.getDoctor();
-        Toast.makeText(this, "Starting voice call with " + doctorName + "...", Toast.LENGTH_SHORT).show();
-        // TODO: Implement voice call functionality
     }
 
     private void showMoreOptions() {
-        // TODO: Implement more options menu
-        String options = "Doctor Info:\n";
-        if (doctor != null) {
-            options += "• " + doctor.getRatingWithReviews() + "\n";
-            options += "• " + doctor.getClinic() + "\n";
-            options += "• " + doctor.getExperience();
-        } else {
-            options += "• Basic appointment information";
+        // Show popup menu with options like cancel, reschedule, etc.
+        android.widget.PopupMenu popup = new android.widget.PopupMenu(this, ivMore);
+        popup.getMenuInflater().inflate(R.menu.appointment_options_menu, popup.getMenu());
+
+        popup.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_reschedule) {
+                rescheduleAppointment();
+                return true;
+            } else if (itemId == R.id.action_cancel) {
+                cancelAppointment();
+                return true;
+            } else if (itemId == R.id.action_share) {
+                shareAppointmentDetails();
+                return true;
+            }
+            return false;
+        });
+
+        popup.show();
+    }
+
+    private void rescheduleAppointment() {
+        Intent intent = new Intent(this, RescheduleActivity.class);
+        intent.putExtra("appointment_id", appointmentId);
+        startActivity(intent);
+    }
+
+    private void cancelAppointment() {
+        // Show confirmation dialog then cancel
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Cancel Appointment")
+                .setMessage("Are you sure you want to cancel this appointment?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    // Handle cancellation
+                    service.cancelAppointment(appointmentId, "User requested cancellation",
+                            new TungFeaturesService.OnCancelListener() {
+                                @Override
+                                public void onSuccess(String message) {
+                                    runOnUiThread(() -> {
+                                        Toast.makeText(AppointmentDetailActivity.this, message, Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    });
+                                }
+
+                                @Override
+                                public void onError(String error) {
+                                    runOnUiThread(() -> {
+                                        Toast.makeText(AppointmentDetailActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                                    });
+                                }
+                            });
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void shareAppointmentDetails() {
+        if (appointment == null) return;
+
+        String shareText = String.format(
+                "Appointment Details:\n" +
+                        "Doctor: %s\n" +
+                        "Date: %s\n" +
+                        "Time: %s\n" +
+                        "Clinic: %s",
+                appointment.getDoctor(),
+                appointment.getDate(),
+                appointment.getTime(),
+                appointment.getClinic()
+        );
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+        startActivity(Intent.createChooser(shareIntent, "Share Appointment"));
+    }
+
+    private String formatDateTime(String date, String time) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("EEEE, dd MMM yyyy", Locale.getDefault());
+            Date dateObj = inputFormat.parse(date);
+            String formattedDate = outputFormat.format(dateObj);
+            return formattedDate + " | " + time;
+        } catch (ParseException e) {
+            return date + " | " + time;
         }
-        Toast.makeText(this, options, Toast.LENGTH_LONG).show();
     }
 
     private String getSpecialtyFromType(String appointmentType) {
         if (appointmentType == null) return "General Practice";
 
-        switch (appointmentType.toLowerCase()) {
-            case "messaging":
-                return "Dermatologist";
-            case "video call":
-                return "Neurologist";
-            case "voice call":
-                return "Cardiologist";
-            case "consultation":
-                return "General Consultation";
-            case "checkup":
-                return "Health Checkup";
-            case "followup":
-                return "Follow-up";
-            case "specialist":
-                return "Specialist";
-            case "emergency":
-                return "Emergency";
-            default:
-                return "General Practice";
-        }
-    }
-
-    private String formatDateTime(String date, String time) {
-        try {
-            // Parse the date
-            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            Date dateObj = inputDateFormat.parse(date);
-
-            // Check if it's today
-            SimpleDateFormat todayFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            String today = todayFormat.format(new Date());
-
-            String displayDate;
-            if (date.equals(today)) {
-                displayDate = "Today";
-            } else {
-                SimpleDateFormat outputDateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
-                displayDate = outputDateFormat.format(dateObj);
-            }
-
-            return displayDate + " | " + time;
-        } catch (ParseException e) {
-            // If parsing fails, return raw date and time
-            return date + " | " + time;
+        if (appointmentType.toLowerCase().contains("dermatology")) {
+            return "Dermatologist";
+        } else if (appointmentType.toLowerCase().contains("cardiology")) {
+            return "Cardiologist";
+        } else if (appointmentType.toLowerCase().contains("neurology")) {
+            return "Neurologist";
+        } else if (appointmentType.toLowerCase().contains("pediatric")) {
+            return "Pediatrician";
+        } else if (appointmentType.toLowerCase().contains("orthopedic")) {
+            return "Orthopedist";
+        } else {
+            return "General Practice";
         }
     }
 }

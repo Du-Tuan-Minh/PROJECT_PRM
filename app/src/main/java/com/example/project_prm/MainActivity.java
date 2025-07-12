@@ -1,3 +1,4 @@
+// File: app/src/main/java/com/example/project_prm/MainActivity.java
 package com.example.project_prm;
 
 import android.content.Intent;
@@ -10,10 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_prm.ui.AppointmentScreen.MyAppointmentActivity;
 import com.example.project_prm.ui.BookingScreen.AppointmentBookingActivity;
-//import com.example.project_prm.ui.ChatBotScreen.ChatbotActivity;
-//import com.example.project_prm.ui.DiseaseScreen.DiseaseLibraryActivity;
 import com.example.project_prm.ui.SearchScreen.ClinicSearchActivity;
-//import com.example.project_prm.ui.auth.LoginActivity;
+import com.example.project_prm.ui.SearchScreen.DiseaseSearchActivity;
+// import com.example.project_prm.ui.auth.LoginActivity; // Comment out for now
 import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Kiểm tra trạng thái đăng nhập
+        // Comment out login check for now
+        /*
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         int userId = prefs.getInt("userId", -1);
         if (userId == -1) {
@@ -30,43 +31,50 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
+        */
 
         setContentView(R.layout.activity_main);
 
-        // Hiển thị tên người dùng
-        String username = prefs.getString("username", "Người dùng");
+        // Setup welcome text
         TextView welcomeText = findViewById(R.id.tv_header);
-        welcomeText.setText("🩺 Ứng dụng Sức khỏe - Chào " + username);
+        welcomeText.setText("🩺 Ứng dụng Sức khỏe");
 
-        // Initialize buttons
-        MaterialButton btnDiseaseLibrary = findViewById(R.id.btn_disease_library);
+        // Initialize buttons for main features
+        MaterialButton btnDiseaseSearch = findViewById(R.id.btn_disease_library);
         MaterialButton btnFindClinic = findViewById(R.id.btn_find_clinic);
         MaterialButton btnBookAppointment = findViewById(R.id.btn_book_appointment);
         MaterialButton btnViewAppointments = findViewById(R.id.btn_view_appointments);
-        MaterialButton btnChatbot = findViewById(R.id.btn_chatbot);
-        MaterialButton btnLogout = findViewById(R.id.btn_logout);
 
-        // Set click listeners for navigation
-        btnDiseaseLibrary.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, DiseaseLibraryActivity.class);
+        // Comment out features not yet implemented
+        // MaterialButton btnChatbot = findViewById(R.id.btn_chatbot);
+        // MaterialButton btnLogout = findViewById(R.id.btn_logout);
+
+        // CHỨC NĂNG 6: Search theo bệnh
+        btnDiseaseSearch.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, DiseaseSearchActivity.class);
             startActivity(intent);
         });
 
+        // CHỨC NĂNG 6: Search phòng khám
         btnFindClinic.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ClinicSearchActivity.class);
             startActivity(intent);
         });
 
+        // CHỨC NĂNG 8: Đặt lịch khám
         btnBookAppointment.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, AppointmentBookingActivity.class);
             startActivity(intent);
         });
 
+        // CHỨC NĂNG 9: Xem lịch sử đặt lịch khám
         btnViewAppointments.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, MyAppointmentActivity.class);
             startActivity(intent);
         });
 
+        // Comment out chatbot and logout for now
+        /*
         btnChatbot.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ChatbotActivity.class);
             startActivity(intent);
@@ -80,5 +88,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         });
+        */
     }
 }

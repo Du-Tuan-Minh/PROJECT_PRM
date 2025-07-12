@@ -1,4 +1,4 @@
-// NEW FILE: app/src/main/java/com/example/project_prm/ui/SearchScreen/DiseaseSearchActivity.java
+// File: app/src/main/java/com/example/project_prm/ui/SearchScreen/DiseaseSearchActivity.java
 package com.example.project_prm.ui.SearchScreen;
 
 import android.content.Intent;
@@ -57,17 +57,7 @@ public class DiseaseSearchActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        adapter = new DiseaseSearchAdapter(diseaseList, new DiseaseSearchAdapter.OnDiseaseClickListener() {
-            @Override
-            public void onDiseaseClick(Disease disease) {
-                // Navigate to disease detail
-                Intent intent = new Intent(DiseaseSearchActivity.this, DiseaseDetailActivity.class);
-                intent.putExtra("disease_id", disease.getId());
-                intent.putExtra("disease_name", disease.getName());
-                startActivity(intent);
-            }
-        });
-
+        adapter = new DiseaseSearchAdapter(diseaseList, this::onDiseaseClick);
         rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
         rvSearchResults.setAdapter(adapter);
     }
@@ -78,93 +68,64 @@ public class DiseaseSearchActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String query = s.toString().trim();
-                if (query.isEmpty()) {
-                    loadPopularDiseases();
-                } else if (query.length() >= 2) {
+                if (query.length() >= 2) {
                     searchDiseases(query);
+                } else if (query.isEmpty()) {
+                    loadPopularDiseases();
                 }
             }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
     }
 
     private void searchDiseases(String query) {
-        showLoading(true);
+        showProgressBar(true);
 
-        // Search by symptoms (primary search method)
-        service.searchDiseasesBySymptoms(query, new DiseaseSearchManager.OnSearchCompleteListener() {
-            @Override
-            public void onSuccess(List<Disease> diseases) {
-                runOnUiThread(() -> {
-                    showLoading(false);
+        // Mock search implementation
+        List<Disease> results = mockSearchDiseases(query);
 
-                    // Also search by name to get more comprehensive results
-                    List<Disease> nameResults = service.searchDiseasesByName(query);
-
-                    // Combine results (avoid duplicates)
-                    List<Disease> combinedResults = new ArrayList<>(diseases);
-                    for (Disease disease : nameResults) {
-                        if (!containsDisease(combinedResults, disease.getId())) {
-                            combinedResults.add(disease);
-                        }
-                    }
-
-                    updateSearchResults(combinedResults);
-                });
-            }
-
-            @Override
-            public void onError(String error) {
-                runOnUiThread(() -> {
-                    showLoading(false);
-                    showError("Search failed: " + error);
-                    showEmptyState(true);
-                });
-            }
-        });
+        new android.os.Handler().postDelayed(() -> {
+            showProgressBar(false);
+            updateSearchResults(results);
+        }, 500);
     }
 
     private void loadPopularDiseases() {
-        showLoading(true);
+        showProgressBar(true);
 
-        new Thread(() -> {
-            try {
-                List<Disease> popularDiseases = service.getPopularDiseases(20);
-                runOnUiThread(() -> {
-                    showLoading(false);
-                    updateSearchResults(popularDiseases);
-                });
-            } catch (Exception e) {
-                runOnUiThread(() -> {
-                    showLoading(false);
-                    showError("Failed to load diseases: " + e.getMessage());
-                });
-            }
-        }).start();
+        // Mock popular diseases
+        List<Disease> popularDiseases = mockGetPopularDiseases();
+
+        new android.os.Handler().postDelayed(() -> {
+            showProgressBar(false);
+            updateSearchResults(popularDiseases);
+        }, 300);
     }
 
-    private void updateSearchResults(List<Disease> diseases) {
+    private void updateSearchResults(List<Disease> results) {
         diseaseList.clear();
-        diseaseList.addAll(diseases);
+        diseaseList.addAll(results);
         adapter.notifyDataSetChanged();
 
-        showEmptyState(diseases.isEmpty());
-    }
-
-    private boolean containsDisease(List<Disease> diseases, int diseaseId) {
-        for (Disease disease : diseases) {
-            if (disease.getId() == diseaseId) {
-                return true;
-            }
+        if (results.isEmpty()) {
+            showEmptyState(true);
+        } else {
+            showEmptyState(false);
         }
-        return false;
     }
 
-    private void showLoading(boolean show) {
+    private void onDiseaseClick(Disease disease) {
+        Intent intent = new Intent(this, DiseaseDetailActivity.class);
+        intent.putExtra("disease_id", disease.getId());
+        intent.putExtra("disease_name", disease.getName());
+        startActivity(intent);
+    }
+
+    private void showProgressBar(boolean show) {
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
         rvSearchResults.setVisibility(show ? View.GONE : View.VISIBLE);
     }
@@ -174,7 +135,94 @@ public class DiseaseSearchActivity extends AppCompatActivity {
         rvSearchResults.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 
-    private void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    // Mock data methods
+    private List<Disease> mockSearchDiseases(String query) {
+        List<Disease> results = new ArrayList<>();
+
+        if (query.toLowerCase().contains("đau")) {
+            results.add(new Disease(1, "Đau đầu", "Triệu chứng đau ở vùng đầu", "Căng thẳng, mệt mỏi"));
+            results.add(new Disease(2, "Đau bụng", "Triệu chứng đau ở vùng bụng", "Tiêu hóa kém"));
+        } else if (query.toLowerCase().contains("sốt")) {
+            results.add(new Disease(3, "Sốt virus", "Nhiệt độ cơ thể tăng cao", "Nhiễm virus"));
+        } else if (query.toLowerCase().contains("ho")) {
+            results.add(new Disease(4, "Ho khan", "Ho không có đờm", "Dị ứng, viêm họng"));
+            results.add(new Disease(5, "Ho có đờm", "Ho kèm đờm", "Nhiễm khuẩn đường hô hấp"));
+        }
+
+        return results;
+    }
+
+    private List<Disease> mockGetPopularDiseases() {
+        List<Disease> diseases = new ArrayList<>();
+        diseases.add(new Disease(1, "Cảm cúm", "Bệnh nhiễm virus phổ biến", "Virus cúm"));
+        diseases.add(new Disease(2, "Đau đầu", "Triệu chứng đau ở vùng đầu", "Căng thẳng"));
+        diseases.add(new Disease(3, "Đau bụng", "Triệu chứng đau ở vùng bụng", "Tiêu hóa"));
+        diseases.add(new Disease(4, "Sốt", "Nhiệt độ cơ thể tăng cao", "Nhiễm trùng"));
+        diseases.add(new Disease(5, "Ho", "Phản xạ tự nhiên của cơ thể", "Dị ứng"));
+        return diseases;
+    }
+
+    // Simple adapter class
+    private static class DiseaseSearchAdapter extends RecyclerView.Adapter<DiseaseSearchAdapter.ViewHolder> {
+        private List<Disease> diseases;
+        private OnDiseaseClickListener listener;
+
+        interface OnDiseaseClickListener {
+            void onDiseaseClick(Disease disease);
+        }
+
+        public DiseaseSearchAdapter(List<Disease> diseases, OnDiseaseClickListener listener) {
+            this.diseases = diseases;
+            this.listener = listener;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
+            android.widget.LinearLayout layout = new android.widget.LinearLayout(parent.getContext());
+            layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+            layout.setPadding(16, 16, 16, 16);
+            return new ViewHolder(layout);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            Disease disease = diseases.get(position);
+            holder.bind(disease, listener);
+        }
+
+        @Override
+        public int getItemCount() {
+            return diseases.size();
+        }
+
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            private android.widget.TextView tvName, tvDescription;
+
+            public ViewHolder(android.view.View itemView) {
+                super(itemView);
+                android.widget.LinearLayout layout = (android.widget.LinearLayout) itemView;
+
+                tvName = new android.widget.TextView(itemView.getContext());
+                tvName.setTextSize(16);
+                tvName.setTextColor(0xFF000000);
+                layout.addView(tvName);
+
+                tvDescription = new android.widget.TextView(itemView.getContext());
+                tvDescription.setTextSize(14);
+                tvDescription.setTextColor(0xFF666666);
+                layout.addView(tvDescription);
+            }
+
+            public void bind(Disease disease, OnDiseaseClickListener listener) {
+                tvName.setText(disease.getName());
+                tvDescription.setText(disease.getSymptoms());
+
+                itemView.setOnClickListener(v -> {
+                    if (listener != null) {
+                        listener.onDiseaseClick(disease);
+                    }
+                });
+            }
+        }
     }
 }

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8F9FA">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:text="Chi tiết bệnh"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#212121" />
+
+    </LinearLayout>
+
+    <!-- Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Disease Name -->
+            <TextView
+                android:id="@+id/tv_disease_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tên bệnh"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#212121"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Symptoms -->
+            <TextView
+                android:id="@+id/tv_disease_symptoms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Triệu chứng"
+                android:textSize="16sp"
+                android:textColor="#424242"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Causes -->
+            <TextView
+                android:id="@+id/tv_disease_causes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nguyên nhân"
+                android:textSize="16sp"
+                android:textColor="#424242"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Treatment -->
+            <TextView
+                android:id="@+id/tv_disease_treatment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Điều trị"
+                android:textSize="16sp"
+                android:textColor="#424242"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Related Diseases -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bệnh liên quan"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#212121"
+                android:layout_marginBottom="8dp" />
+
+            <RecyclerView
+                android:id="@+id/rv_related_diseases"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Bottom Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_find_clinics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Tìm phòng khám điều trị"
+        android:textSize="16sp"
+        android:backgroundTint="#2196F3" />
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+</LinearLayout>
