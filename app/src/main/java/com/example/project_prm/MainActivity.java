@@ -2,20 +2,14 @@ package com.example.project_prm;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.project_prm.DataManager.Entity.FirestoreSeeder;
-import com.example.project_prm.MainScreen.BookAppointmentActivity;
+import com.example.project_prm.DataManager.FirestoreSeeder;
 import com.example.project_prm.MainScreen.ChatbotActivity;
-import com.example.project_prm.MainScreen.DiseaseLibraryActivity;
-import com.example.project_prm.MainScreen.FindClinicActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.FirebaseApp;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
