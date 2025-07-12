@@ -15,18 +15,10 @@
         android:gravity="center_vertical">
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="240dp"
+            android:layout_height="100dp"
             android:src="@drawable/ic_medica_logo" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Medica"
-            android:textColor="#000000"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:layout_marginStart="8dp" />
     </LinearLayout>
 
     <!-- Loading circle -->

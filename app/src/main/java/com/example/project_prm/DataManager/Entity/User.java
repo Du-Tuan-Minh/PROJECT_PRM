@@ -1,64 +1,32 @@
 package com.example.project_prm.DataManager.Entity;
 
-import org.json.JSONArray;
+import com.google.firebase.firestore.FieldValue;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class User {
-    private int id;
-    private String name;
-    private String profile;
-    private JSONArray symptomHistory;
-    private String username; // Thêm username
-    private String password; // Thêm password
+    public long id;
+    public String username, password, email, phone;
+    public Object created_at;
 
-    public User() {
-        this.symptomHistory = new JSONArray();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public User(long id, String username, String password, String email, String phone) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getProfile() {
-        return profile;
-    }
-
-    public void setProfile(String profile) {
-        this.profile = profile;
-    }
-
-    public JSONArray getSymptomHistory() {
-        return symptomHistory;
-    }
-
-    public void setSymptomHistory(JSONArray symptomHistory) {
-        this.symptomHistory = symptomHistory;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.created_at = com.google.firebase.firestore.FieldValue.serverTimestamp();
+    }
+
+    public java.util.Map<String, Object> toMap() {
+        java.util.Map<String, Object> data = new java.util.HashMap<>();
+        data.put("id", id);
+        data.put("username", username);
+        data.put("password", password);
+        data.put("email", email);
+        data.put("phone", phone);
+        data.put("created_at", created_at);
+        return data;
     }
 }

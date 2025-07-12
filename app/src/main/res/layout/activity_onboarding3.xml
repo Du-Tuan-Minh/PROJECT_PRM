@@ -9,23 +9,24 @@
 
     <ImageView
         android:id="@+id/imgIllustration"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_marginBottom="24dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/illus1"
-        android:layout_marginBottom="24dp" />
+        android:src="@drawable/illus1" />
 
     <TextView
         android:id="@+id/txtDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Let’s start living healthy and well with us right now!"
-        android:textSize="18sp"
-        android:textColor="#333333"
-        android:textAlignment="center"
-        android:gravity="center"
         android:layout_marginBottom="24dp"
-        android:paddingHorizontal="12dp" />
+        android:gravity="center"
+        android:paddingHorizontal="12dp"
+        android:text="Let’s start living healthy and well with us right now!"
+        android:textAlignment="center"
+        android:textColor="#2196F3"
+        android:textSize="28sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btnStart"

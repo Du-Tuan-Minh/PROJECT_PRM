@@ -1,52 +1,46 @@
 package com.example.project_prm.DataManager.Entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Disease {
-    private int id;
-    private String name;
-    private String symptoms;
-    private String causes;
-    private String treatment;
+    public long id;
+    public String category_id;
+    public String name;
+    public String vietnamese_name;
+    public String description;
+    public String symptoms;
+    public String causes;
+    public String treatments;
+    public String prevention;
+    public String when_to_see_doctor;
 
-    public Disease() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public Disease(long id, String category_id, String name, String vietnamese_name, String description, String symptoms,
+                   String causes, String treatments, String prevention, String when_to_see_doctor) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+        this.category_id = category_id;
         this.name = name;
-    }
-
-    public String getSymptoms() {
-        return symptoms;
-    }
-
-    public void setSymptoms(String symptoms) {
+        this.vietnamese_name = vietnamese_name;
+        this.description = description;
         this.symptoms = symptoms;
-    }
-
-    public String getCauses() {
-        return causes;
-    }
-
-    public void setCauses(String causes) {
         this.causes = causes;
+        this.treatments = treatments;
+        this.prevention = prevention;
+        this.when_to_see_doctor = when_to_see_doctor;
     }
 
-    public String getTreatment() {
-        return treatment;
-    }
-
-    public void setTreatment(String treatment) {
-        this.treatment = treatment;
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("category_id", category_id);
+        map.put("name", name);
+        map.put("vietnamese_name", vietnamese_name);
+        map.put("description", description);
+        map.put("symptoms", symptoms);
+        map.put("causes", causes);
+        map.put("treatments", treatments);
+        map.put("prevention", prevention);
+        map.put("when_to_see_doctor", when_to_see_doctor);
+        return map;
     }
 }
