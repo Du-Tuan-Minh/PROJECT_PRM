@@ -92,10 +92,10 @@ public class MainActivity extends AppCompatActivity {
 //            startActivity(intent);
 //        });
 //
-        btnChatbot.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ChatbotActivity.class);
-            startActivity(intent);
-        });
+//        btnChatbot.setOnClickListener(v -> {
+//            Intent intent = new Intent(MainActivity.this, ChatbotActivity.class);
+//            startActivity(intent);
+//        });
 //
 //        btnLogout.setOnClickListener(v -> {
 //            SharedPreferences.Editor editor = prefs.edit();
