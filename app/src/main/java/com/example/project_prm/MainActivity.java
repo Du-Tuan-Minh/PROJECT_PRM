@@ -1,5 +1,6 @@
 package com.example.project_prm;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 //        MaterialButton btnDiseaseLibrary = findViewById(R.id.btn_disease_library);
 //        MaterialButton btnFindClinic = findViewById(R.id.btn_find_clinic);
 //        MaterialButton btnBookAppointment = findViewById(R.id.btn_book_appointment);
-//        MaterialButton btnChatbot = findViewById(R.id.btn_chatbot);
+        MaterialButton btnChatbot = findViewById(R.id.btn_chatbot);
 //        MaterialButton btnLogout = findViewById(R.id.btn_logout);
 //
 //        // Set click listeners for navigation
@@ -63,10 +64,10 @@ public class MainActivity extends AppCompatActivity {
 //            startActivity(intent);
 //        });
 //
-//        btnChatbot.setOnClickListener(v -> {
-//            Intent intent = new Intent(MainActivity.this, ChatbotActivity.class);
-//            startActivity(intent);
-//        });
+        btnChatbot.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ChatbotActivity.class);
+            startActivity(intent);
+        });
 //
 //        btnLogout.setOnClickListener(v -> {
 //            SharedPreferences.Editor editor = prefs.edit();
