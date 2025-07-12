@@ -85,9 +85,10 @@ public class MainActivity extends AppCompatActivity {
     public void loadFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, fragment) // fragment_container là ID trong layout XML
-                .addToBackStack(null)
-                .commit();
+                .replace(R.id.fragment_container, fragment)  // Thay thế fragment hiện tại
+                .addToBackStack(null)                         // Thêm vào back stack để quay lại được
+                .commit();                                    // Thực hiện transaction
     }
+
 
 }

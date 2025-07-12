@@ -25,4 +25,15 @@
     <color name="category_medical">#009688</color>
     <color name="category_default">#9E9E9E</color>
 
+
+    <!-- Status Bar Colors -->
+    <color name="status_bar_text">#212121</color>
+    <color name="signal_bar_active">#212121</color>
+    <color name="signal_bar_inactive">#4D000000</color>
+    <color name="wifi_icon">#212121</color>
+    <color name="battery_full">#212121</color>
+    <color name="battery_border">#212121</color>
+
+    <!-- Article Meta Colors -->
+    <color name="article_date_text">#9E9E9E</color>
 </resources>

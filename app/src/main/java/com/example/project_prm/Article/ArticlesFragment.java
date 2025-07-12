@@ -2,6 +2,7 @@ package com.example.project_prm.Article;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -57,15 +59,15 @@ public class ArticlesFragment extends Fragment {
         allArticles = FakeArticleData.getSampleArticles();
 
         // Không xử lý click, chỉ hiển thị giao diện chính
-// seeAllTrending.setOnClickListener(v -> {
-//     ArticlesListFragment fragment = ArticlesListFragment.newInstance("trending");
-//     ((MainActivity) getActivity()).loadFragment(fragment);
-// });
+//         seeAllTrending.setOnClickListener(v -> {
+//             ArticlesListFragment fragment = ArticlesListFragment.newInstance("trending");
+//             ((MainActivity) getActivity()).loadFragment(fragment);
+//         });
 //
-// seeAllArticles.setOnClickListener(v -> {
-//     ArticlesListFragment fragment = ArticlesListFragment.newInstance("all");
-//     ((MainActivity) getActivity()).loadFragment(fragment);
-// });
+//         seeAllArticles.setOnClickListener(v -> {
+//             ArticlesListFragment fragment = ArticlesListFragment.newInstance("all");
+//             ((MainActivity) getActivity()).loadFragment(fragment);
+//         });
 
     }
 
@@ -74,8 +76,8 @@ public class ArticlesFragment extends Fragment {
         trendingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         trendingAdapter = new TrendingAdapter(getContext(), article -> {
             // KHÔNG xử lý click chuyển trang
-            // ArticleDetailFragment fragment = ArticleDetailFragment.newInstance(article.getId());
-            // ((MainActivity) getActivity()).loadFragment(fragment);
+             ArticleDetailFragment fragment = ArticleDetailFragment.newInstance(article.getId());
+             ((MainActivity) getActivity()).loadFragment(fragment);
         });
         trendingRecyclerView.setAdapter(trendingAdapter);
 
@@ -83,15 +85,15 @@ public class ArticlesFragment extends Fragment {
         articlesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         articleAdapter = new ArticleAdapter(getContext(), article -> {
             // KHÔNG xử lý click chuyển trang
-            // ArticleDetailFragment fragment = ArticleDetailFragment.newInstance(article.getId());
-            // ((MainActivity) getActivity()).loadFragment(fragment);
+             ArticleDetailFragment fragment = ArticleDetailFragment.newInstance(article.getId());
+             ((MainActivity) getActivity()).loadFragment(fragment);
         });
         articlesRecyclerView.setAdapter(articleAdapter);
     }
 
 
     private void setupChips() {
-        String[] categories = {"Newest", "Health", "Covid-19", "Lifestyle", "Medical"};
+        String[] categories = {"All", "Health", "Covid-19", "Lifestyle", "Medical"};
 
         for (String category : categories) {
             Chip chip = new Chip(getContext());
@@ -124,7 +126,7 @@ public class ArticlesFragment extends Fragment {
 
     private void loadArticlesByCategory() {
         List<Article> filtered;
-        if (currentCategory.equalsIgnoreCase("Newest") || currentCategory.equalsIgnoreCase("All")) {
+        if ( currentCategory.equalsIgnoreCase("All")) {
             filtered = allArticles;
         } else {
             filtered = allArticles.stream()
@@ -132,5 +134,8 @@ public class ArticlesFragment extends Fragment {
                     .collect(Collectors.toList());
         }
         articleAdapter.updateArticles(filtered);
+
+        Log.d("ArticlesFragment", "Filtered articles: " + filtered.size());
+
     }
 }

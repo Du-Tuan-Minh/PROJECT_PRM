@@ -45,7 +45,7 @@
                     android:contentDescription="Back"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_arrow"
-                    app:tint="@android:color/black" />
+                    android:rotation="180"/>
 
 
                 <View
