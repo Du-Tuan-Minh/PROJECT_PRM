@@ -1,30 +1,27 @@
 package com.example.project_prm;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_prm.DataManager.Entity.FirestoreSeeder;
-import com.example.project_prm.MainScreen.BookAppointmentActivity;
-import com.example.project_prm.MainScreen.ChatbotActivity;
-import com.example.project_prm.MainScreen.DiseaseLibraryActivity;
-import com.example.project_prm.MainScreen.FindClinicActivity;
-import com.google.android.material.button.MaterialButton;
+import com.example.project_prm.ui.appointment.MyAppointmentDetailActivity;
+import com.example.project_prm.ui.auth.SignInActivity;
 import com.google.firebase.FirebaseApp;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         FirebaseApp.initializeApp(this);
         FirestoreSeeder.seedAll();
         Toast.makeText(this, "Seeding hoàn tất!", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, SignInActivity.class));
         // Kiểm tra trạng thái đăng nhập
 //        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
 //        int userId = prefs.getInt("userId", -1);
@@ -34,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 //            return;
 //        }
 
-        setContentView(R.layout.activity_signin);
         // Hiển thị tên người dùng
 //        String username = prefs.getString("username", "Người dùng");
 //        TextView welcomeText = findViewById(R.id.tv_header);

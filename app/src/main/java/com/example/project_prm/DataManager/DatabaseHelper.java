@@ -25,10 +25,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_USER = "user";
     public static final String COLUMN_USER_ID = "id";
     public static final String COLUMN_USER_NAME = "name";
-    public static final String COLUMN_USER_PROFILE = "profile";
+    public static final String COLUMN_USER_GENDER = "gender";
+    public static final String COLUMN_USER_DATE_OF_BIRTH = "date_of_birth";
     public static final String COLUMN_USER_SYMPTOM_HISTORY = "symptom_history";
-    public static final String COLUMN_USER_USERNAME = "username"; // Thêm cột username
-    public static final String COLUMN_USER_PASSWORD = "password"; // Thêm cột password
+    public static final String COLUMN_USER_EMAIL = "email";
+    public static final String COLUMN_USER_PASSWORD = "password";
+    public static final String COLUMN_USER_ROLE = "role";
+
 
     // Bảng Appointment
     public static final String TABLE_APPOINTMENT = "appointment";
@@ -66,9 +69,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createUserTable = "CREATE TABLE " + TABLE_USER + " (" +
                 COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_USER_NAME + " TEXT, " +
-                COLUMN_USER_PROFILE + " TEXT, " +
+                COLUMN_USER_GENDER + " INTEGER, " +
+                COLUMN_USER_ROLE + " INTEGER, " +
+                COLUMN_USER_DATE_OF_BIRTH + " TEXT, " +
                 COLUMN_USER_SYMPTOM_HISTORY + " TEXT, " +
-                COLUMN_USER_USERNAME + " TEXT UNIQUE, " + // UNIQUE để tránh trùng username
+                COLUMN_USER_EMAIL + " TEXT UNIQUE, " + // UNIQUE để tránh trùng username
                 COLUMN_USER_PASSWORD + " TEXT)";
         db.execSQL(createUserTable);
 
@@ -98,24 +103,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
             // Thêm cột username và password vào bảng user
-            db.execSQL("ALTER TABLE " + TABLE_USER + " ADD COLUMN " + COLUMN_USER_USERNAME + " TEXT");
-            db.execSQL("ALTER TABLE " + TABLE_USER + " ADD COLUMN " + COLUMN_USER_PASSWORD + " TEXT");
-            // Thêm ràng buộc UNIQUE cho username (cần tạo bảng tạm thời)
-            db.execSQL("CREATE TABLE temp_user AS SELECT * FROM " + TABLE_USER);
-            db.execSQL("DROP TABLE " + TABLE_USER);
-            db.execSQL("CREATE TABLE " + TABLE_USER + " (" +
-                    COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_USER_NAME + " TEXT, " +
-                    COLUMN_USER_PROFILE + " TEXT, " +
-                    COLUMN_USER_SYMPTOM_HISTORY + " TEXT, " +
-                    COLUMN_USER_USERNAME + " TEXT UNIQUE, " +
-                    COLUMN_USER_PASSWORD + " TEXT)");
-            db.execSQL("INSERT INTO " + TABLE_USER + " (" +
-                    COLUMN_USER_ID + ", " + COLUMN_USER_NAME + ", " + COLUMN_USER_PROFILE + ", " +
-                    COLUMN_USER_SYMPTOM_HISTORY + ", " + COLUMN_USER_USERNAME + ", " + COLUMN_USER_PASSWORD +
-                    ") SELECT " + COLUMN_USER_ID + ", " + COLUMN_USER_NAME + ", " + COLUMN_USER_PROFILE + ", " +
-                    COLUMN_USER_SYMPTOM_HISTORY + ", NULL, NULL FROM temp_user");
-            db.execSQL("DROP TABLE temp_user");
+//            db.execSQL("ALTER TABLE " + TABLE_USER + " ADD COLUMN " + COLUMN_USER_USERNAME + " TEXT");
+//            db.execSQL("ALTER TABLE " + TABLE_USER + " ADD COLUMN " + COLUMN_USER_PASSWORD + " TEXT");
+//            // Thêm ràng buộc UNIQUE cho username (cần tạo bảng tạm thời)
+//            db.execSQL("CREATE TABLE temp_user AS SELECT * FROM " + TABLE_USER);
+//            db.execSQL("DROP TABLE " + TABLE_USER);
+//            db.execSQL("CREATE TABLE " + TABLE_USER + " (" +
+//                    COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                    COLUMN_USER_NAME + " TEXT, " +
+//                    COLUMN_USER_PROFILE + " TEXT, " +
+//                    COLUMN_USER_SYMPTOM_HISTORY + " TEXT, " +
+//                    COLUMN_USER_USERNAME + " TEXT UNIQUE, " +
+//                    COLUMN_USER_PASSWORD + " TEXT)");
+//            db.execSQL("INSERT INTO " + TABLE_USER + " (" +
+//                    COLUMN_USER_ID + ", " + COLUMN_USER_NAME + ", " + COLUMN_USER_PROFILE + ", " +
+//                    COLUMN_USER_SYMPTOM_HISTORY + ", " + COLUMN_USER_USERNAME + ", " + COLUMN_USER_PASSWORD +
+//                    ") SELECT " + COLUMN_USER_ID + ", " + COLUMN_USER_NAME + ", " + COLUMN_USER_PROFILE + ", " +
+//                    COLUMN_USER_SYMPTOM_HISTORY + ", NULL, NULL FROM temp_user");
+//            db.execSQL("DROP TABLE temp_user");
         }
     }
 

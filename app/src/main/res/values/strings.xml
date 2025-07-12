@@ -3,5 +3,7 @@
 
     <string name="login_title">Login</string>
     <string name="register_title">Register</string>
+    <string name="facebook_app_id">1796723421265328</string>
+    <string name="fb_login_protocol_scheme">fb1796723421265328</string>
 
 </resources>

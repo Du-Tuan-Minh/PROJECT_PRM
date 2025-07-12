@@ -1,14 +1,20 @@
 package com.example.project_prm.DataManager.Entity;
 
+import com.example.project_prm.DataManager.DatabaseHelper;
+
 import org.json.JSONArray;
+
+import java.util.Date;
 
 public class User {
     private int id;
     private String name;
-    private String profile;
+    private int gender;
+    private String dateOfBirth;
     private JSONArray symptomHistory;
-    private String username; // Thêm username
+    private String email; // Thêm username
     private String password; // Thêm password
+    private int role; // Thêm role
 
     public User() {
         this.symptomHistory = new JSONArray();
@@ -30,13 +36,6 @@ public class User {
         this.name = name;
     }
 
-    public String getProfile() {
-        return profile;
-    }
-
-    public void setProfile(String profile) {
-        this.profile = profile;
-    }
 
     public JSONArray getSymptomHistory() {
         return symptomHistory;
@@ -46,19 +45,56 @@ public class User {
         this.symptomHistory = symptomHistory;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+
+        this.password = DatabaseHelper.hashPassword(password);
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
+    public enum GenderEnum {
+        Male,
+        Female,
+        Other;
+    }
+
+    public enum RoleEnum {
+        Patient,
+        Clinic;
     }
 }

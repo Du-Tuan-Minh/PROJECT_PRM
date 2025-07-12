@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_prm.DataManager.DatabaseHelper;
 import com.example.project_prm.DataManager.DAO.UserDAO;
+import com.example.project_prm.DataManager.Entity.User;
 import com.example.project_prm.R;
 import com.example.project_prm.ui.dialog.StatusPopup;
 import com.example.project_prm.widgets.DropDownFieldView;
@@ -102,41 +103,50 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void onSignUpClick(View view) {
-        String username = registerEmailInput.getFieldText();
+        String email = registerEmailInput.getFieldText();
         String password = registerPasswordInput.getFieldText();
         String gender = registerGenderInput.getSelectedItem();
         String dateOfBirth = registerDateOfBirthInput.getFieldText();
         String name = registerFullNameInput.getFieldText();
-        String profile = registerDateOfBirthInput.getFieldText();
+        String role = registerRoleInput.getSelectedItem();
 
-        if (username.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+        if (email.isEmpty() || password.isEmpty() ||
+                gender.isEmpty() || dateOfBirth.isEmpty() ||
+                name.isEmpty() || role.isEmpty() ) {
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
         if (password.length() < 6) {
-            Toast.makeText(this, "Mật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Mật khẩu phải có ít nhất 6 ký tự",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!username.matches("[a-zA-Z0-9]+")) {
-            Toast.makeText(this, "Tên đăng nhập chỉ được chứa chữ cái và số", Toast.LENGTH_SHORT).show();
+        if (!email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
+            Toast.makeText(this, "Vui lòng nhập đúng định dạng email", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        long result = userDAO.registerUser(name, profile, username, password);
+        int roleEnum = User.RoleEnum.valueOf(role).ordinal();
+        int genderEnum = User.GenderEnum.valueOf(gender).ordinal();
+
+        long result = userDAO.registerUser(roleEnum,name, dateOfBirth,
+                genderEnum, email, password);
+
         if (result != -1) {
             Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
             setClearFocus();
             startActivity(new Intent(this, SignInActivity.class));
         } else {
-            Toast.makeText(this, "Đăng ký thất bại, username có thể đã tồn tại", Toast.LENGTH_SHORT).show();
-        }
-        StatusPopup popup = new StatusPopup(this);
-        popup.setPrimaryClick(v -> popup.dismiss());
-        popup.setCancelClick(v -> popup.dismiss());
+            StatusPopup popup = new StatusPopup(this);
+            popup.setPrimaryClick(v -> popup.dismiss());
+            popup.setCancelClick(v -> popup.dismiss());
 
-        // Success Example
-        popup.setErrorPopup("\"Oops, Failed!", "Desvv...","Oki");
-        popup.show();
+            // Success Example
+            popup.setErrorPopup("\"Oops, Failed!", "Đăng ký thất bại, email có thể đã tồn tại","Oki");
+            popup.hiddenCancelButton();
+            popup.show();
+        }
     }
 
     private void onEyeIconClick(EditTextFieldView editTextFieldView) {

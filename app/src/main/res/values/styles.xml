@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base TextView style -->
+    <style name="DefaultTextView" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/font_md</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <!-- Base Button style -->
+    <style name="DefaultButton" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">@dimen/font_md</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <!-- Base EditText style -->
+    <style name="DefaultEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textSize">@dimen/font_md</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <!-- Optional Dialog Styling -->
+    <style name="DefaultDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:textSize">@dimen/font_md</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+</resources>

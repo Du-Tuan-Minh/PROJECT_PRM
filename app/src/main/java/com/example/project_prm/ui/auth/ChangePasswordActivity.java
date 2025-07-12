@@ -1,11 +1,14 @@
 package com.example.project_prm.ui.auth;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import com.example.project_prm.DataManager.DAO.UserDAO;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,12 +23,15 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private EditTextFieldView newPasswordInput;
     private EditTextFieldView confirmNewPasswordInput;
     private Button changePasswordButton;
+    private StatusPopup popup;
+    private UserDAO userDAO;
 
     private void bindingView(){
         oldPasswordInput = findViewById(R.id.OldPasswordInput);
         newPasswordInput = findViewById(R.id.NewPasswordInput);
         confirmNewPasswordInput = findViewById(R.id.confirmNewPasswordInput);
         changePasswordButton = findViewById(R.id.changePasswordButton);
+        popup = new StatusPopup(this);
     }
 
     private void bindingAction(){
@@ -40,6 +46,32 @@ public class ChangePasswordActivity extends AppCompatActivity {
         oldPasswordInput.clearFocus();
         newPasswordInput.clearFocus();
         confirmNewPasswordInput.clearFocus();
+    }
+
+    private String getUserPassWord(){
+        String userPassWord = "";
+        if(getIntent().hasExtra("resetPassword")){
+            userPassWord = getIntent().getStringExtra("resetPassword");
+            return userPassWord;
+        }
+        // handle take password from database here
+        SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        int userId = prefs.getInt("userId", -1);
+        if (userId == -1) {
+            popup.setErrorPopup("Oops, Failed!", "Please login to change password...",
+                        "Oki");
+            popup.setPrimaryClick(this::onPrimaryPopupClick);
+            popup.show();
+            return null;
+        }
+        userPassWord = userDAO.getUserById(userId).getPassword();
+
+        return userPassWord;
+    }
+
+    private void onPrimaryPopupClick(View view) {
+        popup.dismiss();
+        startActivity(new Intent(this, SignInActivity.class));
     }
 
     private void onEndIconClick(EditTextFieldView editTextFieldView) {
@@ -64,19 +96,31 @@ public class ChangePasswordActivity extends AppCompatActivity {
         String oldPassword = oldPasswordInput.getFieldText();
         String newPassword = newPasswordInput.getFieldText();
         String confirmNewPassword = confirmNewPasswordInput.getFieldText();
+        StatusPopup popup = new StatusPopup(this);
         // handle change password logic here
         if (oldPassword.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
-            StatusPopup popup = new StatusPopup(this);
             popup.setErrorPopup("Oops, Failed!", "Cant empty...","Oki");
             popup.show();
             return;
         }
-        if (!newPassword.equals(confirmNewPassword)) {
-            StatusPopup popup = new StatusPopup(this);
-            popup.setErrorPopup("Oops, Failed!", "Password not match...","Oki");
+
+        if(!oldPassword.equals(getUserPassWord())){
+            popup.setErrorPopup("Oops, Failed!", "Old password is wrong...","Oki");
+            popup.hiddenCancelButton();
             popup.show();
             return;
         }
+
+        if (!newPassword.equals(confirmNewPassword)) {
+
+            popup.setErrorPopup("Oops, Failed!", "New password not match...","Oki");
+            popup.show();
+            return;
+        }
+
+        popup.setSuccessPopup("Success!", "Change password success","Oki");
+        popup.setPrimaryClick(v -> popup.dismiss());
+        popup.show();
     }
 
 
