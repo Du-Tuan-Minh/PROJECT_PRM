@@ -67,6 +67,18 @@
         <activity
             android:name=".MainScreen.ChatbotActivity"
             android:exported="false" />
+
+        <!-- Main Activity (Dashboard) -->
+        <activity android:name=".MainActivity" android:exported="false" />
+
+        <!-- Các màn chính -->
+        <activity android:name=".MainScreen.DiseaseLibraryActivity" android:exported="false" />
+        <activity android:name=".MainScreen.FindClinicActivity" android:exported="false" />
+        <activity android:name=".MainScreen.BookAppointmentActivity" android:exported="false" />
+        <activity android:name=".MainScreen.ChatbotActivity" android:exported="false" />
+        <activity android:name=".MainScreen.NotificationActivity" />
+        <activity android:name=".AllUtilitiesActivity" />
+
     </application>
 
 </manifest>

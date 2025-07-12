@@ -49,4 +49,5 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
     implementation(libs.recyclerview)
+    implementation("com.tbuonomo:dotsindicator:4.3")
 }
