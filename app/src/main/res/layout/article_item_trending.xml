@@ -19,7 +19,7 @@
             android:layout_height="160dp"
             android:scaleType="centerCrop"
             android:background="#F5F5F5"
-            android:src="@drawable/ic_facebook" />
+            android:src="@drawable/ic_facebook_dat" />
 
         <LinearLayout
             android:layout_width="match_parent"

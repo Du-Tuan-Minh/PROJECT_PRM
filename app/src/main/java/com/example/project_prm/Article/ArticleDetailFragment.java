@@ -65,8 +65,8 @@ public class ArticleDetailFragment extends Fragment {
 
             Glide.with(this)
                     .load(article.getImageUrl())  // ← Load từ link
-                    .placeholder(R.drawable.ic_facebook) // ảnh tạm trong lúc loading
-                    .error(R.drawable.ic_facebook)       // ảnh nếu load lỗi
+                    .placeholder(R.drawable.ic_facebook_dat) // ảnh tạm trong lúc loading
+                    .error(R.drawable.ic_facebook_dat)       // ảnh nếu load lỗi
                     .into(imageView);
         }
 

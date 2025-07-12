@@ -36,7 +36,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/ic_facebook"
+                    android:src="@drawable/ic_facebook_dat"
                     android:background="@android:color/transparent" />
             </androidx.cardview.widget.CardView>
 
