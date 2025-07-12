@@ -3,13 +3,12 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <!-- Bong bóng chat -->
+    <!-- Message bubble -->
     <path
         android:fillColor="#1976D2"
-        android:pathData="M4,4h16a2,2 0 0,1 2,2v10a2,2 0 0,1 -2,2h-4l-4,4v-4h-8a2,2 0 0,1 -2,-2v-10a2,2 0 0,1 2,-2z"/>
-    <!-- Sóng AI -->
+        android:pathData="M20,2H4C2.9,2 2,2.9 2,4V22L6,18H20C21.1,18 22,17.1 22,16V4C22,2.9 21.1,2 20,2zM20,16H6L4,18V4H20V16z"/>
+    <!-- Message dots -->
     <path
         android:fillColor="#FFFFFF"
-        android:strokeWidth="0"
-        android:pathData="M8,10c0,1.1 0.9,2 2,2s2,-0.9 2,-2 -0.9,-2 -2,-2 -2,0.9 -2,2zm4,0c0,1.1 0.9,2 2,2s2,-0.9 2,-2 -0.9,-2 -2,-2 -2,0.9 -2,2z"/>
+        android:pathData="M7,9h2v2H7V9zM10,9h2v2H10V9zM13,9h2v2H13V9z"/>
 </vector> 

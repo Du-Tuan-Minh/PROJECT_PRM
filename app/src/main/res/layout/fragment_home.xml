@@ -261,7 +261,7 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:background="@drawable/bg_circle_lightblue"
-                    android:src="@drawable/ic_calendar"
+                    android:src="@drawable/ic_calendar_vector"
                     android:padding="10dp"
                     android:scaleType="centerInside"/>
                 <TextView

@@ -13,7 +13,7 @@ import android.widget.ImageView;
 
 public class AllUtilitiesActivity extends AppCompatActivity {
     private String[] utilityNames = {"Thông tin đặt lịch", "Articles", "History", "Chat AI", "Appointment"};
-    private int[] utilityIcons = {R.drawable.ic_info_booking, R.drawable.ic_article, R.drawable.ic_history, R.drawable.ic_chat_ai, R.drawable.ic_calendar};
+    private int[] utilityIcons = {R.drawable.ic_info_booking, R.drawable.ic_article, R.drawable.ic_history, R.drawable.ic_chat_ai, R.drawable.ic_calendar_vector};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
