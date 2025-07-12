@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- Permissions for Internet and Location -->
+
+    <!-- PERMISSIONS -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- FIX: Add telephony feature for CALL_PHONE permission -->
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -14,21 +22,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project_PRM"
         tools:targetApi="31">
-        <activity
-            android:name=".widgets.BackView"
-            android:exported="false" />
-        <activity
-            android:name=".ui.auth.LoginOptionActivity"
-            android:exported="false" /> <!-- Splash Activity: KHỞI ĐỘNG APP -->
+
+        <!-- GOOGLE MAPS API KEY -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR_GOOGLE_MAPS_API_KEY_HERE" />
+
+        <!-- ========== SPLASH & ONBOARDING ========== -->
+
+        <!-- Splash Activity: KHỞI ĐỘNG APP -->
         <activity
             android:name=".DashBoardScreen.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Onboarding Screens -->
+        </activity>
+
+        <!-- Onboarding Screens -->
         <activity
             android:name=".DashBoardScreen.Onboarding1Activity"
             android:exported="false" />
@@ -37,77 +49,112 @@
             android:exported="false" />
         <activity
             android:name=".DashBoardScreen.Onboarding3Activity"
-            android:exported="false" /> <!-- Authentication Screens -->
+            android:exported="false" />
+
+        <!-- ========== AUTHENTICATION ========== -->
+
+        <activity
+            android:name=".ui.auth.LoginOptionActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.auth.SignUpActivity"
             android:exported="false"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.SignInActivity"
             android:exported="false"
-            android:windowSoftInputMode="stateHidden" /> <!-- Main Activity (Dashboard) -->
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.ForgotPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".ui.auth.ChangePasswordActivity"
             android:exported="false" />
+
+        <!-- ========== MAIN ACTIVITIES ========== -->
+
+        <!-- Main Dashboard -->
         <activity
             android:name=".MainActivity"
-            android:exported="false" /> <!-- Các màn chính -->
+            android:exported="false" />
+
+        <!-- Core Features -->
         <activity
             android:name=".MainScreen.DiseaseLibraryActivity"
             android:exported="false" />
         <activity
             android:name=".MainScreen.FindClinicActivity"
             android:exported="false" />
-        <activity
+
+        <!-- FIX: Remove BookAppointmentActivity that doesn't exist -->
+        <!-- <activity
             android:name=".MainScreen.BookAppointmentActivity"
-            android:exported="false" />
+            android:exported="false" /> -->
+
         <activity
             android:name=".MainScreen.ChatbotActivity"
             android:exported="false" />
+
+        <!-- ========== TUNG'S FEATURES ========== -->
+
+        <!-- CHỨC NĂNG 6: Search phòng khám với Google Maps -->
+        <activity
+            android:name=".ui.SearchScreen.ClinicSearchActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Project_PRM" />
+
+        <activity
+            android:name=".ui.SearchScreen.ClinicDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Project_PRM" />
+
+        <activity
+            android:name=".ui.SearchScreen.DiseaseDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Project_PRM" />
+
+        <!-- CHỨC NĂNG 8: Đặt lịch khám với form thông tin -->
+        <activity
+            android:name=".ui.BookingScreen.AppointmentBookingActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.Project_PRM" />
+
+        <!-- CHỨC NĂNG 9: Lịch sử đặt lịch khám -->
+        <activity
+            android:name=".ui.AppointmentScreen.MyAppointmentActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Project_PRM" />
+
+        <activity
+            android:name=".ui.AppointmentScreen.AppointmentDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Project_PRM" />
+
+        <activity
+            android:name=".ui.AppointmentScreen.RescheduleActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.Project_PRM" />
+
+        <activity
+            android:name=".ui.AppointmentScreen.CancelAppointmentActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Project_PRM" />
+
+        <activity
+            android:name=".ui.AppointmentScreen.ReviewActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.Project_PRM" />
+
+        <!-- ========== UTILITY ACTIVITIES ========== -->
+
+        <!-- FIX: Remove BackView activity that has constructor issues -->
+        <!-- <activity
+            android:name=".widgets.BackView"
+            android:exported="false" /> -->
+
     </application>
-    <!-- Thêm các activity này vào AndroidManifest.xml trong <application> tag -->
 
-    <!-- Demo Main Activity (launcher) -->
-    <activity
-        android:name=".DemoMainActivity"
-        android:exported="true"
-        android:theme="@style/Theme.Project_prm">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-
-    <!-- My Appointment Activity -->
-    <activity
-        android:name=".ui.AppointmentScreen.MyAppointmentActivity"
-        android:exported="false"
-        android:theme="@style/Theme.Project_prm" />
-
-    <!-- Appointment Detail Activity -->
-    <activity
-        android:name=".ui.AppointmentScreen.AppointmentDetailActivity"
-        android:exported="false"
-        android:theme="@style/Theme.Project_prm" />
-
-    <!-- Reschedule Activity -->
-    <activity
-        android:name=".ui.AppointmentScreen.RescheduleActivity"
-        android:exported="false"
-        android:theme="@style/Theme.Project_prm" />
-
-    <!-- Cancel Appointment Activity -->
-    <activity
-        android:name=".ui.AppointmentScreen.CancelAppointmentActivity"
-        android:exported="false"
-        android:theme="@style/Theme.Project_prm" />
-
-    <!-- Review Activity -->
-    <activity
-        android:name=".ui.AppointmentScreen.ReviewActivity"
-        android:exported="false"
-        android:theme="@style/Theme.Project_prm" />
 </manifest>

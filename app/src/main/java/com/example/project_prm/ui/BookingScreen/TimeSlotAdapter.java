@@ -1,4 +1,3 @@
-// NEW FILE: app/src/main/java/com/example/project_prm/ui/BookingScreen/TimeSlotAdapter.java
 package com.example.project_prm.ui.BookingScreen;
 
 import android.view.LayoutInflater;
@@ -14,17 +13,21 @@ import com.example.project_prm.R;
 
 import java.util.List;
 
+/**
+ * Adapter for Time Slot selection in Appointment Booking
+ * Chức năng 8: Đặt lịch khám - Time slot selection
+ */
 public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder> {
 
-    private final List<String> timeSlots;
-    private final OnTimeSlotClickListener listener;
-    private int selectedPosition = -1;
+    private List<String> timeSlots;
+    private String selectedTimeSlot = "";
+    private OnTimeSlotSelectedListener listener;
 
-    public interface OnTimeSlotClickListener {
+    public interface OnTimeSlotSelectedListener {
         void onTimeSlotSelected(String timeSlot);
     }
 
-    public TimeSlotAdapter(List<String> timeSlots, OnTimeSlotClickListener listener) {
+    public TimeSlotAdapter(List<String> timeSlots, OnTimeSlotSelectedListener listener) {
         this.timeSlots = timeSlots;
         this.listener = listener;
     }
@@ -40,48 +43,55 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
     @Override
     public void onBindViewHolder(@NonNull TimeSlotViewHolder holder, int position) {
         String timeSlot = timeSlots.get(position);
-        holder.bind(timeSlot, position == selectedPosition, position, listener);
+        holder.bind(timeSlot);
     }
 
     @Override
     public int getItemCount() {
-        return timeSlots.size();
+        return timeSlots != null ? timeSlots.size() : 0;
     }
 
-    public void setSelectedPosition(int position) {
-        int previousPosition = selectedPosition;
-        selectedPosition = position;
+    public void updateTimeSlots(List<String> newTimeSlots) {
+        this.timeSlots = newTimeSlots;
+        this.selectedTimeSlot = ""; // Reset selection
+        notifyDataSetChanged();
+    }
 
-        if (previousPosition != -1) {
-            notifyItemChanged(previousPosition);
-        }
-        if (selectedPosition != -1) {
-            notifyItemChanged(selectedPosition);
-        }
+    public String getSelectedTimeSlot() {
+        return selectedTimeSlot;
+    }
+
+    public void clearSelection() {
+        selectedTimeSlot = "";
+        notifyDataSetChanged();
     }
 
     class TimeSlotViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvTimeSlot;
+        private TextView tvTimeSlot;
 
         public TimeSlotViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTimeSlot = itemView.findViewById(R.id.tv_time_slot);
         }
 
-        public void bind(String timeSlot, boolean isSelected, int position, OnTimeSlotClickListener listener) {
+        public void bind(String timeSlot) {
             tvTimeSlot.setText(timeSlot);
 
-            // Update appearance based on selection
+            // Set appearance based on selection
+            boolean isSelected = timeSlot.equals(selectedTimeSlot);
             if (isSelected) {
-                tvTimeSlot.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), R.color.primary_blue));
+                tvTimeSlot.setBackgroundResource(R.drawable.bg_time_slot_selected);
                 tvTimeSlot.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.white));
             } else {
-                tvTimeSlot.setBackgroundTintList(ContextCompat.getColorStateList(itemView.getContext(), R.color.background_light));
+                tvTimeSlot.setBackgroundResource(R.drawable.bg_time_slot_unselected);
                 tvTimeSlot.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.text_black));
             }
 
+            // Handle click
             itemView.setOnClickListener(v -> {
-                setSelectedPosition(position);
+                selectedTimeSlot = timeSlot;
+                notifyDataSetChanged(); // Refresh all items to update selection
+
                 if (listener != null) {
                     listener.onTimeSlotSelected(timeSlot);
                 }
