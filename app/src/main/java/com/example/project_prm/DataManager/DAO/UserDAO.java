@@ -28,4 +28,5 @@ public class UserDAO {
     public Task<DocumentSnapshot> getById(String userId) {
         return db.collection("users").document(userId).get();
     }
+
 }

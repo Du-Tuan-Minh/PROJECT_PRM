@@ -2,21 +2,13 @@ package com.example.project_prm;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import com.example.project_prm.Article.ArticlesFragment;
-import com.example.project_prm.DataManager.Entity.FirestoreSeeder;
-import com.example.project_prm.MainScreen.BookAppointmentActivity;
-import com.example.project_prm.DataManager.FirestoreSeeder;
 import com.example.project_prm.MainScreen.ChatbotActivity;
-import com.google.android.material.button.MaterialButton;
-import com.google.firebase.FirebaseApp;
 
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
@@ -39,11 +31,13 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
 
-        setContentView(R.layout.article_main);
-        // Gọi ArticlesFragment ngay khi mở app
-        loadFragment(new ArticlesFragment());
+//        setContentView(R.layout.article_main);
+//        // Gọi ArticlesFragment ngay khi mở app
+//        loadFragment(new ArticlesFragment());
 
-        // setContentView(R.layout.activity_main);
+
+
+         setContentView(R.layout.activity_main_1);
         // Hiển thị tên người dùng
 //        String username = prefs.getString("username", "Người dùng");
 //        TextView welcomeText = findViewById(R.id.tv_header);
@@ -53,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 //        MaterialButton btnDiseaseLibrary = findViewById(R.id.btn_disease_library);
 //        MaterialButton btnFindClinic = findViewById(R.id.btn_find_clinic);
 //        MaterialButton btnBookAppointment = findViewById(R.id.btn_book_appointment);
-        MaterialButton btnChatbot = findViewById(R.id.btn_chatbot);
+//        MaterialButton btnChatbot = findViewById(R.id.btn_chatbot);
 //        MaterialButton btnLogout = findViewById(R.id.btn_logout);
 //
 //        // Set click listeners for navigation
