@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.project_prm.R;
 
 import java.util.ArrayList;
@@ -76,15 +78,14 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.Trendi
         public void bind(Article article) {
             trendingTitle.setText(article.getTitle());
 
-            // Load image giả bằng tên resource nếu cần
-            int imageRes = context.getResources().getIdentifier(
-                    article.getImageUrl(), "drawable", context.getPackageName());
-            if (imageRes != 0) {
-                trendingImage.setImageResource(imageRes);
-            } else {
-                trendingImage.setImageResource(R.drawable.ic_facebook);
-            }
+            // Load ảnh từ URL bằng Glide
+            Glide.with(context)
+                    .load(article.getImageUrl()) // ← dùng link ảnh
+                    .placeholder(R.drawable.loading) // ảnh tạm trong lúc loading
+                    .error(R.drawable.loading)       // ảnh khi lỗi
+                    .into(trendingImage);
         }
+
     }
 }
 

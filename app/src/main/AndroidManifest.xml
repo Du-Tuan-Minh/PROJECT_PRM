@@ -79,6 +79,9 @@
         <activity android:name=".MainScreen.NotificationActivity" />
         <activity android:name=".AllUtilitiesActivity" />
 
+        <activity android:name=".Article.ArticlesActivity" />
+
+
     </application>
 
 </manifest>

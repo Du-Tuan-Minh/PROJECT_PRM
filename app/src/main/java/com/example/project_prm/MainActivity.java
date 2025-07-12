@@ -22,11 +22,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
+import com.example.project_prm.Article.ArticlesActivity;
+import com.example.project_prm.Article.ArticlesFragment;
 import com.example.project_prm.MainScreen.ChatbotActivity;
 
 import com.example.project_prm.MainScreen.DiseaseLibraryActivity;
 import com.example.project_prm.MainScreen.FindClinicActivity;
 import com.example.project_prm.MainScreen.HomeFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.FirebaseApp;
 import com.google.android.material.tabs.TabLayout;
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
 
 //        FirebaseApp.initializeApp(this);
 //        FirestoreSeeder.seedAll();
@@ -62,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 //        // Gọi ArticlesFragment ngay khi mở app
 //        loadFragment(new ArticlesFragment());
 
-        setContentView(R.layout.activity_main);
+
 
         // Hiển thị tên người dùng
 //        String username = prefs.getString("username", "Người dùng");
@@ -106,12 +111,41 @@ public class MainActivity extends AppCompatActivity {
 //        });
         
         // Load HomeFragment as the default fragment
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.nav_home) {
+                // Load HomeFragment trong fragmentContainer
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, new HomeFragment())
+                        .commit();
+                return true;
+
+            } else if (id == R.id.nav_articles) {
+                // 👉 Mở màn ArticlesActivity
+                Intent intent = new Intent(MainActivity.this, ArticlesActivity.class);
+                startActivity(intent);
+                return false; // Không chọn tab này vì là màn riêng
+            }
+
+
+            return true;
+        });
+
+
+        // ✅ Chỉ chạy khi Activity mới khởi tạo (không phải quay lại)
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, new HomeFragment())
-                .commit();
+                    .replace(R.id.fragmentContainer, new HomeFragment())
+                    .commit();
+
+            // ✅ Đảm bảo tab "Home" được chọn trên thanh điều hướng
+            bottomNavigationView.setSelectedItemId(R.id.nav_home);
         }
-        
+
         // UI logic đã được chuyển sang HomeFragment
         // ImageView ivNotification = findViewById(R.id.ivNotification);
         // ivNotification.setOnClickListener(v -> {
@@ -165,15 +199,5 @@ public class MainActivity extends AppCompatActivity {
         //     startActivity(new android.content.Intent(MainActivity.this, AllUtilitiesActivity.class));
         // });
     }
-
-
-    public void loadFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)  // Thay thế fragment hiện tại
-                .addToBackStack(null)                         // Thêm vào back stack để quay lại được
-                .commit();                                    // Thực hiện transaction
-    }
-
 
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,6 +56,11 @@ public class ArticlesFragment extends Fragment {
         seeAllTrending = view.findViewById(R.id.see_all_trending);
         seeAllArticles = view.findViewById(R.id.see_all_articles);
 
+        ImageView iconBack = view.findViewById(R.id.icon_back);
+        if (iconBack != null) {
+            iconBack.setOnClickListener(v -> requireActivity().finish());
+        }
+
         // Sample Data
         allArticles = FakeArticleData.getSampleArticles();
 
@@ -76,8 +82,13 @@ public class ArticlesFragment extends Fragment {
         trendingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         trendingAdapter = new TrendingAdapter(getContext(), article -> {
             // KHÔNG xử lý click chuyển trang
-             ArticleDetailFragment fragment = ArticleDetailFragment.newInstance(article.getId());
-             ((MainActivity) getActivity()).loadFragment(fragment);
+            ArticleDetailFragment fragment = ArticleDetailFragment.newInstance(article.getId());
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container_article, fragment)
+                    .addToBackStack(null)
+                    .commit();
+
         });
         trendingRecyclerView.setAdapter(trendingAdapter);
 
@@ -85,8 +96,12 @@ public class ArticlesFragment extends Fragment {
         articlesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         articleAdapter = new ArticleAdapter(getContext(), article -> {
             // KHÔNG xử lý click chuyển trang
-             ArticleDetailFragment fragment = ArticleDetailFragment.newInstance(article.getId());
-             ((MainActivity) getActivity()).loadFragment(fragment);
+            ArticleDetailFragment fragment = ArticleDetailFragment.newInstance(article.getId());
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container_article, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
         articlesRecyclerView.setAdapter(articleAdapter);
     }

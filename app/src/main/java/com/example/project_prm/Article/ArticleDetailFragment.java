@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.project_prm.R;
 
 public class ArticleDetailFragment extends Fragment {
@@ -62,9 +63,11 @@ public class ArticleDetailFragment extends Fragment {
             contentView.setText(article.getContent());
             categoryView.setText(article.getCategory());
 
-            int resId = getResources().getIdentifier(
-                    article.getImageUrl(), "drawable", requireContext().getPackageName());
-            imageView.setImageResource(resId != 0 ? resId : R.drawable.ic_facebook);
+            Glide.with(this)
+                    .load(article.getImageUrl())  // ← Load từ link
+                    .placeholder(R.drawable.ic_facebook) // ảnh tạm trong lúc loading
+                    .error(R.drawable.ic_facebook)       // ảnh nếu load lỗi
+                    .into(imageView);
         }
 
         // Xử lý quay lại Fragment trước

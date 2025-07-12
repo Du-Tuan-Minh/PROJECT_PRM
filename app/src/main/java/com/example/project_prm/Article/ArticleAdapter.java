@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.project_prm.R;
 
 import java.util.ArrayList;
@@ -82,12 +83,17 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
             articleDate.setText(article.getDate());
             articleCategory.setText(article.getCategory());
 
-            // Load image
-            articleImage.setImageResource(R.drawable.ic_facebook);
+            // Load ảnh từ URL bằng Glide
+            Glide.with(context)
+                    .load(article.getImageUrl()) // ← Đường dẫn URL
+                    .placeholder(R.drawable.loading) // Ảnh tạm khi loading
+                    .error(R.drawable.loading)       // Ảnh fallback nếu lỗi
+                    .into(articleImage);
 
-            // Set category background color based on category
+            // Gán màu nền cho category
             setCategoryBackground(article.getCategory());
         }
+
 
         private void setCategoryBackground(String category) {
             int colorResId;
