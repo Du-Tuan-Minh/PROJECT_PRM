@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.project_prm.R;
-import com.example.project_prm.ui.DiseaseScreen.DiseaseSearchActivity;
+//import com.example.project_prm.ui.DiseaseScreen.DiseaseSearchActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

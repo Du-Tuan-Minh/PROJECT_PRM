@@ -10,10 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_prm.ui.AppointmentScreen.MyAppointmentActivity;
 import com.example.project_prm.ui.BookingScreen.AppointmentBookingActivity;
-import com.example.project_prm.ui.ChatBotScreen.ChatbotActivity;
-import com.example.project_prm.ui.DiseaseScreen.DiseaseLibraryActivity;
+//import com.example.project_prm.ui.ChatBotScreen.ChatbotActivity;
+//import com.example.project_prm.ui.DiseaseScreen.DiseaseLibraryActivity;
 import com.example.project_prm.ui.SearchScreen.ClinicSearchActivity;
-import com.example.project_prm.ui.auth.LoginActivity;
+//import com.example.project_prm.ui.auth.LoginActivity;
 import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity {
