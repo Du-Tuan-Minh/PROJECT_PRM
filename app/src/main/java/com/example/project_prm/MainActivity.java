@@ -6,9 +6,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.project_prm.DataManager.Entity.FirestoreSeeder;
-import com.example.project_prm.ui.appointment.MyAppointmentDetailActivity;
-import com.example.project_prm.ui.auth.SignInActivity;
+import com.example.project_prm.DataManager.FirestoreSeeder;
+import com.example.project_prm.MainScreen.ChatbotActivity;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 //            return;
 //        }
 
+        setContentView(R.layout.activity_main);
         // Hiển thị tên người dùng
 //        String username = prefs.getString("username", "Người dùng");
 //        TextView welcomeText = findViewById(R.id.tv_header);
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 //        MaterialButton btnDiseaseLibrary = findViewById(R.id.btn_disease_library);
 //        MaterialButton btnFindClinic = findViewById(R.id.btn_find_clinic);
 //        MaterialButton btnBookAppointment = findViewById(R.id.btn_book_appointment);
-//        MaterialButton btnChatbot = findViewById(R.id.btn_chatbot);
+        MaterialButton btnChatbot = findViewById(R.id.btn_chatbot);
 //        MaterialButton btnLogout = findViewById(R.id.btn_logout);
 //
 //        // Set click listeners for navigation
@@ -59,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
 //            startActivity(intent);
 //        });
 //
-//        btnChatbot.setOnClickListener(v -> {
-//            Intent intent = new Intent(MainActivity.this, ChatbotActivity.class);
-//            startActivity(intent);
-//        });
+        btnChatbot.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ChatbotActivity.class);
+            startActivity(intent);
+        });
 //
 //        btnLogout.setOnClickListener(v -> {
 //            SharedPreferences.Editor editor = prefs.edit();

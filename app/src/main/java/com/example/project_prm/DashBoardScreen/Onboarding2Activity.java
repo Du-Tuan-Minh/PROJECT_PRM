@@ -1,6 +1,7 @@
 package com.example.project_prm.DashBoardScreen;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 
 public class Onboarding2Activity extends AppCompatActivity {
@@ -42,7 +44,11 @@ public class Onboarding2Activity extends AppCompatActivity {
             if (currentIndex < images.length) {
                 updateContent();
             } else {
-                startActivity(new Intent(Onboarding2Activity.this, Onboarding3Activity.class));
+                SharedPreferences.Editor editor = getSharedPreferences("my_prefs", MODE_PRIVATE).edit();
+                editor.putBoolean("is_first_time", false);
+                editor.apply();
+
+                startActivity(new Intent(Onboarding2Activity.this, MainActivity.class));
                 finish();
             }
         });

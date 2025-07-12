@@ -1,100 +1,34 @@
 package com.example.project_prm.DataManager.Entity;
 
-import com.example.project_prm.DataManager.DatabaseHelper;
+import com.google.firebase.firestore.FieldValue;
 
-import org.json.JSONArray;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.util.Date;
 
 public class User {
-    private int id;
-    private String name;
-    private int gender;
-    private String dateOfBirth;
-    private JSONArray symptomHistory;
-    private String email; // Thêm username
-    private String password; // Thêm password
-    private int role; // Thêm role
+    public long id;
+    public String username, password, email, phone;
+    public Object created_at;
 
-    public User() {
-        this.symptomHistory = new JSONArray();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public User(long id, String username, String password, String email, String phone) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public JSONArray getSymptomHistory() {
-        return symptomHistory;
-    }
-
-    public void setSymptomHistory(JSONArray symptomHistory) {
-        this.symptomHistory = symptomHistory;
-    }
-
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-
-        this.password = DatabaseHelper.hashPassword(password);
-    }
-
-    public int getGender() {
-        return gender;
-    }
-
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
-
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+        this.username = username;
+        this.password = password;
         this.email = email;
+        this.phone = phone;
+        this.created_at = com.google.firebase.firestore.FieldValue.serverTimestamp();
     }
 
-    public int getRole() {
-        return role;
-    }
-
-    public void setRole(int role) {
-        this.role = role;
-    }
-
-    public enum GenderEnum {
-        Male,
-        Female,
-        Other;
-    }
-
-    public enum RoleEnum {
-        Patient,
-        Clinic;
+    public java.util.Map<String, Object> toMap() {
+        java.util.Map<String, Object> data = new java.util.HashMap<>();
+        data.put("id", id);
+        data.put("username", username);
+        data.put("password", password);
+        data.put("email", email);
+        data.put("phone", phone);
+        data.put("created_at", created_at);
+        return data;
     }
 }

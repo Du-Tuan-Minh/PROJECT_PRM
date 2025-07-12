@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,9 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.project_prm.DataManager.DatabaseHelper;
-import com.example.project_prm.DataManager.DAO.UserDAO;
-import com.example.project_prm.DataManager.Entity.User;
 import com.example.project_prm.R;
 import com.example.project_prm.ui.dialog.StatusPopup;
 import com.example.project_prm.widgets.DropDownFieldView;
@@ -32,8 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     private DropDownFieldView registerGenderInput, registerRoleInput;
     private Button signUpButton;
     private TextView signInText;
-    private DatabaseHelper dbHelper;
-    private UserDAO userDAO;
+
 
     private void bindingView(){
         registerEmailInput = findViewById(R.id.registerEmailInput);
@@ -127,20 +122,9 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        int roleEnum = User.RoleEnum.valueOf(role).ordinal();
-        int genderEnum = User.GenderEnum.valueOf(gender).ordinal();
-
-        long result = userDAO.registerUser(roleEnum,name, dateOfBirth,
-                genderEnum, email, password);
-
-        if (result != -1) {
-            Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-            setClearFocus();
-            startActivity(new Intent(this, SignInActivity.class));
-        } else {
-            StatusPopup popup = new StatusPopup(this);
-            popup.setPrimaryClick(v -> popup.dismiss());
-            popup.setCancelClick(v -> popup.dismiss());
+        StatusPopup popup = new StatusPopup(this);
+        popup.setPrimaryClick(v -> popup.dismiss());
+        popup.setCancelClick(v -> popup.dismiss());
 
             // Success Example
             popup.setErrorPopup("\"Oops, Failed!", "Đăng ký thất bại, email có thể đã tồn tại","Oki");
@@ -172,8 +156,7 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        dbHelper = new DatabaseHelper(this);
-        userDAO = new UserDAO(dbHelper.getWritableDatabase());
+
         bindingView();
         bindingAction();
 
@@ -189,6 +172,6 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dbHelper.close();
+
     }
 }

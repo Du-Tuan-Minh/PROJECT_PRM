@@ -67,3 +67,124 @@ Danh sách câu hỏi/trả lời:
     - "Chữa viêm nha chu thế nào?" - Đi nha sĩ, cạo vôi răng, dùng nước súc miệng.
 30. Bệnh trĩ - "Trĩ có triệu chứng gì?" - Đau hậu môn, chảy máu khi đại tiện. Tránh táo bón.
     - "Xử lý bệnh trĩ thế nào?" - Ăn nhiều chất xơ, thuốc bôi, phẫu thuật nếu nặng.
+
+31. Thiếu máu
+
+"Thiếu máu có dấu hiệu gì?" – Mệt mỏi, chóng mặt, da nhợt nhạt. Kiểm tra huyết sắc tố.
+
+"Chữa thiếu máu thế nào?" – Bổ sung sắt, ăn thực phẩm giàu sắt, dùng thuốc theo bác sĩ.
+
+32. Rối loạn tiền đình
+
+"Rối loạn tiền đình có triệu chứng gì?" – Chóng mặt, buồn nôn, mất thăng bằng. Nghỉ ngơi và tránh quay đầu đột ngột.
+
+"Điều trị rối loạn tiền đình thế nào?" – Dùng thuốc chống chóng mặt, tập phục hồi chức năng tiền đình.
+
+33. Viêm đường tiết niệu
+
+"Viêm tiết niệu có triệu chứng gì?" – Tiểu buốt, tiểu rắt, đau bụng dưới. Uống nhiều nước.
+
+"Chữa viêm tiết niệu ra sao?" – Dùng kháng sinh theo đơn, giữ vệ sinh vùng kín.
+
+34. Đau thần kinh tọa
+
+"Đau thần kinh tọa có dấu hiệu gì?" – Đau lưng lan xuống chân, tê chân. Nghỉ ngơi và tránh vận động mạnh.
+
+"Xử lý đau thần kinh tọa thế nào?" – Dùng thuốc giảm đau, vật lý trị liệu.
+
+35. Rối loạn giấc ngủ
+
+"Rối loạn giấc ngủ có dấu hiệu gì?" – Khó ngủ, thức giấc nhiều lần, mệt mỏi ban ngày. Tránh caffeine.
+
+"Cải thiện giấc ngủ ra sao?" – Ngủ đúng giờ, tập thư giãn, dùng thuốc nếu cần.
+
+36. Viêm da cơ địa
+
+"Viêm da cơ địa có triệu chứng gì?" – Da khô, ngứa, nứt nẻ. Thường gặp ở trẻ em.
+
+"Điều trị viêm da cơ địa thế nào?" – Dưỡng ẩm, tránh dị nguyên, dùng thuốc bôi theo chỉ định.
+
+37. Rối loạn tiêu hóa
+
+"Rối loạn tiêu hóa có dấu hiệu gì?" – Đầy bụng, tiêu chảy hoặc táo bón. Tránh thức ăn dầu mỡ.
+
+"Xử lý rối loạn tiêu hóa ra sao?" – Ăn dễ tiêu, dùng men tiêu hóa nếu cần.
+
+38. Hạ đường huyết
+
+"Hạ đường huyết có triệu chứng gì?" – Run tay, vã mồ hôi, choáng váng. Uống nước ngọt ngay.
+
+"Phòng hạ đường huyết thế nào?" – Ăn đúng bữa, theo dõi đường huyết, dùng thuốc đúng liều.
+
+39. Tăng cholesterol máu
+
+"Tăng cholesterol có dấu hiệu gì?" – Thường không triệu chứng, phát hiện qua xét nghiệm.
+
+"Giảm cholesterol thế nào?" – Ăn ít chất béo xấu, tập thể dục, dùng thuốc nếu cần.
+
+40. Thiếu vitamin D
+
+"Thiếu vitamin D có dấu hiệu gì?" – Đau xương, yếu cơ, mệt mỏi.
+
+"Bổ sung vitamin D thế nào?" – Tắm nắng sáng sớm, dùng thực phẩm và thuốc bổ sung.
+
+41. Viêm lỗ chân lông
+
+"Viêm lỗ chân lông có triệu chứng gì?" – Nổi mụn nhỏ, đỏ, ngứa.
+
+"Chữa viêm lỗ chân lông ra sao?" – Tắm sạch, bôi thuốc kháng khuẩn.
+
+42. Mề đay
+
+"Mề đay có triệu chứng gì?" – Nổi mẩn đỏ, ngứa, sưng phù.
+
+"Xử lý mề đay thế nào?" – Tránh dị ứng, dùng thuốc kháng histamin.
+
+43. Tăng axit uric máu
+
+"Tăng axit uric có dấu hiệu gì?" – Có thể không rõ triệu chứng, dễ gây gout.
+
+"Kiểm soát axit uric thế nào?" – Ăn ít purin, uống đủ nước, dùng thuốc nếu bác sĩ kê.
+
+44. Loãng xương
+
+"Loãng xương có triệu chứng gì?" – Đau lưng, gù lưng, dễ gãy xương.
+
+"Phòng loãng xương thế nào?" – Bổ sung canxi, vitamin D, tập thể dục nhẹ.
+
+46. Viêm amidan
+
+"Viêm amidan có dấu hiệu gì?" – Đau họng, sốt, amidan sưng đỏ.
+
+"Chữa viêm amidan thế nào?" – Uống thuốc, súc miệng nước muối, phẫu thuật nếu tái phát nhiều.
+
+47. Nhiễm trùng da
+
+"Nhiễm trùng da có dấu hiệu gì?" – Da đỏ, nóng, sưng, có mủ.
+
+"Điều trị nhiễm trùng da thế nào?" – Dùng thuốc kháng sinh bôi hoặc uống theo bác sĩ.
+
+48. Hội chứng ruột kích thích (IBS)
+
+"IBS có triệu chứng gì?" – Đau bụng, tiêu chảy hoặc táo bón, đầy hơi.
+
+"Chữa IBS thế nào?" – Ăn uống khoa học, giảm căng thẳng, dùng thuốc điều hòa ruột.
+
+49. Đau nửa đầu (Migraine)
+
+"Migraine có dấu hiệu gì?" – Đau đầu một bên, buồn nôn, sợ ánh sáng.
+
+"Xử lý migraine thế nào?" – Nghỉ ngơi nơi yên tĩnh, dùng thuốc giảm đau đặc hiệu.
+
+50.Trào ngược dạ dày thực quản
+
+"Trào ngược dạ dày có triệu chứng gì?" – Ợ nóng, đau ngực, buồn nôn sau ăn.
+
+"Chữa trào ngược dạ dày thế nào?" – Tránh ăn no, tránh nằm sau ăn, dùng thuốc kháng acid.
+
+45. Nấm da
+
+"Nấm da có dấu hiệu gì?" – Ngứa, đỏ da, tróc vảy.
+
+"Điều trị nấm da thế nào?" – Dùng thuốc bôi kháng nấm, giữ vùng da khô thoáng.
+
