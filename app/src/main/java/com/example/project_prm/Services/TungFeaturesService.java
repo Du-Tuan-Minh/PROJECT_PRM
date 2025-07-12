@@ -10,6 +10,14 @@ import com.example.project_prm.DataManager.HistoryManager.AppointmentHistoryMana
 import com.example.project_prm.DataManager.SampleDataCreator;
 import com.example.project_prm.DataManager.UserSessionManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * TungFeaturesService - Service for Tung's appointment management features
+ * Chức năng 9: Quản lý lịch sử đặt lịch khám
+ * Provides appointment CRUD operations with user authorization
+ */
 public class TungFeaturesService {
 
     private static TungFeaturesService instance;
@@ -61,13 +69,23 @@ public class TungFeaturesService {
         return sessionManager.getCurrentUserId();
     }
 
-    // Interface for appointment detail
+    // ========== CALLBACK INTERFACES ==========
+
     public interface OnAppointmentDetailListener {
         void onSuccess(Appointment appointment);
         void onError(String error);
     }
 
-    // Get appointment details by ID
+    public interface OnStatsListener {
+        void onSuccess(String stats);
+        void onError(String error);
+    }
+
+    // ========== APPOINTMENT DETAIL METHODS ==========
+
+    /**
+     * Get appointment details by ID with user authorization
+     */
     public void getAppointmentDetails(int appointmentId, OnAppointmentDetailListener listener) {
         new Thread(() -> {
             try {
@@ -88,7 +106,11 @@ public class TungFeaturesService {
         }).start();
     }
 
-    // Get upcoming appointments for current user
+    // ========== APPOINTMENT HISTORY METHODS ==========
+
+    /**
+     * Get upcoming appointments for current user
+     */
     public void getUpcomingAppointments(AppointmentHistoryManager.OnHistoryListener listener) {
         historyManager.getUpcomingAppointments(getCurrentUserId(), listener);
     }
@@ -102,7 +124,9 @@ public class TungFeaturesService {
         historyManager.getUpcomingAppointments(userId, listener);
     }
 
-    // Get completed appointments for current user
+    /**
+     * Get completed appointments for current user
+     */
     public void getCompletedAppointments(AppointmentHistoryManager.OnHistoryListener listener) {
         historyManager.getCompletedAppointments(getCurrentUserId(), listener);
     }
@@ -115,7 +139,9 @@ public class TungFeaturesService {
         historyManager.getCompletedAppointments(userId, listener);
     }
 
-    // Get cancelled appointments for current user
+    /**
+     * Get cancelled appointments for current user
+     */
     public void getCancelledAppointments(AppointmentHistoryManager.OnHistoryListener listener) {
         historyManager.getCancelledAppointments(getCurrentUserId(), listener);
     }
@@ -128,7 +154,11 @@ public class TungFeaturesService {
         historyManager.getCancelledAppointments(userId, listener);
     }
 
-    // Cancel appointment with authorization check
+    // ========== APPOINTMENT ACTIONS ==========
+
+    /**
+     * Cancel appointment with authorization check
+     */
     public void cancelAppointment(int appointmentId, String reason, AppointmentHistoryManager.OnActionListener listener) {
         new Thread(() -> {
             try {
@@ -152,7 +182,9 @@ public class TungFeaturesService {
         }).start();
     }
 
-    // Reschedule appointment with authorization check
+    /**
+     * Reschedule appointment with authorization check
+     */
     public void rescheduleAppointment(int appointmentId, String newDate, String newTime, AppointmentHistoryManager.OnActionListener listener) {
         new Thread(() -> {
             try {
@@ -176,7 +208,9 @@ public class TungFeaturesService {
         }).start();
     }
 
-    // Add feedback for appointment with authorization check
+    /**
+     * Add feedback for appointment with authorization check
+     */
     public void addAppointmentFeedback(int appointmentId, int rating, String feedback, AppointmentHistoryManager.OnActionListener listener) {
         new Thread(() -> {
             try {
@@ -200,7 +234,9 @@ public class TungFeaturesService {
         }).start();
     }
 
-    // Get template for booking again with authorization check
+    /**
+     * Get template for booking again with authorization check
+     */
     public void getBookAgainTemplate(int originalAppointmentId, AppointmentHistoryManager.OnBookAgainListener listener) {
         new Thread(() -> {
             try {
@@ -224,7 +260,11 @@ public class TungFeaturesService {
         }).start();
     }
 
-    // Add new appointment for current user
+    // ========== APPOINTMENT MANAGEMENT ==========
+
+    /**
+     * Add new appointment for current user
+     */
     public void addAppointment(Appointment appointment, AppointmentHistoryManager.OnActionListener listener) {
         new Thread(() -> {
             try {
@@ -241,42 +281,37 @@ public class TungFeaturesService {
         }).start();
     }
 
-    // Get all appointments for current user
+    /**
+     * Get all appointments for current user
+     */
     public void getAllAppointments(AppointmentHistoryManager.OnHistoryListener listener) {
         new Thread(() -> {
             try {
                 // Get all appointments for current user from database
-                java.util.List<Appointment> allAppointments = appointmentDAO.getAppointmentsByUserId(getCurrentUserId());
+                List<Appointment> allAppointments = appointmentDAO.getAppointmentsByUserId(getCurrentUserId());
 
                 // Convert to AppointmentHistoryItem list
-                java.util.List<AppointmentHistoryManager.AppointmentHistoryItem> historyItems = new java.util.ArrayList<>();
+                List<AppointmentHistoryManager.AppointmentHistoryItem> historyItems = new ArrayList<>();
 
                 for (Appointment appointment : allAppointments) {
                     AppointmentHistoryManager.AppointmentHistoryItem item = new AppointmentHistoryManager.AppointmentHistoryItem();
-                    item.appointment = appointment;
 
-                    // Determine status
+                    // Map appointment data to history item
+                    item.appointmentId = appointment.getId();
+                    item.doctorName = appointment.getDoctor();
+                    item.specialty = getSpecialtyFromAppointmentType(appointment.getAppointmentType());
+                    item.clinicName = appointment.getClinic();
+                    item.appointmentDate = appointment.getDate();
+                    item.appointmentTime = appointment.getTime();
+                    item.fee = appointment.getAppointmentFee();
+                    item.packageType = appointment.getAppointmentType();
+
+                    // Set status as string
                     String status = appointment.getStatus();
                     if (status != null) {
-                        switch (status.toLowerCase()) {
-                            case "upcoming":
-                                item.status = com.example.project_prm.DataManager.Entity.AppointmentStatus.UPCOMING;
-                                break;
-                            case "completed":
-                                item.status = com.example.project_prm.DataManager.Entity.AppointmentStatus.COMPLETED;
-                                break;
-                            case "cancelled":
-                                item.status = com.example.project_prm.DataManager.Entity.AppointmentStatus.CANCELLED;
-                                break;
-                            case "pending":
-                                item.status = com.example.project_prm.DataManager.Entity.AppointmentStatus.PENDING;
-                                break;
-                            default:
-                                item.status = com.example.project_prm.DataManager.Entity.AppointmentStatus.PENDING;
-                                break;
-                        }
+                        item.status = status.toLowerCase();
                     } else {
-                        item.status = com.example.project_prm.DataManager.Entity.AppointmentStatus.PENDING;
+                        item.status = "pending";
                     }
 
                     historyItems.add(item);
@@ -289,7 +324,39 @@ public class TungFeaturesService {
         }).start();
     }
 
-    // Generate random appointments for testing
+    // ========== UTILITY METHODS ==========
+
+    /**
+     * Get specialty from appointment type since Appointment entity doesn't have specialty field
+     */
+    private String getSpecialtyFromAppointmentType(String appointmentType) {
+        if (appointmentType == null) {
+            return "Tổng quát";
+        }
+
+        switch (appointmentType.toLowerCase()) {
+            case "consultation":
+                return "Tư vấn";
+            case "checkup":
+                return "Khám tổng quát";
+            case "followup":
+                return "Tái khám";
+            case "messaging":
+                return "Tư vấn trực tuyến";
+            case "video call":
+                return "Tư vấn video";
+            case "voice call":
+                return "Tư vấn điện thoại";
+            default:
+                return "Tổng quát";
+        }
+    }
+
+    // ========== TESTING AND UTILITY METHODS ==========
+
+    /**
+     * Generate random appointments for testing
+     */
     public void generateRandomAppointments(int count) {
         new Thread(() -> {
             try {
@@ -302,7 +369,9 @@ public class TungFeaturesService {
         }).start();
     }
 
-    // Force refresh sample data (for testing)
+    /**
+     * Force refresh sample data (for testing)
+     */
     public void refreshSampleData() {
         new Thread(() -> {
             try {
@@ -315,7 +384,9 @@ public class TungFeaturesService {
         }).start();
     }
 
-    // Clear all data (for testing)
+    /**
+     * Clear all data (for testing)
+     */
     public void clearAllData() {
         new Thread(() -> {
             try {
@@ -327,12 +398,9 @@ public class TungFeaturesService {
         }).start();
     }
 
-    // Get current user info
-    public UserSessionManager getSessionManager() {
-        return sessionManager;
-    }
-
-    // Get database statistics
+    /**
+     * Get database statistics
+     */
     public void getDatabaseStats(OnStatsListener listener) {
         new Thread(() -> {
             try {
@@ -354,14 +422,24 @@ public class TungFeaturesService {
         }).start();
     }
 
-    public interface OnStatsListener {
-        void onSuccess(String stats);
-        void onError(String error);
+    // ========== GETTERS ==========
+
+    /**
+     * Get current user session manager
+     */
+    public UserSessionManager getSessionManager() {
+        return sessionManager;
     }
 
+    /**
+     * Close service and free resources
+     */
     public void close() {
         if (dbHelper != null) {
             dbHelper.close();
+        }
+        if (historyManager != null) {
+            historyManager.close();
         }
     }
 }

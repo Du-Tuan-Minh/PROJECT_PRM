@@ -232,7 +232,8 @@ public class HealthcareService {
             try {
                 // Get appointment from database
                 // For now, we'll create a placeholder implementation
-                listener.onError("Not implemented yet");
+                // You can integrate with your existing DAO here
+                listener.onError("Not implemented yet - integrate with DAO");
             } catch (Exception e) {
                 listener.onError(e.getMessage());
             }

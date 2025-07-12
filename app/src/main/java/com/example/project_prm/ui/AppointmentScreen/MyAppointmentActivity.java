@@ -2,15 +2,20 @@ package com.example.project_prm.ui.AppointmentScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.project_prm.R;
-//import com.example.project_prm.ui.DiseaseScreen.DiseaseSearchActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+/**
+ * Activity chính cho quản lý lịch hẹn
+ * Chức năng 9: Xem lịch sử đặt lịch khám
+ * Có 3 tabs: Upcoming, Completed, Cancelled
+ */
 public class MyAppointmentActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
@@ -33,13 +38,19 @@ public class MyAppointmentActivity extends AppCompatActivity {
 
         // Setup toolbar
         findViewById(R.id.btn_search).setOnClickListener(v -> {
-            // Open search - assuming you have DiseaseSearchActivity
-            Intent intent = new Intent(this, DiseaseSearchActivity.class);
-            startActivity(intent);
+            // Open disease search activity
+            try {
+                Intent intent = new Intent();
+                intent.setClassName(this, "com.example.project_prm.ui.SearchScreen.DiseaseSearchActivity");
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(this, "Chức năng tìm kiếm đang được phát triển", Toast.LENGTH_SHORT).show();
+            }
         });
 
         findViewById(R.id.btn_notifications).setOnClickListener(v -> {
-            // TODO: Show notifications
+            // Show notifications
+            Toast.makeText(this, "Thông báo đang được phát triển", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -52,13 +63,13 @@ public class MyAppointmentActivity extends AppCompatActivity {
                 (tab, position) -> {
                     switch (position) {
                         case 0:
-                            tab.setText("Upcoming");
+                            tab.setText("Sắp tới");
                             break;
                         case 1:
-                            tab.setText("Completed");
+                            tab.setText("Hoàn thành");
                             break;
                         case 2:
-                            tab.setText("Cancelled");
+                            tab.setText("Đã hủy");
                             break;
                     }
                 }).attach();
@@ -70,15 +81,28 @@ public class MyAppointmentActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.nav_history).setOnClickListener(v -> {
-            // TODO: Navigate to history
+            // Navigate to history
+            Toast.makeText(this, "Lịch sử đang được phát triển", Toast.LENGTH_SHORT).show();
         });
 
         findViewById(R.id.nav_articles).setOnClickListener(v -> {
-            // TODO: Navigate to articles
+            // Navigate to articles
+            Toast.makeText(this, "Bài viết đang được phát triển", Toast.LENGTH_SHORT).show();
         });
 
         findViewById(R.id.nav_profile).setOnClickListener(v -> {
-            // TODO: Navigate to profile
+            // Navigate to profile
+            Toast.makeText(this, "Hồ sơ đang được phát triển", Toast.LENGTH_SHORT).show();
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh data when returning to this activity
+        if (pagerAdapter != null) {
+            // Notify adapter to refresh data
+            pagerAdapter.notifyDataSetChanged();
+        }
     }
 }

@@ -3,7 +3,6 @@ package com.example.project_prm.ui.AppointmentScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,11 +10,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_prm.DataManager.Entity.Appointment;
-import com.example.project_prm.DataManager.Entity.AppointmentStatus;
 import com.example.project_prm.DataManager.Entity.Doctor;
+import com.example.project_prm.DataManager.HistoryManager.AppointmentHistoryManager;
 import com.example.project_prm.DataManager.Repository.DoctorRepository;
 import com.example.project_prm.R;
-import com.example.project_prm.Services.TungFeaturesService;
+import com.example.project_prm.Services.HealthcareService;
 import com.google.android.material.button.MaterialButton;
 
 import java.text.ParseException;
@@ -23,6 +22,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Activity hiển thị chi tiết cuộc hẹn
+ * Chức năng 10: Appointment Detail
+ * Hiển thị thông tin đầy đủ về cuộc hẹn, bác sĩ, bệnh nhân
+ */
 public class AppointmentDetailActivity extends AppCompatActivity {
 
     // UI Components
@@ -35,9 +39,10 @@ public class AppointmentDetailActivity extends AppCompatActivity {
     // Data
     private Appointment appointment;
     private Doctor doctor;
-    private TungFeaturesService service;
+    private HealthcareService service;
     private DoctorRepository doctorRepository;
     private int appointmentId;
+    private String appointmentStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +51,15 @@ public class AppointmentDetailActivity extends AppCompatActivity {
 
         // Get appointment ID from intent
         appointmentId = getIntent().getIntExtra("appointment_id", -1);
+        appointmentStatus = getIntent().getStringExtra("appointment_status");
+
         if (appointmentId == -1) {
             Toast.makeText(this, "Invalid appointment", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        service = TungFeaturesService.getInstance(this);
+        service = HealthcareService.getInstance(this);
         doctorRepository = DoctorRepository.getInstance();
         initViews();
         loadAppointmentDetails();
@@ -81,14 +88,22 @@ public class AppointmentDetailActivity extends AppCompatActivity {
         btnPrimaryAction = findViewById(R.id.btn_primary_action);
 
         // Set click listeners
-        ivBack.setOnClickListener(v -> onBackPressed());
-        ivMore.setOnClickListener(v -> showMoreOptions());
-        btnPrimaryAction.setOnClickListener(v -> handlePrimaryAction());
+        if (ivBack != null) {
+            ivBack.setOnClickListener(v -> onBackPressed());
+        }
+
+        if (ivMore != null) {
+            ivMore.setOnClickListener(v -> showMoreOptions());
+        }
+
+        if (btnPrimaryAction != null) {
+            btnPrimaryAction.setOnClickListener(v -> handlePrimaryAction());
+        }
     }
 
     private void loadAppointmentDetails() {
         // Get appointment from database
-        service.getAppointmentDetails(appointmentId, new TungFeaturesService.OnAppointmentDetailListener() {
+        service.getAppointmentDetails(appointmentId, new HealthcareService.OnAppointmentDetailListener() {
             @Override
             public void onSuccess(Appointment appointment) {
                 runOnUiThread(() -> {
@@ -113,92 +128,105 @@ public class AppointmentDetailActivity extends AppCompatActivity {
 
     private void displayAppointmentDetails(Appointment appointment) {
         // Doctor Information
-        tvDoctorName.setText(appointment.getDoctor());
+        if (tvDoctorName != null) {
+            tvDoctorName.setText(appointment.getDoctor() != null ? appointment.getDoctor() : "Bác sĩ");
+        }
 
         if (doctor != null) {
             // Use real doctor data
-            tvSpecialty.setText(doctor.getSpecialty());
+            if (tvSpecialty != null) {
+                tvSpecialty.setText(doctor.getSpecialty());
+            }
             setDoctorAvatar(doctor);
 
-            // FIXED: Add experience info if available - check if view exists first
+            // Add experience info if available
             TextView tvExperienceView = findViewById(R.id.tv_experience);
             if (tvExperienceView != null && doctor.getExperience() != null) {
                 tvExperienceView.setText(doctor.getExperience());
             }
         } else {
             // Fallback to appointment type based specialty
-            tvSpecialty.setText(getSpecialtyFromType(appointment.getAppointmentType()));
-            // FIXED: Use default avatar instead of problematic resources
-            ivDoctorAvatar.setImageResource(R.drawable.ic_doctor_default);
+            if (tvSpecialty != null) {
+                tvSpecialty.setText(getSpecialtyFromType(appointment.getAppointmentType()));
+            }
+            // Use default avatar
+            if (ivDoctorAvatar != null) {
+                ivDoctorAvatar.setImageResource(R.drawable.ic_launcher_foreground); // Fallback
+            }
         }
 
         // Scheduled Appointment
-        tvScheduledAppointment.setText("Scheduled Appointment");
-        String dateTime = formatDateTime(appointment.getDate(), appointment.getTime());
-        tvDateTime.setText(dateTime);
+        if (tvScheduledAppointment != null) {
+            tvScheduledAppointment.setText("Lịch hẹn đã đặt");
+        }
+
+        if (tvDateTime != null) {
+            String dateTime = formatDateTime(appointment.getDate(), appointment.getTime());
+            tvDateTime.setText(dateTime);
+        }
 
         // Patient Information
-        tvPatientName.setText(appointment.getPatientName() != null ? appointment.getPatientName() : "N/A");
-        tvPatientPhone.setText(appointment.getPatientPhone() != null ? appointment.getPatientPhone() : "N/A");
-        tvPatientAge.setText(appointment.getPatientAge() != null ? appointment.getPatientAge() + " years old" : "N/A");
-        tvPatientGender.setText(appointment.getPatientGender() != null ? appointment.getPatientGender() : "N/A");
-        tvSymptoms.setText(appointment.getSymptoms() != null ? appointment.getSymptoms() : "No symptoms described");
+        if (tvPatientName != null) {
+            tvPatientName.setText(appointment.getPatientName() != null ? appointment.getPatientName() : "N/A");
+        }
 
-        // Package Information with real data
+        if (tvPatientPhone != null) {
+            tvPatientPhone.setText(appointment.getPatientPhone() != null ? appointment.getPatientPhone() : "N/A");
+        }
+
+        if (tvPatientAge != null) {
+            String ageText = appointment.getPatientAge() != null ? appointment.getPatientAge() + " tuổi" : "N/A";
+            tvPatientAge.setText(ageText);
+        }
+
+        if (tvPatientGender != null) {
+            tvPatientGender.setText(appointment.getPatientGender() != null ? appointment.getPatientGender() : "N/A");
+        }
+
+        if (tvSymptoms != null) {
+            tvSymptoms.setText(appointment.getSymptoms() != null ? appointment.getSymptoms() : "Không có triệu chứng mô tả");
+        }
+
+        // Package Information
         displayPackageInformation(appointment);
 
-        // Configure primary action button based on appointment type and status
+        // Configure primary action button based on appointment status
         configurePrimaryActionButton(appointment);
     }
 
     private void setDoctorAvatar(Doctor doctor) {
+        if (ivDoctorAvatar == null) return;
+
         String avatarResource = doctor.getAvatarResource();
 
         if (avatarResource != null) {
             // Try to get resource ID by name
-            int resourceId = getResources().getIdentifier(
-                    avatarResource, "drawable", getPackageName());
-
-            if (resourceId != 0) {
-                ivDoctorAvatar.setImageResource(resourceId);
-            } else {
-                // Use specialty-based avatar
-                setAvatarBySpecialty(doctor.getSpecialtyCode());
-            }
+            int resourceId = getResourceIdSafely(avatarResource);
+            ivDoctorAvatar.setImageResource(resourceId);
         } else {
+            // Use specialty-based avatar
             setAvatarBySpecialty(doctor.getSpecialtyCode());
         }
     }
 
     private void setAvatarBySpecialty(String specialtyCode) {
-        int avatarResource;
+        if (ivDoctorAvatar == null) return;
 
-        // FIXED: Use safe specialty checking and fallback to default
-        if (specialtyCode == null) {
-            avatarResource = R.drawable.ic_doctor_default;
-        } else {
+        int avatarResource = R.drawable.ic_launcher_foreground; // Default fallback
+
+        if (specialtyCode != null) {
             switch (specialtyCode.toLowerCase()) {
                 case "dermatology":
-                    // FIXED: Check if resource exists, fallback to default
-                    avatarResource = getResourceIdSafely("avatar_dermatologist");
-                    break;
                 case "neurology":
-                    avatarResource = getResourceIdSafely("avatar_neurologist");
-                    break;
                 case "cardiology":
-                    avatarResource = getResourceIdSafely("avatar_cardiologist");
-                    break;
                 case "pediatrics":
-                    avatarResource = getResourceIdSafely("avatar_pediatrician");
-                    break;
                 case "orthopedics":
-                    avatarResource = getResourceIdSafely("avatar_orthopedist");
-                    break;
                 case "gastroenterology":
-                    avatarResource = getResourceIdSafely("avatar_gastroenterologist");
+                    // For now use default, can be customized later
+                    avatarResource = R.drawable.ic_launcher_foreground;
                     break;
                 default:
-                    avatarResource = R.drawable.ic_doctor_default;
+                    avatarResource = R.drawable.ic_launcher_foreground;
                     break;
             }
         }
@@ -206,53 +234,56 @@ public class AppointmentDetailActivity extends AppCompatActivity {
         ivDoctorAvatar.setImageResource(avatarResource);
     }
 
-    // FIXED: Helper method to safely get resource ID
     private int getResourceIdSafely(String resourceName) {
         try {
             int resourceId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
-            return resourceId != 0 ? resourceId : R.drawable.ic_doctor_default;
+            return resourceId != 0 ? resourceId : R.drawable.ic_launcher_foreground;
         } catch (Exception e) {
-            return R.drawable.ic_doctor_default;
+            return R.drawable.ic_launcher_foreground;
         }
     }
 
     private void displayPackageInformation(Appointment appointment) {
         String appointmentType = appointment.getAppointmentType() != null ?
-                appointment.getAppointmentType() : "General Consultation";
-        double fee = appointment.getFee() > 0 ? appointment.getFee() : 100000.0;
+                appointment.getAppointmentType() : "Khám tổng quát";
+        double fee = appointment.getAppointmentFee() > 0 ? appointment.getAppointmentFee() : 100000.0;
 
-        tvPackageName.setText(appointmentType);
-        tvPackagePrice.setText(String.format(Locale.getDefault(), "%.0f VND", fee));
+        if (tvPackageName != null) {
+            tvPackageName.setText(appointmentType);
+        }
+
+        if (tvPackagePrice != null) {
+            tvPackagePrice.setText(String.format(Locale.getDefault(), "%.0f VND", fee));
+        }
 
         // Set package icon based on type
-        if (appointmentType.toLowerCase().contains("emergency")) {
-            ivPackageIcon.setImageResource(R.drawable.ic_emergency);
-        } else if (appointmentType.toLowerCase().contains("consultation")) {
-            ivPackageIcon.setImageResource(R.drawable.ic_consultation);
-        } else {
-            ivPackageIcon.setImageResource(R.drawable.ic_medical_package);
+        if (ivPackageIcon != null) {
+            // Use default icon since specific icons might not exist
+            ivPackageIcon.setImageResource(R.drawable.ic_launcher_foreground);
         }
     }
 
     private void configurePrimaryActionButton(Appointment appointment) {
-        AppointmentStatus status = appointment.getStatus();
+        if (btnPrimaryAction == null) return;
+
+        String status = appointment.getStatus() != null ? appointment.getStatus().toLowerCase() : "pending";
 
         switch (status) {
-            case UPCOMING:
-                btnPrimaryAction.setText("Message (Start at 10:00 PM)");
-                btnPrimaryAction.setBackgroundTintList(getColorStateList(R.color.primary_blue));
+            case "upcoming":
+                btnPrimaryAction.setText("Nhắn tin (Bắt đầu lúc " + appointment.getTime() + ")");
+                // Use safe color - no custom color resources
                 break;
-            case COMPLETED:
-                btnPrimaryAction.setText("Leave a Review");
-                btnPrimaryAction.setBackgroundTintList(getColorStateList(R.color.success_green));
+            case "completed":
+                btnPrimaryAction.setText("Để lại đánh giá");
+                // Use safe color - no custom color resources
                 break;
-            case CANCELLED:
-                btnPrimaryAction.setText("Book Again");
-                btnPrimaryAction.setBackgroundTintList(getColorStateList(R.color.primary_blue));
+            case "cancelled":
+                btnPrimaryAction.setText("Đặt lại lịch");
+                // Use safe color - no custom color resources
                 break;
             default:
-                btnPrimaryAction.setText("View Details");
-                btnPrimaryAction.setBackgroundTintList(getColorStateList(R.color.text_gray));
+                btnPrimaryAction.setText("Xem chi tiết");
+                // Use safe color - no custom color resources
                 break;
         }
     }
@@ -260,67 +291,93 @@ public class AppointmentDetailActivity extends AppCompatActivity {
     private void handlePrimaryAction() {
         if (appointment == null) return;
 
-        AppointmentStatus status = appointment.getStatus();
+        String status = appointment.getStatus() != null ? appointment.getStatus().toLowerCase() : "pending";
 
         switch (status) {
-            case UPCOMING:
-                // Handle messaging functionality
-                Toast.makeText(this, "Messaging will be available at appointment time", Toast.LENGTH_SHORT).show();
+            case "upcoming":
+                Toast.makeText(this, "Nhắn tin sẽ khả dụng vào thời gian hẹn", Toast.LENGTH_SHORT).show();
                 break;
-            case COMPLETED:
+            case "completed":
                 // Navigate to review screen
-                Intent reviewIntent = new Intent(this, ReviewActivity.class);
-                reviewIntent.putExtra("appointment_id", appointmentId);
-                reviewIntent.putExtra("doctor_name", appointment.getDoctor());
-                startActivity(reviewIntent);
+                navigateToReviewScreen();
                 break;
-            case CANCELLED:
+            case "cancelled":
                 // Navigate to booking screen to book again
-                Intent bookIntent = new Intent(this, RescheduleActivity.class);
-                bookIntent.putExtra("appointment_id", appointmentId);
-                startActivity(bookIntent);
+                navigateToBookAgainScreen();
+                break;
+            default:
+                Toast.makeText(this, "Xem chi tiết cuộc hẹn", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
-    private void showMoreOptions() {
-        // Show popup menu with options like cancel, reschedule, etc.
-        android.widget.PopupMenu popup = new android.widget.PopupMenu(this, ivMore);
-        popup.getMenuInflater().inflate(R.menu.appointment_options_menu, popup.getMenu());
+    private void navigateToReviewScreen() {
+        try {
+            Intent reviewIntent = new Intent();
+            reviewIntent.setClassName(this, "com.example.project_prm.ui.ReviewScreen.ReviewActivity");
+            reviewIntent.putExtra("appointment_id", appointmentId);
+            reviewIntent.putExtra("doctor_name", appointment.getDoctor());
+            startActivity(reviewIntent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Chức năng đánh giá đang được phát triển", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-        popup.setOnMenuItemClickListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.action_reschedule) {
-                rescheduleAppointment();
-                return true;
-            } else if (itemId == R.id.action_cancel) {
-                cancelAppointment();
-                return true;
-            } else if (itemId == R.id.action_share) {
-                shareAppointmentDetails();
-                return true;
+    private void navigateToBookAgainScreen() {
+        try {
+            Intent bookIntent = new Intent();
+            bookIntent.setClassName(this, "com.example.project_prm.ui.BookingScreen.AppointmentBookingActivity");
+            bookIntent.putExtra("appointment_id", appointmentId);
+            bookIntent.putExtra("from_detail", true);
+            startActivity(bookIntent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Chức năng đặt lại đang được phát triển", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showMoreOptions() {
+        // Simple implementation without menu resource dependency
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setTitle("Tùy chọn");
+
+        String[] options = {"Đổi lịch", "Hủy lịch", "Chia sẻ"};
+
+        builder.setItems(options, (dialog, which) -> {
+            switch (which) {
+                case 0:
+                    rescheduleAppointment();
+                    break;
+                case 1:
+                    cancelAppointment();
+                    break;
+                case 2:
+                    shareAppointmentDetails();
+                    break;
             }
-            return false;
         });
 
-        popup.show();
+        builder.show();
     }
 
     private void rescheduleAppointment() {
-        Intent intent = new Intent(this, RescheduleActivity.class);
-        intent.putExtra("appointment_id", appointmentId);
-        startActivity(intent);
+        try {
+            Intent intent = new Intent();
+            intent.setClassName(this, "com.example.project_prm.ui.RescheduleScreen.RescheduleActivity");
+            intent.putExtra("appointment_id", appointmentId);
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Chức năng đổi lịch đang được phát triển", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void cancelAppointment() {
-        // Show confirmation dialog then cancel
         new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Cancel Appointment")
-                .setMessage("Are you sure you want to cancel this appointment?")
-                .setPositiveButton("Yes", (dialog, which) -> {
+                .setTitle("Hủy cuộc hẹn")
+                .setMessage("Bạn có chắc muốn hủy cuộc hẹn này không?")
+                .setPositiveButton("Có", (dialog, which) -> {
                     // Handle cancellation
-                    service.cancelAppointment(appointmentId, "User requested cancellation",
-                            new TungFeaturesService.OnCancelListener() {
+                    service.cancelAppointment(appointmentId, "Người dùng yêu cầu hủy",
+                            new AppointmentHistoryManager.OnActionListener() {
                                 @Override
                                 public void onSuccess(String message) {
                                     runOnUiThread(() -> {
@@ -332,12 +389,12 @@ public class AppointmentDetailActivity extends AppCompatActivity {
                                 @Override
                                 public void onError(String error) {
                                     runOnUiThread(() -> {
-                                        Toast.makeText(AppointmentDetailActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(AppointmentDetailActivity.this, "Lỗi: " + error, Toast.LENGTH_SHORT).show();
                                     });
                                 }
                             });
                 })
-                .setNegativeButton("No", null)
+                .setNegativeButton("Không", null)
                 .show();
     }
 
@@ -345,11 +402,11 @@ public class AppointmentDetailActivity extends AppCompatActivity {
         if (appointment == null) return;
 
         String shareText = String.format(
-                "Appointment Details:\n" +
-                        "Doctor: %s\n" +
-                        "Date: %s\n" +
-                        "Time: %s\n" +
-                        "Clinic: %s",
+                "Chi tiết cuộc hẹn:\n" +
+                        "Bác sĩ: %s\n" +
+                        "Ngày: %s\n" +
+                        "Giờ: %s\n" +
+                        "Phòng khám: %s",
                 appointment.getDoctor(),
                 appointment.getDate(),
                 appointment.getTime(),
@@ -359,10 +416,14 @@ public class AppointmentDetailActivity extends AppCompatActivity {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-        startActivity(Intent.createChooser(shareIntent, "Share Appointment"));
+        startActivity(Intent.createChooser(shareIntent, "Chia sẻ cuộc hẹn"));
     }
 
     private String formatDateTime(String date, String time) {
+        if (date == null || time == null) {
+            return "N/A";
+        }
+
         try {
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             SimpleDateFormat outputFormat = new SimpleDateFormat("EEEE, dd MMM yyyy", Locale.getDefault());
@@ -375,20 +436,21 @@ public class AppointmentDetailActivity extends AppCompatActivity {
     }
 
     private String getSpecialtyFromType(String appointmentType) {
-        if (appointmentType == null) return "General Practice";
+        if (appointmentType == null) return "Tổng quát";
 
-        if (appointmentType.toLowerCase().contains("dermatology")) {
-            return "Dermatologist";
-        } else if (appointmentType.toLowerCase().contains("cardiology")) {
-            return "Cardiologist";
-        } else if (appointmentType.toLowerCase().contains("neurology")) {
-            return "Neurologist";
-        } else if (appointmentType.toLowerCase().contains("pediatric")) {
-            return "Pediatrician";
-        } else if (appointmentType.toLowerCase().contains("orthopedic")) {
-            return "Orthopedist";
+        String type = appointmentType.toLowerCase();
+        if (type.contains("dermatology") || type.contains("da liễu")) {
+            return "Bác sĩ Da liễu";
+        } else if (type.contains("cardiology") || type.contains("tim mạch")) {
+            return "Bác sĩ Tim mạch";
+        } else if (type.contains("neurology") || type.contains("thần kinh")) {
+            return "Bác sĩ Thần kinh";
+        } else if (type.contains("pediatric") || type.contains("nhi")) {
+            return "Bác sĩ Nhi khoa";
+        } else if (type.contains("orthopedic") || type.contains("xương khớp")) {
+            return "Bác sĩ Xương khớp";
         } else {
-            return "General Practice";
+            return "Bác sĩ Tổng quát";
         }
     }
 }

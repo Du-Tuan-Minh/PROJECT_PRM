@@ -18,6 +18,11 @@ import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity hiển thị chi tiết bệnh
+ * Chức năng 6: Search - Disease Detail
+ * Hiển thị triệu chứng, nguyên nhân, điều trị và bệnh liên quan
+ */
 public class DiseaseDetailActivity extends AppCompatActivity {
 
     private TextView tvDiseaseName, tvDiseaseSymptoms, tvDiseaseCauses, tvDiseaseTreatment;
@@ -63,16 +68,22 @@ public class DiseaseDetailActivity extends AppCompatActivity {
 
     private void setupClickListeners() {
         btnFindClinics.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ClinicSearchActivity.class);
-            intent.putExtra("disease_name", currentDisease != null ? currentDisease.getName() : "");
-            startActivity(intent);
+            try {
+                Intent intent = new Intent();
+                intent.setClassName(this, "com.example.project_prm.ui.SearchScreen.ClinicSearchActivity");
+                intent.putExtra("disease_name", currentDisease != null ? currentDisease.getName() : "");
+                intent.putExtra("search_specialty", getSpecialtyFromDisease(currentDisease));
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(this, "Chức năng tìm phòng khám đang được phát triển", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
     private void loadDiseaseDetails(int diseaseId, String diseaseName) {
         showProgressBar(true);
 
-        // Mock disease details
+        // Mock disease details - simulate async loading
         new android.os.Handler().postDelayed(() -> {
             currentDisease = mockGetDiseaseDetails(diseaseId, diseaseName);
             displayDiseaseDetails(currentDisease);
@@ -82,18 +93,32 @@ public class DiseaseDetailActivity extends AppCompatActivity {
     }
 
     private void displayDiseaseDetails(Disease disease) {
-        tvDiseaseName.setText(disease.getName());
-        tvDiseaseSymptoms.setText("Triệu chứng: " + disease.getSymptoms());
-        tvDiseaseCauses.setText("Nguyên nhân: " + disease.getCauses());
-        tvDiseaseTreatment.setText("Điều trị: " + disease.getTreatment());
+        if (tvDiseaseName != null) {
+            tvDiseaseName.setText(disease.getName());
+        }
+
+        if (tvDiseaseSymptoms != null) {
+            tvDiseaseSymptoms.setText("Triệu chứng: " + disease.getSymptoms());
+        }
+
+        if (tvDiseaseCauses != null) {
+            tvDiseaseCauses.setText("Nguyên nhân: " + disease.getCauses());
+        }
+
+        if (tvDiseaseTreatment != null) {
+            tvDiseaseTreatment.setText("Điều trị: " + disease.getTreatment());
+        }
     }
 
     private void loadRelatedDiseases(int diseaseId) {
         List<Disease> relatedDiseases = mockGetRelatedDiseases(diseaseId);
 
         relatedAdapter = new RelatedDiseaseAdapter(relatedDiseases, this::onRelatedDiseaseClick);
-        rvRelatedDiseases.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        rvRelatedDiseases.setAdapter(relatedAdapter);
+
+        if (rvRelatedDiseases != null) {
+            rvRelatedDiseases.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            rvRelatedDiseases.setAdapter(relatedAdapter);
+        }
     }
 
     private void onRelatedDiseaseClick(Disease disease) {
@@ -104,53 +129,139 @@ public class DiseaseDetailActivity extends AppCompatActivity {
     }
 
     private void showProgressBar(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (progressBar != null) {
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
     }
 
-    // Mock data methods
+    private String getSpecialtyFromDisease(Disease disease) {
+        if (disease == null) return "general";
+
+        String name = disease.getName().toLowerCase();
+        if (name.contains("da") || name.contains("skin")) {
+            return "dermatology";
+        } else if (name.contains("tim") || name.contains("heart")) {
+            return "cardiology";
+        } else if (name.contains("thần kinh") || name.contains("neuro")) {
+            return "neurology";
+        } else if (name.contains("nhi") || name.contains("trẻ em")) {
+            return "pediatrics";
+        } else {
+            return "general";
+        }
+    }
+
+    // FIXED: Mock data methods using setters instead of constructor
     private Disease mockGetDiseaseDetails(int diseaseId, String diseaseName) {
+        Disease disease = new Disease();
+
         switch (diseaseId) {
             case 1:
-                return new Disease(1, "Cảm cúm",
-                        "Sốt, đau đầu, ho, chảy nước mũi, đau cơ",
-                        "Virus cúm A, B hoặc C",
-                        "Nghỉ ngơi, uống nhiều nước, thuốc hạ sốt");
+                disease.setId(1);
+                disease.setName("Cảm cúm");
+                disease.setSymptoms("Sốt, đau đầu, ho, chảy nước mũi, đau cơ");
+                disease.setCauses("Virus cúm A, B hoặc C");
+                disease.setTreatment("Nghỉ ngơi, uống nhiều nước, thuốc hạ sốt");
+                break;
             case 2:
-                return new Disease(2, "Đau đầu",
-                        "Đau âm ỉ hoặc nhói ở vùng đầu, có thể kèm buồn nôn",
-                        "Căng thẳng, thiếu ngủ, tăng huyết áp",
-                        "Nghỉ ngơi, massage, thuốc giảm đau");
+                disease.setId(2);
+                disease.setName("Đau đầu");
+                disease.setSymptoms("Đau âm ỉ hoặc nhói ở vùng đầu, có thể kèm buồn nôn");
+                disease.setCauses("Căng thẳng, thiếu ngủ, tăng huyết áp");
+                disease.setTreatment("Nghỉ ngơi, massage, thuốc giảm đau");
+                break;
             case 3:
-                return new Disease(3, "Đau bụng",
-                        "Đau ở vùng bụng, có thể kèm buồn nôn, tiêu chảy",
-                        "Ăn uống không hợp lý, nhiễm khuẩn tiêu hóa",
-                        "Ăn nhẹ, uống nhiều nước, thuốc kháng sinh nếu cần");
+                disease.setId(3);
+                disease.setName("Đau bụng");
+                disease.setSymptoms("Đau ở vùng bụng, có thể kèm buồn nôn, tiêu chảy");
+                disease.setCauses("Ăn uống không hợp lý, nhiễm khuẩn tiêu hóa");
+                disease.setTreatment("Ăn nhẹ, uống nhiều nước, thuốc kháng sinh nếu cần");
+                break;
+            case 4:
+                disease.setId(4);
+                disease.setName("Viêm họng");
+                disease.setSymptoms("Đau rát cổ họng, khó nuốt");
+                disease.setCauses("Virus, vi khuẩn");
+                disease.setTreatment("Súc miệng nước muối, thuốc kháng sinh");
+                break;
+            case 5:
+                disease.setId(5);
+                disease.setName("Viêm xoang");
+                disease.setSymptoms("Đau đầu, nghẹt mũi, chảy nước mũi");
+                disease.setCauses("Nhiễm trùng xoang");
+                disease.setTreatment("Xịt mũi, thuốc kháng sinh");
+                break;
             default:
-                return new Disease(diseaseId, diseaseName != null ? diseaseName : "Unknown",
-                        "Triệu chứng chưa xác định",
-                        "Nguyên nhân chưa xác định",
-                        "Cần thăm khám để xác định");
+                disease.setId(diseaseId);
+                disease.setName(diseaseName != null ? diseaseName : "Bệnh không xác định");
+                disease.setSymptoms("Triệu chứng chưa xác định");
+                disease.setCauses("Nguyên nhân chưa xác định");
+                disease.setTreatment("Cần thăm khám để xác định phương pháp điều trị phù hợp");
+                break;
         }
+
+        return disease;
     }
 
     private List<Disease> mockGetRelatedDiseases(int diseaseId) {
         List<Disease> related = new ArrayList<>();
 
         if (diseaseId == 1) { // Cảm cúm
-            related.add(new Disease(4, "Viêm họng", "Đau rát cổ họng", "Virus, vi khuẩn"));
-            related.add(new Disease(5, "Viêm xoang", "Đau đầu, nghẹt mũi", "Nhiễm trùng xoang"));
+            Disease disease1 = new Disease();
+            disease1.setId(4);
+            disease1.setName("Viêm họng");
+            disease1.setSymptoms("Đau rát cổ họng");
+            disease1.setCauses("Virus, vi khuẩn");
+            disease1.setTreatment("Súc miệng nước muối");
+            related.add(disease1);
+
+            Disease disease2 = new Disease();
+            disease2.setId(5);
+            disease2.setName("Viêm xoang");
+            disease2.setSymptoms("Đau đầu, nghẹt mũi");
+            disease2.setCauses("Nhiễm trùng xoang");
+            disease2.setTreatment("Xịt mũi, thuốc kháng sinh");
+            related.add(disease2);
+
         } else if (diseaseId == 2) { // Đau đầu
-            related.add(new Disease(6, "Migraine", "Đau đầu dữ dội", "Rối loạn thần kinh"));
-            related.add(new Disease(7, "Căng thẳng", "Stress, lo âu", "Áp lực cuộc sống"));
+            Disease disease1 = new Disease();
+            disease1.setId(6);
+            disease1.setName("Migraine");
+            disease1.setSymptoms("Đau đầu dữ dội");
+            disease1.setCauses("Rối loạn thần kinh");
+            disease1.setTreatment("Thuốc chuyên biệt cho migraine");
+            related.add(disease1);
+
+            Disease disease2 = new Disease();
+            disease2.setId(7);
+            disease2.setName("Căng thẳng");
+            disease2.setSymptoms("Stress, lo âu");
+            disease2.setCauses("Áp lực cuộc sống");
+            disease2.setTreatment("Thư giãn, tập thể dục");
+            related.add(disease2);
+
         } else if (diseaseId == 3) { // Đau bụng
-            related.add(new Disease(8, "Viêm dạ dày", "Đau thượng vị", "H.pylori, stress"));
-            related.add(new Disease(9, "Rối loạn tiêu hóa", "Khó tiêu", "Chế độ ăn không tốt"));
+            Disease disease1 = new Disease();
+            disease1.setId(8);
+            disease1.setName("Viêm dạ dày");
+            disease1.setSymptoms("Đau thượng vị");
+            disease1.setCauses("H.pylori, stress");
+            disease1.setTreatment("Thuốc kháng acid");
+            related.add(disease1);
+
+            Disease disease2 = new Disease();
+            disease2.setId(9);
+            disease2.setName("Rối loạn tiêu hóa");
+            disease2.setSymptoms("Khó tiêu");
+            disease2.setCauses("Chế độ ăn không tốt");
+            disease2.setTreatment("Thay đổi chế độ ăn");
+            related.add(disease2);
         }
 
         return related;
     }
 
-    // Related disease adapter
+    // FIXED: Related disease adapter with proper ViewHolder
     private static class RelatedDiseaseAdapter extends RecyclerView.Adapter<RelatedDiseaseAdapter.ViewHolder> {
         private List<Disease> diseases;
         private OnDiseaseClickListener listener;
@@ -166,10 +277,19 @@ public class DiseaseDetailActivity extends AppCompatActivity {
 
         @Override
         public ViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
+            // Create a simple card view programmatically
             android.widget.LinearLayout layout = new android.widget.LinearLayout(parent.getContext());
             layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-            layout.setPadding(12, 12, 12, 12);
-            layout.setMinimumWidth(150);
+            layout.setPadding(16, 16, 16, 16);
+            layout.setMinimumWidth(200);
+
+            // Add background and elevation
+            try {
+                layout.setBackgroundResource(android.R.drawable.dialog_holo_light_frame);
+            } catch (Exception e) {
+                // Fallback if resource not available
+            }
+
             return new ViewHolder(layout);
         }
 
@@ -181,25 +301,42 @@ public class DiseaseDetailActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return diseases.size();
+            return diseases != null ? diseases.size() : 0;
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
             private android.widget.TextView tvName;
+            private android.widget.TextView tvSymptoms;
 
             public ViewHolder(android.view.View itemView) {
                 super(itemView);
                 android.widget.LinearLayout layout = (android.widget.LinearLayout) itemView;
 
+                // Disease name
                 tvName = new android.widget.TextView(itemView.getContext());
-                tvName.setTextSize(14);
+                tvName.setTextSize(16);
                 tvName.setTextColor(0xFF2196F3);
-                tvName.setPadding(8, 8, 8, 8);
+                tvName.setPadding(8, 8, 8, 4);
+                tvName.setTypeface(null, android.graphics.Typeface.BOLD);
                 layout.addView(tvName);
+
+                // Disease symptoms (brief)
+                tvSymptoms = new android.widget.TextView(itemView.getContext());
+                tvSymptoms.setTextSize(12);
+                tvSymptoms.setTextColor(0xFF666666);
+                tvSymptoms.setPadding(8, 0, 8, 8);
+                tvSymptoms.setMaxLines(2);
+                layout.addView(tvSymptoms);
             }
 
             public void bind(Disease disease, OnDiseaseClickListener listener) {
                 tvName.setText(disease.getName());
+
+                String symptoms = disease.getSymptoms();
+                if (symptoms != null && symptoms.length() > 50) {
+                    symptoms = symptoms.substring(0, 47) + "...";
+                }
+                tvSymptoms.setText(symptoms);
 
                 itemView.setOnClickListener(v -> {
                     if (listener != null) {

@@ -11,18 +11,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.project_prm.DataManager.HistoryManager.AppointmentHistoryManager;
 import com.example.project_prm.R;
-import com.example.project_prm.Services.TungFeaturesService;
-import com.example.project_prm.ui.dialog.StatusPopup;
+import com.example.project_prm.Services.HealthcareService;
 import com.google.android.material.button.MaterialButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Activity cho chức năng đổi lịch hẹn
+ * 3 bước: Chọn lý do -> Chọn ngày -> Chọn giờ
+ */
 public class RescheduleActivity extends AppCompatActivity {
 
     // UI Components
@@ -38,14 +41,14 @@ public class RescheduleActivity extends AppCompatActivity {
     private String selectedDate;
     private String selectedTime;
     private int currentStep = 1; // 1: Reason, 2: Date, 3: Time
-    private TungFeaturesService service;
+    private HealthcareService service;
 
     // Time slots
     private final String[] timeSlots = {
-            "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
-            "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM",
-            "04:00 PM", "04:30 PM", "05:00 PM", "05:30 PM", "06:00 PM", "06:30 PM",
-            "07:00 PM", "07:30 PM", "08:00 PM", "08:30 PM", "09:00 PM", "09:30 PM"
+            "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
+            "13:00", "13:30", "14:00", "14:30", "15:00", "15:30",
+            "16:00", "16:30", "17:00", "17:30", "18:00", "18:30",
+            "19:00", "19:30", "20:00", "20:30", "21:00", "21:30"
     };
 
     @Override
@@ -60,7 +63,7 @@ public class RescheduleActivity extends AppCompatActivity {
             return;
         }
 
-        service = TungFeaturesService.getInstance(this);
+        service = HealthcareService.getInstance(this);
         initViews();
         setupStep1(); // Start with reason selection
     }
@@ -81,7 +84,7 @@ public class RescheduleActivity extends AppCompatActivity {
 
     private void setupStep1() {
         currentStep = 1;
-        tvTitle.setText("Reschedule Appointment");
+        tvTitle.setText("Đổi lịch hẹn - Chọn lý do");
 
         // Show reason selection
         findViewById(R.id.step_1_layout).setVisibility(View.VISIBLE);
@@ -90,12 +93,12 @@ public class RescheduleActivity extends AppCompatActivity {
 
         btnNext.setVisibility(View.VISIBLE);
         btnSubmit.setVisibility(View.GONE);
-        btnNext.setText("Next");
+        btnNext.setText("Tiếp theo");
     }
 
     private void setupStep2() {
         currentStep = 2;
-        tvTitle.setText("Reschedule Appointment");
+        tvTitle.setText("Đổi lịch hẹn - Chọn ngày");
 
         // Show date selection
         findViewById(R.id.step_1_layout).setVisibility(View.GONE);
@@ -104,7 +107,7 @@ public class RescheduleActivity extends AppCompatActivity {
 
         btnNext.setVisibility(View.VISIBLE);
         btnSubmit.setVisibility(View.GONE);
-        btnNext.setText("Next");
+        btnNext.setText("Tiếp theo");
 
         // Setup calendar
         Calendar calendar = Calendar.getInstance();
@@ -121,7 +124,7 @@ public class RescheduleActivity extends AppCompatActivity {
 
     private void setupStep3() {
         currentStep = 3;
-        tvTitle.setText("Reschedule Appointment");
+        tvTitle.setText("Đổi lịch hẹn - Chọn giờ");
 
         // Show time selection
         findViewById(R.id.step_1_layout).setVisibility(View.GONE);
@@ -130,6 +133,7 @@ public class RescheduleActivity extends AppCompatActivity {
 
         btnNext.setVisibility(View.GONE);
         btnSubmit.setVisibility(View.VISIBLE);
+        btnSubmit.setText("Xác nhận đổi lịch");
 
         setupTimeSlots();
     }
@@ -155,7 +159,7 @@ public class RescheduleActivity extends AppCompatActivity {
 
             MaterialButton timeButton = new MaterialButton(this);
             timeButton.setText(timeSlots[i]);
-            timeButton.setTextAllCaps(false);
+            // FIXED: Remove setTextAllCaps method
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     0, 120, 1.0f
@@ -163,11 +167,15 @@ public class RescheduleActivity extends AppCompatActivity {
             params.setMargins(0, 0, 8, 0);
             timeButton.setLayoutParams(params);
 
-            // Style
+            // Style with safe colors
             timeButton.setStrokeWidth(2);
-            timeButton.setStrokeColor(getColorStateList(R.color.stroke_color));
-            timeButton.setBackgroundTintList(getColorStateList(R.color.white));
-            timeButton.setTextColor(getColor(R.color.text_black));
+            try {
+                timeButton.setStrokeColor(ContextCompat.getColorStateList(this, android.R.color.darker_gray));
+                timeButton.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.white));
+                timeButton.setTextColor(ContextCompat.getColor(this, android.R.color.black));
+            } catch (Exception e) {
+                // Ignore color setting if resources not available
+            }
             timeButton.setCornerRadius(12);
 
             final String time = timeSlots[i];
@@ -185,14 +193,22 @@ public class RescheduleActivity extends AppCompatActivity {
             LinearLayout row = (LinearLayout) timeSlotContainer.getChildAt(i);
             for (int j = 0; j < row.getChildCount(); j++) {
                 MaterialButton button = (MaterialButton) row.getChildAt(j);
-                button.setBackgroundTintList(getColorStateList(R.color.white));
-                button.setTextColor(getColor(R.color.text_black));
+                try {
+                    button.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.white));
+                    button.setTextColor(ContextCompat.getColor(this, android.R.color.black));
+                } catch (Exception e) {
+                    // Ignore color setting
+                }
             }
         }
 
         // Highlight selected button
-        selectedButton.setBackgroundTintList(getColorStateList(R.color.primary_blue));
-        selectedButton.setTextColor(getColor(R.color.white));
+        try {
+            selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.holo_blue_bright));
+            selectedButton.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+        } catch (Exception e) {
+            // Ignore color setting
+        }
         selectedTime = time;
     }
 
@@ -202,7 +218,7 @@ public class RescheduleActivity extends AppCompatActivity {
                 // Validate reason selection
                 int selectedReasonId = radioGroupReasons.getCheckedRadioButtonId();
                 if (selectedReasonId == -1) {
-                    Toast.makeText(this, "Please select a reason", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Vui lòng chọn lý do", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 RadioButton selectedRadio = findViewById(selectedReasonId);
@@ -213,7 +229,7 @@ public class RescheduleActivity extends AppCompatActivity {
             case 2:
                 // Validate date selection
                 if (selectedDate == null) {
-                    Toast.makeText(this, "Please select a date", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Vui lòng chọn ngày", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 setupStep3();
@@ -223,13 +239,13 @@ public class RescheduleActivity extends AppCompatActivity {
 
     private void handleSubmit() {
         if (selectedTime == null) {
-            Toast.makeText(this, "Please select a time slot", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vui lòng chọn khung giờ", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Show loading
         btnSubmit.setEnabled(false);
-        btnSubmit.setText("Rescheduling...");
+        btnSubmit.setText("Đang xử lý...");
 
         service.rescheduleAppointment(appointmentId, selectedDate, selectedTime, new AppointmentHistoryManager.OnActionListener() {
             @Override
@@ -243,29 +259,27 @@ public class RescheduleActivity extends AppCompatActivity {
             public void onError(String error) {
                 runOnUiThread(() -> {
                     btnSubmit.setEnabled(true);
-                    btnSubmit.setText("Submit");
-                    Toast.makeText(RescheduleActivity.this, "Failed to reschedule: " + error, Toast.LENGTH_LONG).show();
+                    btnSubmit.setText("Xác nhận đổi lịch");
+                    Toast.makeText(RescheduleActivity.this, "Lỗi khi đổi lịch: " + error, Toast.LENGTH_LONG).show();
                 });
             }
         });
     }
 
     private void showSuccessDialog() {
-        StatusPopup popup = new StatusPopup(this);
-        popup.setSuccessPopup(
-                "Rescheduling Success!",
-                "Appointment successfully changed. You will receive a notification and the doctor will contact you.",
-                "View Appointment"
-        );
-        popup.setPrimaryClick(v -> {
-            popup.dismiss();
-            // Navigate back to appointments
-            Intent intent = new Intent(this, MyAppointmentActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-        });
-        popup.show();
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Đổi lịch thành công!")
+                .setMessage("Cuộc hẹn đã được đổi thành công. Bạn sẽ nhận được thông báo và bác sĩ sẽ liên hệ với bạn.")
+                .setPositiveButton("Xem lịch hẹn", (dialog, which) -> {
+                    // Navigate back to appointments
+                    Intent intent = new Intent(this, MyAppointmentActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton("Đóng", (dialog, which) -> finish())
+                .setCancelable(false)
+                .show();
     }
 
     @Override
