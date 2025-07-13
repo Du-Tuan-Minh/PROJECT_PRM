@@ -32,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.project_prm.DataManager.Entity.Clinic;
 import com.example.project_prm.DataManager.Repository.ClinicRepository;
 import com.example.project_prm.R;
-import com.example.project_prm.ui.adapter.ClinicAdapter;
+import com.example.project_prm.ui.SearchScreen.ClinicSearchAdapter;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -54,7 +54,7 @@ public class ClinicSearchActivity extends AppCompatActivity {
     // UI Components
     private TextInputEditText etSearch;
     private AutoCompleteTextView actvSpecialty;
-    private MaterialButton btnSearch, btnToggleView, btnMyLocation;
+    private MaterialButton btnSearch, btnToggleView, btnMyLocation, btnDistanceFilter;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView tvEmptyState, tvLocationStatus;
@@ -66,7 +66,7 @@ public class ClinicSearchActivity extends AppCompatActivity {
     private boolean isMapView = false;
 
     // Data & Logic
-    private ClinicAdapter adapter;
+    private ClinicSearchAdapter adapter;
     private List<Clinic> clinicList;
     private List<Clinic> allClinics;
     private ClinicRepository clinicRepository;
@@ -80,6 +80,7 @@ public class ClinicSearchActivity extends AppCompatActivity {
     // Search params
     private String currentSearchQuery = "";
     private String currentSpecialty = "";
+    private double currentDistanceFilter = 0; // 0 = no filter, >0 = max distance in km
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +114,7 @@ public class ClinicSearchActivity extends AppCompatActivity {
         btnSearch = findViewById(R.id.btn_search);
         btnToggleView = findViewById(R.id.btn_toggle_view);
         btnMyLocation = findViewById(R.id.btn_my_location);
+        btnDistanceFilter = findViewById(R.id.btn_distance_filter);
         recyclerView = findViewById(R.id.recycler_view);
         progressBar = findViewById(R.id.progress_bar);
         tvEmptyState = findViewById(R.id.tv_empty_state);
@@ -127,9 +129,30 @@ public class ClinicSearchActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        adapter = new ClinicAdapter(clinicList, this::onClinicClick);
+        adapter = new ClinicSearchAdapter(clinicList, new ClinicSearchAdapter.OnClinicClickListener() {
+            @Override
+            public void onClinicClick(Clinic clinic) {
+                ClinicSearchActivity.this.onClinicClick(clinic);
+            }
+
+            @Override
+            public void onBookAppointmentClick(Clinic clinic) {
+                // Navigate to booking activity
+                Toast.makeText(ClinicSearchActivity.this, "Đặt lịch với " + clinic.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        
+        // Update adapter with user location
+        updateAdapterLocation();
+    }
+
+    private void updateAdapterLocation() {
+        if (adapter != null) {
+            adapter.setUserLocation(userLatitude, userLongitude, locationEnabled);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void setupMap() {
@@ -163,6 +186,34 @@ public class ClinicSearchActivity extends AppCompatActivity {
         btnToggleView.setOnClickListener(v -> toggleView());
 
         btnMyLocation.setOnClickListener(v -> moveToMyLocation());
+
+        btnDistanceFilter.setOnClickListener(v -> showDistanceFilterDialog());
+    }
+
+    // Method to set distance filter (can be called from UI)
+    public void setDistanceFilter(double maxDistanceKm) {
+        this.currentDistanceFilter = maxDistanceKm;
+        searchClinics(); // Re-search with new filter
+    }
+
+    // Method to clear distance filter
+    public void clearDistanceFilter() {
+        this.currentDistanceFilter = 0;
+        searchClinics(); // Re-search without distance filter
+    }
+
+    // Method to show distance filter dialog
+    public void showDistanceFilterDialog() {
+        String[] distances = {"Tất cả khoảng cách", "Dưới 2 km", "Dưới 5 km", "Dưới 10 km"};
+        double[] distanceValues = {0, 2, 5, 10};
+
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setTitle("Chọn khoảng cách");
+        builder.setItems(distances, (dialog, which) -> {
+            setDistanceFilter(distanceValues[which]);
+            Toast.makeText(this, "Đã chọn: " + distances[which], Toast.LENGTH_SHORT).show();
+        });
+        builder.show();
     }
 
     private void requestLocationPermission() {
@@ -239,15 +290,16 @@ public class ClinicSearchActivity extends AppCompatActivity {
     }
 
     private void updateLocationStatus() {
-        if (tvLocationStatus != null) {
-            if (locationEnabled) {
-                tvLocationStatus.setText("📍 Đang tìm gần vị trí của bạn");
-                tvLocationStatus.setTextColor(getColor(android.R.color.holo_green_dark));
-            } else {
-                tvLocationStatus.setText("📍 Sử dụng vị trí mặc định (Hà Nội)");
-                tvLocationStatus.setTextColor(getColor(android.R.color.holo_orange_dark));
-            }
+        if (locationEnabled) {
+            tvLocationStatus.setText(String.format("📍 Vị trí: %.4f, %.4f", userLatitude, userLongitude));
+            tvLocationStatus.setTextColor(getColor(android.R.color.holo_green_dark));
+        } else {
+            tvLocationStatus.setText("📍 Đang tìm vị trí của bạn...");
+            tvLocationStatus.setTextColor(getColor(android.R.color.holo_orange_dark));
         }
+        
+        // Update adapter with new location
+        updateAdapterLocation();
     }
 
     private void updateMapCenter() {
@@ -283,15 +335,14 @@ public class ClinicSearchActivity extends AppCompatActivity {
     private void searchClinics() {
         showLoading(true);
 
-        if (currentSearchQuery.isEmpty() && (currentSpecialty.isEmpty() || currentSpecialty.equals("Tất cả chuyên khoa"))) {
-            loadAllClinics();
-            return;
-        }
+        // Get search parameters
+        String query = etSearch.getText().toString().trim();
+        String specialty = actvSpecialty.getText().toString().trim();
 
-        // Filter clinics
-        List<Clinic> filteredClinics = filterClinics(allClinics, currentSearchQuery, currentSpecialty);
+        // Apply filters
+        List<Clinic> filteredClinics = filterClinics(allClinics, query, specialty);
 
-        // Sort by distance if location is available
+        // Sort by distance if location available
         if (locationEnabled) {
             filteredClinics = sortByDistance(filteredClinics);
         }
@@ -299,12 +350,12 @@ public class ClinicSearchActivity extends AppCompatActivity {
         showLoading(false);
         updateClinicList(filteredClinics);
 
-        if (filteredClinics.isEmpty()) {
-            showEmptyState("Không tìm thấy phòng khám phù hợp\nThử tìm kiếm với từ khóa khác");
-        } else {
-            showEmptyState(null);
-            Toast.makeText(this, "Tìm thấy " + filteredClinics.size() + " phòng khám", Toast.LENGTH_SHORT).show();
+        // Show result count
+        String resultMessage = String.format("Tìm thấy %d phòng khám", filteredClinics.size());
+        if (locationEnabled && currentDistanceFilter > 0) {
+            resultMessage += String.format(" trong bán kính %.1f km", currentDistanceFilter);
         }
+        Toast.makeText(this, resultMessage, Toast.LENGTH_SHORT).show();
     }
 
     private List<Clinic> filterClinics(List<Clinic> clinics, String query, String specialty) {
@@ -319,7 +370,15 @@ public class ClinicSearchActivity extends AppCompatActivity {
                     specialty.equals("Tất cả chuyên khoa") ||
                     clinic.hasSpecialty(specialty);
 
-            if (matchesName && matchesSpecialty) {
+            // Filter by distance if location is available and distance filter is set
+            boolean matchesDistance = true;
+            if (locationEnabled && currentDistanceFilter > 0) {
+                double distance = calculateDistance(userLatitude, userLongitude,
+                        clinic.getLatitude(), clinic.getLongitude());
+                matchesDistance = distance <= currentDistanceFilter;
+            }
+
+            if (matchesName && matchesSpecialty && matchesDistance) {
                 filtered.add(clinic);
             }
         }
@@ -370,7 +429,9 @@ public class ClinicSearchActivity extends AppCompatActivity {
     private void updateClinicList(List<Clinic> newClinics) {
         clinicList.clear();
         clinicList.addAll(newClinics);
-        adapter.notifyDataSetChanged();
+        
+        // Update adapter with current location
+        updateAdapterLocation();
 
         // Update map markers
         updateMapMarkers(newClinics);

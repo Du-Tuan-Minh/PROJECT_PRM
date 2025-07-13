@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,48 +53,29 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
     }
 
     public class TimeSlotViewHolder extends RecyclerView.ViewHolder {
-        private MaterialButton btnTimeSlot;
+        private TextView tvTimeSlot;
 
         public TimeSlotViewHolder(@NonNull View itemView) {
             super(itemView);
-            btnTimeSlot = itemView.findViewById(R.id.btn_time_slot);
+            tvTimeSlot = itemView.findViewById(R.id.tv_time_slot);
         }
 
         public void bind(String timeSlot, int position) {
-            btnTimeSlot.setText(timeSlot);
+            tvTimeSlot.setText(timeSlot);
 
             // Set appearance based on selection
             if (selectedPosition == position) {
                 // Selected state - GREEN background, WHITE text
-                btnTimeSlot.setBackgroundTintList(
-                        ColorStateList.valueOf(Color.parseColor(GREEN_COLOR))
-                );
-                btnTimeSlot.setTextColor(Color.parseColor(WHITE_COLOR));
-                btnTimeSlot.setStrokeWidth(0);
-
-                // Add elevation for selected state
-                btnTimeSlot.setElevation(8f);
-
+                itemView.setBackgroundResource(R.drawable.bg_time_slot_selected);
+                tvTimeSlot.setTextColor(Color.parseColor(WHITE_COLOR));
             } else {
                 // Unselected state - WHITE background, BLACK text
-                btnTimeSlot.setBackgroundTintList(
-                        ColorStateList.valueOf(Color.parseColor(WHITE_COLOR))
-                );
-                btnTimeSlot.setTextColor(Color.parseColor(BLACK_COLOR));
-                btnTimeSlot.setStrokeWidth(2);
-                btnTimeSlot.setStrokeColor(
-                        ColorStateList.valueOf(Color.parseColor(GRAY_BORDER))
-                );
-
-                // Remove elevation for unselected state
-                btnTimeSlot.setElevation(2f);
+                itemView.setBackgroundResource(R.drawable.bg_time_slot_unselected);
+                tvTimeSlot.setTextColor(Color.parseColor(BLACK_COLOR));
             }
 
-            // Set corner radius
-            btnTimeSlot.setCornerRadius(12);
-
             // Click listener
-            btnTimeSlot.setOnClickListener(v -> {
+            itemView.setOnClickListener(v -> {
                 int oldPosition = selectedPosition;
                 selectedPosition = getAdapterPosition();
 
@@ -108,11 +90,6 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
                     listener.onTimeSlotClick(timeSlot, selectedPosition);
                 }
             });
-
-            // Add ripple effect
-            btnTimeSlot.setRippleColor(
-                    ColorStateList.valueOf(Color.parseColor("#E8F5E8")) // Light green ripple
-            );
         }
     }
 

@@ -3,5 +3,6 @@
 
     <string name="login_title">Login</string>
     <string name="register_title">Register</string>
+    <string name="empty_appointments">Empty Appointments</string>
 
 </resources>

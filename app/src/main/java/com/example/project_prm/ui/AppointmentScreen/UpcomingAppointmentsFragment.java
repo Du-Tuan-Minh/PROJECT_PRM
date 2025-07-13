@@ -80,36 +80,17 @@ public class UpcomingAppointmentsFragment extends Fragment {
      * Thiết lập RecyclerView và Adapter
      */
     private void setupRecyclerView() {
-        adapter = new AppointmentAdapter(appointmentList, AppointmentAdapter.TYPE_UPCOMING);
-
-        // Thiết lập listener cho các action buttons
+        adapter = new AppointmentAdapter((List<Object>) (List<?>) appointmentList, AppointmentAdapter.TYPE_UPCOMING);
         adapter.setOnActionClickListener(new AppointmentAdapter.OnActionClickListener() {
             @Override
-            public void onCancelClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                cancelAppointment(item);
-            }
-
+            public void onCancelClick(Object item) { cancelAppointment((AppointmentHistoryManager.AppointmentHistoryItem) item); }
             @Override
-            public void onRescheduleClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                rescheduleAppointment(item);
-            }
-
+            public void onRescheduleClick(Object item) { rescheduleAppointment((AppointmentHistoryManager.AppointmentHistoryItem) item); }
             @Override
-            public void onBookAgainClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                // Không áp dụng cho upcoming appointments
-            }
-
+            public void onBookAgainClick(Object item) {}
             @Override
-            public void onReviewClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                // Không áp dụng cho upcoming appointments
-            }
-
-            @Override
-            public void onItemClick(AppointmentHistoryManager.AppointmentHistoryItem item) {
-                viewAppointmentDetail(item);
-            }
+            public void onReviewClick(Object item) {}
         });
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
     }

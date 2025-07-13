@@ -1,312 +1,321 @@
 package com.example.project_prm.ui.AppointmentScreen;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.project_prm.DataManager.Entity.Appointment;
 import com.example.project_prm.DataManager.HistoryManager.AppointmentHistoryManager;
 import com.example.project_prm.R;
-import com.google.android.material.button.MaterialButton;
 
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Locale;
 
-/**
- * Adapter for displaying appointment history items in RecyclerView
- * Supports different types: Upcoming, Completed, Cancelled
- * Each type has different action buttons and status display
- */
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.AppointmentViewHolder> {
 
-    // Appointment types for different fragments
+    // Constants for appointment types
     public static final int TYPE_UPCOMING = 1;
     public static final int TYPE_COMPLETED = 2;
     public static final int TYPE_CANCELLED = 3;
 
-    private List<AppointmentHistoryManager.AppointmentHistoryItem> appointmentList;
+    private List<Object> appointments;
+    private OnAppointmentClickListener listener;
+    private OnActionClickListener actionListener;
     private int appointmentType;
-    private OnActionClickListener actionClickListener;
-    private Context context;
 
-    public AppointmentAdapter(List<AppointmentHistoryManager.AppointmentHistoryItem> appointmentList, int appointmentType) {
-        this.appointmentList = appointmentList;
+    public interface OnAppointmentClickListener {
+        void onAppointmentClick(Appointment appointment);
+        default void onCancelClick(Appointment appointment) {}
+        default void onRescheduleClick(Appointment appointment) {}
+        default void onReviewClick(Appointment appointment) {}
+        default void onBookAgainClick(Appointment appointment) {}
+    }
+
+    public interface OnActionClickListener {
+        void onCancelClick(Object appointment);
+        void onRescheduleClick(Object appointment);
+        void onReviewClick(Object appointment);
+        void onBookAgainClick(Object appointment);
+    }
+
+    public AppointmentAdapter(List<?> appointments, OnAppointmentClickListener listener) {
+        this.appointments = new ArrayList<>();
+        if (appointments != null) {
+            this.appointments.addAll(appointments);
+        }
+        this.listener = listener;
+    }
+
+    public AppointmentAdapter(List<?> appointments, int appointmentType) {
+        this.appointments = new ArrayList<>();
+        if (appointments != null) {
+            this.appointments.addAll(appointments);
+        }
         this.appointmentType = appointmentType;
+    }
+
+    public void setOnActionClickListener(OnActionClickListener listener) {
+        this.actionListener = listener;
     }
 
     @NonNull
     @Override
     public AppointmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.item_appointment_history, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_appointment, parent, false);
         return new AppointmentViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AppointmentViewHolder holder, int position) {
-        AppointmentHistoryManager.AppointmentHistoryItem item = appointmentList.get(position);
-        holder.bind(item, appointmentType, actionClickListener);
+        Object appointment = appointments.get(position);
+        holder.bind(appointment);
     }
 
     @Override
     public int getItemCount() {
-        return appointmentList != null ? appointmentList.size() : 0;
+        return appointments.size();
     }
 
-    public void setOnActionClickListener(OnActionClickListener listener) {
-        this.actionClickListener = listener;
-    }
-
-    /**
-     * Update adapter data and refresh
-     */
-    public void updateData(List<AppointmentHistoryManager.AppointmentHistoryItem> newData) {
-        this.appointmentList = newData;
-        notifyDataSetChanged();
-    }
-
-    public static class AppointmentViewHolder extends RecyclerView.ViewHolder {
-        // Text Views
-        private TextView tvAppointmentStatus;
-        private TextView tvClinicName;
+    class AppointmentViewHolder extends RecyclerView.ViewHolder {
+        private ImageView ivDoctorAvatar;
         private TextView tvDoctorName;
-        private TextView tvSpecialty;
         private TextView tvAppointmentType;
-        private TextView tvAppointmentDate;
-        private TextView tvAppointmentTime;
-        private TextView tvAppointmentFee;
-        private TextView tvPatientInfo;
-
-        // Action buttons
-        private MaterialButton btnCancel;
-        private MaterialButton btnReschedule;
-        private MaterialButton btnBookAgain;
-        private MaterialButton btnReview;
+        private TextView tvStatus;
+        private TextView tvDateTime;
+        private CardView ivAction;
+        private ImageView ivActionIcon;
+        private View llActionButtons;
+        private CardView btnCancelBook;
+        private TextView tvCancelBook;
+        private CardView btnRescheduleReview;
+        private TextView tvRescheduleReview;
+        private View llCancelledInfo;
 
         public AppointmentViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            // Initialize text views
-            tvAppointmentStatus = itemView.findViewById(R.id.tv_appointment_status);
-            tvClinicName = itemView.findViewById(R.id.tv_clinic_name);
+            ivDoctorAvatar = itemView.findViewById(R.id.iv_doctor_avatar);
             tvDoctorName = itemView.findViewById(R.id.tv_doctor_name);
-            tvSpecialty = itemView.findViewById(R.id.tv_specialty);
             tvAppointmentType = itemView.findViewById(R.id.tv_appointment_type);
-            tvAppointmentDate = itemView.findViewById(R.id.tv_appointment_date);
-            tvAppointmentTime = itemView.findViewById(R.id.tv_appointment_time);
-            tvAppointmentFee = itemView.findViewById(R.id.tv_appointment_fee);
-            tvPatientInfo = itemView.findViewById(R.id.tv_patient_info);
-
-            // Initialize action buttons
-            btnCancel = itemView.findViewById(R.id.btn_cancel);
-            btnReschedule = itemView.findViewById(R.id.btn_reschedule);
-            btnBookAgain = itemView.findViewById(R.id.btn_book_again);
-            btnReview = itemView.findViewById(R.id.btn_review);
+            tvStatus = itemView.findViewById(R.id.tv_status);
+            tvDateTime = itemView.findViewById(R.id.tv_date_time);
+            ivAction = itemView.findViewById(R.id.iv_action);
+            ivActionIcon = itemView.findViewById(R.id.iv_action_icon);
+            llActionButtons = itemView.findViewById(R.id.ll_action_buttons);
+            btnCancelBook = itemView.findViewById(R.id.btn_cancel_book);
+            tvCancelBook = itemView.findViewById(R.id.tv_cancel_book);
+            btnRescheduleReview = itemView.findViewById(R.id.btn_reschedule_review);
+            tvRescheduleReview = itemView.findViewById(R.id.tv_reschedule_review);
+            llCancelledInfo = itemView.findViewById(R.id.ll_cancelled_info);
         }
 
-        public void bind(AppointmentHistoryManager.AppointmentHistoryItem item, int type, OnActionClickListener listener) {
-            // Basic appointment info - using direct properties from AppointmentHistoryItem
-            if (tvClinicName != null) {
-                tvClinicName.setText(item.clinicName != null ? item.clinicName : "Phòng khám");
+        public void bind(Object appointment) {
+            if (appointment instanceof Appointment) {
+                bindAppointment((Appointment) appointment);
+            } else if (appointment instanceof AppointmentHistoryManager.AppointmentHistoryItem) {
+                bindHistoryItem((AppointmentHistoryManager.AppointmentHistoryItem) appointment);
             }
+        }
 
-            if (tvDoctorName != null) {
-                tvDoctorName.setText(item.doctorName != null ? "BS. " + item.doctorName : "Bác sĩ");
+        private void bindAppointment(Appointment appointment) {
+            // Set doctor name
+            tvDoctorName.setText(appointment.getDoctor() != null ? appointment.getDoctor() : "Unknown Doctor");
+
+            // Set appointment type
+            tvAppointmentType.setText(appointment.getAppointmentType() != null ? appointment.getAppointmentType() : "Consultation");
+
+            // Set date and time
+            String dateTime = "";
+            if (appointment.getDate() != null && appointment.getTime() != null) {
+                dateTime = appointment.getDate() + " | " + appointment.getTime();
+            } else if (appointment.getDate() != null) {
+                dateTime = appointment.getDate();
             }
+            tvDateTime.setText(dateTime);
 
-            if (tvSpecialty != null) {
-                tvSpecialty.setText(item.specialty != null ? item.specialty : "Tổng quát");
-            }
+            // Set status and styling based on appointment status
+            String status = appointment.getStatus() != null ? appointment.getStatus().toLowerCase() : "upcoming";
+            setupStatusAndActions(status, appointment);
 
-            // Appointment type with fallback
-            if (tvAppointmentType != null) {
-                String appointmentType = item.packageType;
-                if (appointmentType == null || appointmentType.isEmpty()) {
-                    appointmentType = "Khám tổng quát";
-                }
-                tvAppointmentType.setText(appointmentType);
-            }
+            // Set action icon based on appointment type
+            setupActionIcon(appointment.getAppointmentType());
 
-            // Format date and time
-            if (tvAppointmentDate != null) {
-                tvAppointmentDate.setText(formatDate(item.appointmentDate));
-            }
-
-            if (tvAppointmentTime != null) {
-                tvAppointmentTime.setText(item.appointmentTime != null ? item.appointmentTime : "N/A");
-            }
-
-            // Format fee
-            if (tvAppointmentFee != null) {
-                tvAppointmentFee.setText(formatCurrency(item.fee));
-            }
-
-            // Patient info - for now hide since we don't have patient data in history item
-            if (tvPatientInfo != null) {
-                tvPatientInfo.setVisibility(View.GONE);
-            }
-
-            // Status and actions based on appointment type
-            setupStatusAndActions(item, type, listener);
-
-            // Item click listener
+            // Set click listener for the whole item
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
-                    listener.onItemClick(item);
+                    listener.onAppointmentClick(appointment);
                 }
             });
         }
 
-        private void setupStatusAndActions(AppointmentHistoryManager.AppointmentHistoryItem item, int type, OnActionClickListener listener) {
-            // Hide all buttons first
-            hideAllButtons();
+        private void bindHistoryItem(AppointmentHistoryManager.AppointmentHistoryItem item) {
+            // Set doctor name
+            tvDoctorName.setText(item.doctorName != null ? item.doctorName : "Unknown Doctor");
 
-            switch (type) {
-                case TYPE_UPCOMING:
-                    setupUpcomingAppointment(item, listener);
-                    break;
+            // Set appointment type
+            tvAppointmentType.setText(item.packageType != null ? item.packageType : "Consultation");
 
-                case TYPE_COMPLETED:
-                    setupCompletedAppointment(item, listener);
-                    break;
-
-                case TYPE_CANCELLED:
-                    setupCancelledAppointment(item, listener);
-                    break;
+            // Set date and time
+            String dateTime = "";
+            if (item.appointmentDate != null && item.appointmentTime != null) {
+                dateTime = item.appointmentDate + " | " + item.appointmentTime;
+            } else if (item.appointmentDate != null) {
+                dateTime = item.appointmentDate;
             }
-        }
+            tvDateTime.setText(dateTime);
 
-        private void hideAllButtons() {
-            if (btnCancel != null) btnCancel.setVisibility(View.GONE);
-            if (btnReschedule != null) btnReschedule.setVisibility(View.GONE);
-            if (btnBookAgain != null) btnBookAgain.setVisibility(View.GONE);
-            if (btnReview != null) btnReview.setVisibility(View.GONE);
-        }
+            // Set status and styling based on appointment status
+            String status = item.status != null ? item.status.toLowerCase() : "upcoming";
+            setupStatusAndActions(status, item);
 
-        private void setupUpcomingAppointment(AppointmentHistoryManager.AppointmentHistoryItem item, OnActionClickListener listener) {
-            if (tvAppointmentStatus != null) {
-                tvAppointmentStatus.setText("Sắp tới");
-                try {
-                    tvAppointmentStatus.setBackgroundTintList(
-                            itemView.getContext().getColorStateList(R.color.primary_blue));
-                } catch (Exception e) {
-                    // Fallback if color resource not found
+            // Set action icon based on appointment type
+            setupActionIcon(item.packageType);
+
+            // Set click listener for the whole item
+            itemView.setOnClickListener(v -> {
+                if (actionListener != null) {
+                    // Handle history item click
                 }
-            }
+            });
+        }
 
-            // Show cancel and reschedule buttons
-            if (btnCancel != null) {
-                btnCancel.setVisibility(View.VISIBLE);
-                btnCancel.setOnClickListener(v -> {
-                    if (listener != null) {
-                        listener.onCancelClick(item);
-                    }
-                });
-            }
-
-            if (btnReschedule != null) {
-                btnReschedule.setVisibility(View.VISIBLE);
-                btnReschedule.setOnClickListener(v -> {
-                    if (listener != null) {
-                        listener.onRescheduleClick(item);
-                    }
-                });
+        private void setupStatusAndActions(String status, Object appointment) {
+            switch (status) {
+                case "upcoming":
+                    setupUpcomingAppointment(appointment);
+                    break;
+                case "completed":
+                    setupCompletedAppointment(appointment);
+                    break;
+                case "cancelled":
+                    setupCancelledAppointment(appointment);
+                    break;
+                default:
+                    setupUpcomingAppointment(appointment);
+                    break;
             }
         }
 
-        private void setupCompletedAppointment(AppointmentHistoryManager.AppointmentHistoryItem item, OnActionClickListener listener) {
-            if (tvAppointmentStatus != null) {
-                tvAppointmentStatus.setText("Hoàn thành");
-                try {
-                    tvAppointmentStatus.setBackgroundTintList(
-                            itemView.getContext().getColorStateList(R.color.success_green));
-                } catch (Exception e) {
-                    // Fallback if color resource not found
+        private void setupUpcomingAppointment(Object appointment) {
+            // Status styling
+            tvStatus.setText("Upcoming");
+            tvStatus.setTextColor(itemView.getContext().getColor(android.R.color.holo_blue_dark));
+            tvStatus.setBackgroundResource(R.drawable.status_upcoming_background);
+
+            // Action icon styling
+            ivAction.setBackgroundResource(R.drawable.action_icon_background);
+            ivActionIcon.setColorFilter(itemView.getContext().getColor(android.R.color.holo_blue_dark));
+
+            // Action buttons
+            llActionButtons.setVisibility(View.VISIBLE);
+            llCancelledInfo.setVisibility(View.GONE);
+
+            tvCancelBook.setText("Cancel Appointment");
+            tvRescheduleReview.setText("Reschedule");
+
+            // Button click listeners
+            btnCancelBook.setOnClickListener(v -> {
+                if (actionListener != null) {
+                    actionListener.onCancelClick(appointment);
+                } else if (listener != null) {
+                    listener.onCancelClick((Appointment) appointment);
                 }
-            }
+            });
 
-            // Show book again button
-            if (btnBookAgain != null) {
-                btnBookAgain.setVisibility(View.VISIBLE);
-                btnBookAgain.setOnClickListener(v -> {
-                    if (listener != null) {
-                        listener.onBookAgainClick(item);
-                    }
-                });
-            }
-
-            // Show review button only if not reviewed yet
-            if (btnReview != null && item.rating == 0) {
-                btnReview.setVisibility(View.VISIBLE);
-                btnReview.setOnClickListener(v -> {
-                    if (listener != null) {
-                        listener.onReviewClick(item);
-                    }
-                });
-            }
-        }
-
-        private void setupCancelledAppointment(AppointmentHistoryManager.AppointmentHistoryItem item, OnActionClickListener listener) {
-            if (tvAppointmentStatus != null) {
-                tvAppointmentStatus.setText("Đã hủy");
-                try {
-                    tvAppointmentStatus.setBackgroundTintList(
-                            itemView.getContext().getColorStateList(R.color.error_red));
-                } catch (Exception e) {
-                    // Fallback if color resource not found
+            btnRescheduleReview.setOnClickListener(v -> {
+                if (actionListener != null) {
+                    actionListener.onRescheduleClick(appointment);
+                } else if (listener != null) {
+                    listener.onRescheduleClick((Appointment) appointment);
                 }
-            }
-
-            // Show book again button
-            if (btnBookAgain != null) {
-                btnBookAgain.setVisibility(View.VISIBLE);
-                btnBookAgain.setOnClickListener(v -> {
-                    if (listener != null) {
-                        listener.onBookAgainClick(item);
-                    }
-                });
-            }
+            });
         }
 
-        private String formatDate(String dateString) {
-            if (dateString == null || dateString.isEmpty()) {
-                return "N/A";
-            }
+        private void setupCompletedAppointment(Object appointment) {
+            // Status styling
+            tvStatus.setText("Completed");
+            tvStatus.setTextColor(itemView.getContext().getColor(android.R.color.holo_green_dark));
+            tvStatus.setBackgroundResource(R.drawable.status_completed_background);
 
-            try {
-                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                return outputFormat.format(inputFormat.parse(dateString));
-            } catch (Exception e) {
-                return dateString; // Return original if parsing fails
-            }
+            // Action icon styling
+            ivAction.setBackgroundResource(R.drawable.action_icon_background);
+            ivActionIcon.setColorFilter(itemView.getContext().getColor(android.R.color.holo_blue_dark));
+
+            // Action buttons
+            llActionButtons.setVisibility(View.VISIBLE);
+            llCancelledInfo.setVisibility(View.GONE);
+
+            tvCancelBook.setText("Book Again");
+            tvRescheduleReview.setText("Leave a Review");
+
+            // Button click listeners
+            btnCancelBook.setOnClickListener(v -> {
+                if (actionListener != null) {
+                    actionListener.onBookAgainClick(appointment);
+                } else if (listener != null) {
+                    listener.onBookAgainClick((Appointment) appointment);
+                }
+            });
+
+            btnRescheduleReview.setOnClickListener(v -> {
+                if (actionListener != null) {
+                    actionListener.onReviewClick(appointment);
+                } else if (listener != null) {
+                    listener.onReviewClick((Appointment) appointment);
+                }
+            });
         }
 
-        private String formatCurrency(double amount) {
-            if (amount <= 0) {
-                return "Miễn phí";
+        private void setupCancelledAppointment(Object appointment) {
+            // Status styling
+            tvStatus.setText("Cancelled");
+            tvStatus.setTextColor(itemView.getContext().getColor(android.R.color.holo_red_dark));
+            tvStatus.setBackgroundResource(R.drawable.status_cancelled_background);
+
+            // Action icon styling - disabled appearance
+            ivAction.setBackgroundResource(R.drawable.action_icon_background);
+            ivActionIcon.setColorFilter(itemView.getContext().getColor(android.R.color.darker_gray));
+
+            // Hide action buttons for cancelled appointments
+            llActionButtons.setVisibility(View.GONE);
+            llCancelledInfo.setVisibility(View.VISIBLE);
+        }
+
+        private void setupActionIcon(String appointmentType) {
+            if (appointmentType == null) {
+                ivActionIcon.setImageResource(R.drawable.ic_message);
+                return;
             }
-            try {
-                NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-                return formatter.format(amount) + "đ";
-            } catch (Exception e) {
-                return String.valueOf((int)amount) + "đ"; // Fallback formatting
+
+            switch (appointmentType.toLowerCase()) {
+                case "messaging":
+                    ivActionIcon.setImageResource(R.drawable.ic_message);
+                    break;
+                case "voice call":
+                    ivActionIcon.setImageResource(R.drawable.ic_phone);
+                    break;
+                case "video call":
+                    ivActionIcon.setImageResource(R.drawable.ic_video_call);
+                    break;
+                default:
+                    ivActionIcon.setImageResource(R.drawable.ic_message);
+                    break;
             }
         }
     }
 
-    // Interface for handling button clicks
-    public interface OnActionClickListener {
-        void onCancelClick(AppointmentHistoryManager.AppointmentHistoryItem item);
-        void onRescheduleClick(AppointmentHistoryManager.AppointmentHistoryItem item);
-        void onBookAgainClick(AppointmentHistoryManager.AppointmentHistoryItem item);
-        void onReviewClick(AppointmentHistoryManager.AppointmentHistoryItem item);
-        void onItemClick(AppointmentHistoryManager.AppointmentHistoryItem item);
+    public void updateAppointments(List<?> newAppointments) {
+        this.appointments.clear();
+        if (newAppointments != null) {
+            this.appointments.addAll(newAppointments);
+        }
+        notifyDataSetChanged();
     }
 }

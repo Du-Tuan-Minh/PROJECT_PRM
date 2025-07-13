@@ -1,4 +1,3 @@
-// NEW FILE: app/src/main/java/com/example/project_prm/ui/SearchScreen/ClinicSearchAdapter.java
 package com.example.project_prm.ui.SearchScreen;
 
 import android.view.LayoutInflater;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.project_prm.DataManager.SearchManager.ClinicSearchManager;
+import com.example.project_prm.DataManager.Entity.Clinic;
 import com.example.project_prm.R;
 import com.google.android.material.button.MaterialButton;
 
@@ -20,17 +19,26 @@ import java.util.List;
 
 public class ClinicSearchAdapter extends RecyclerView.Adapter<ClinicSearchAdapter.ClinicViewHolder> {
 
-    private final List<ClinicSearchManager.ClinicSearchResult> clinicList;
+    private final List<Clinic> clinicList;
     private final OnClinicClickListener listener;
+    private double userLatitude = 0;
+    private double userLongitude = 0;
+    private boolean locationEnabled = false;
 
     public interface OnClinicClickListener {
-        void onClinicClick(ClinicSearchManager.ClinicSearchResult clinic);
-        void onBookAppointmentClick(ClinicSearchManager.ClinicSearchResult clinic);
+        void onClinicClick(Clinic clinic);
+        void onBookAppointmentClick(Clinic clinic);
     }
 
-    public ClinicSearchAdapter(List<ClinicSearchManager.ClinicSearchResult> clinicList, OnClinicClickListener listener) {
+    public ClinicSearchAdapter(List<Clinic> clinicList, OnClinicClickListener listener) {
         this.clinicList = clinicList;
         this.listener = listener;
+    }
+
+    public void setUserLocation(double latitude, double longitude, boolean enabled) {
+        this.userLatitude = latitude;
+        this.userLongitude = longitude;
+        this.locationEnabled = enabled;
     }
 
     @NonNull
@@ -43,7 +51,7 @@ public class ClinicSearchAdapter extends RecyclerView.Adapter<ClinicSearchAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ClinicViewHolder holder, int position) {
-        ClinicSearchManager.ClinicSearchResult clinic = clinicList.get(position);
+        Clinic clinic = clinicList.get(position);
         holder.bind(clinic, listener);
     }
 
@@ -52,7 +60,7 @@ public class ClinicSearchAdapter extends RecyclerView.Adapter<ClinicSearchAdapte
         return clinicList.size();
     }
 
-    static class ClinicViewHolder extends RecyclerView.ViewHolder {
+    class ClinicViewHolder extends RecyclerView.ViewHolder {
         private final ImageView ivClinicImage;
         private final TextView tvClinicName;
         private final TextView tvSpecialty;
@@ -78,32 +86,39 @@ public class ClinicSearchAdapter extends RecyclerView.Adapter<ClinicSearchAdapte
             btnBookAppointment = itemView.findViewById(R.id.btn_book_appointment);
         }
 
-        public void bind(ClinicSearchManager.ClinicSearchResult clinic, OnClinicClickListener listener) {
+        public void bind(Clinic clinic, OnClinicClickListener listener) {
             // Clinic name
-            tvClinicName.setText(clinic.name);
+            tvClinicName.setText(clinic.getName());
 
-            // Specialty
-            tvSpecialty.setText(clinic.specialties != null ? clinic.specialties : "Khám tổng quát");
+            // Specialty - show first specialty or "Khám tổng quát"
+            String[] specialties = clinic.getSpecialties();
+            String specialtyText = "Khám tổng quát";
+            if (specialties != null && specialties.length > 0) {
+                specialtyText = specialties[0];
+            }
+            tvSpecialty.setText(specialtyText);
 
             // Address
-            tvAddress.setText(clinic.address != null ? clinic.address : "Địa chỉ không có sẵn");
+            tvAddress.setText(clinic.getAddress());
 
-            // Distance (if available)
-            if (clinic.distance > 0) {
-                tvDistance.setText(String.format("%.1f km", clinic.distance));
+            // Distance (if location enabled)
+            if (locationEnabled && userLatitude != 0 && userLongitude != 0) {
+                double distance = calculateDistance(userLatitude, userLongitude,
+                        clinic.getLatitude(), clinic.getLongitude());
+                tvDistance.setText(String.format("📍 %.1f km", distance));
                 tvDistance.setVisibility(View.VISIBLE);
             } else {
                 tvDistance.setVisibility(View.GONE);
             }
 
             // Rating
-            ratingBar.setRating((float) clinic.rating);
-            tvRating.setText(String.format("%.1f", clinic.rating));
-            tvReviewCount.setText(String.format("(%d reviews)", clinic.totalReviews));
+            ratingBar.setRating(clinic.getRating());
+            tvRating.setText(String.format("%.1f", clinic.getRating()));
+            tvReviewCount.setText(String.format("(%d đánh giá)", clinic.getReviewCount()));
 
             // Open status
             boolean isOpen = isClinicOpen(clinic);
-            tvOpenStatus.setText(isOpen ? "Đang mở cửa" : "Đã đóng cửa");
+            tvOpenStatus.setText(isOpen ? "🟢 Đang mở cửa" : "🔴 Đã đóng cửa");
             tvOpenStatus.setTextColor(itemView.getContext().getColor(
                     isOpen ? R.color.success_green : R.color.error_red
             ));
@@ -125,21 +140,27 @@ public class ClinicSearchAdapter extends RecyclerView.Adapter<ClinicSearchAdapte
             });
         }
 
-        private boolean isClinicOpen(ClinicSearchManager.ClinicSearchResult clinic) {
-            // Get current day and time
+        private boolean isClinicOpen(Clinic clinic) {
+            // Simple logic - assume clinic is open during business hours
             Calendar calendar = Calendar.getInstance();
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            int minute = calendar.get(Calendar.MINUTE);
+            
+            // Most clinics are open from 6 AM to 8 PM
+            return hour >= 6 && hour <= 20;
+        }
 
-            String currentTime = String.format("%02d:%02d", hour, minute);
+        private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+            final int R = 6371; // Radius of the earth in km
 
-            // Convert day of week to string
-            String[] days = {"", "sun", "mon", "tue", "wed", "thu", "fri", "sat"};
-            String currentDay = days[dayOfWeek];
+            double latDistance = Math.toRadians(lat2 - lat1);
+            double lonDistance = Math.toRadians(lon2 - lon1);
+            double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                    + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                    * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            double distance = R * c; // distance in km
 
-            // Check if clinic is open
-            return clinic.isOpen(currentDay, currentTime);
+            return distance;
         }
     }
 }

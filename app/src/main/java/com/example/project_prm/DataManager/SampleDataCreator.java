@@ -64,7 +64,7 @@ public class SampleDataCreator {
         dbHelper = new DatabaseHelper(context);
         appointmentDAO = new AppointmentDAO(dbHelper.getWritableDatabase());
         doctorRepository = DoctorRepository.getInstance();
-        clinicRepository = ClinicRepository.getInstance();
+        clinicRepository = new ClinicRepository();
         random = new Random();
     }
 

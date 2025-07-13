@@ -522,8 +522,8 @@ public class AppointmentBookingActivity extends AppCompatActivity {
         request.clinicId = clinicId != null ? clinicId : "default_clinic";
         request.clinicName = clinicName != null ? clinicName : "Phòng khám mặc định";
         request.doctorName = doctorName != null ? doctorName : "Bác sĩ sẽ được phân công";
-        request.appointmentDate = selectedDate;
-        request.appointmentTime = selectedTimeSlot;
+        request.date = selectedDate;
+        request.time = selectedTimeSlot;
         request.patientName = patientName;
         request.patientPhone = patientPhone;
         request.patientAge = patientAge;

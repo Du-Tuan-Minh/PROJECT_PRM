@@ -197,6 +197,24 @@
                     tools:itemCount="6"
                     tools:listitem="@layout/item_time_slot" />
 
+                <ProgressBar
+                    android:id="@+id/time_slots_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_no_slots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Không có khung giờ trống. Vui lòng chọn ngày khác."
+                    android:textSize="14sp"
+                    android:textColor="@color/text_gray"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/tv_no_slots_available"
                     android:layout_width="match_parent"
@@ -424,6 +442,48 @@
 
         </androidx.cardview.widget.CardView>
 
+        <!-- Doctor and Clinic Info -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/doctor_clinic_info_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toBottomOf="@id/patient_info_card"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tv_doctor_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_gray"
+                    android:visibility="gone"
+                    tools:text="👨‍⚕️ Bác sĩ: BS. Nguyễn Văn A\n🏥 Chuyên khoa: Tổng quát" />
+
+                <TextView
+                    android:id="@+id/tv_clinic_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_gray"
+                    android:visibility="gone"
+                    tools:text="🏥 Phòng khám: Phòng khám ABC" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
         <!-- Fee Information -->
         <androidx.cardview.widget.CardView
             android:id="@+id/fee_info_card"
@@ -433,7 +493,7 @@
             android:layout_marginTop="16dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
-            app:layout_constraintTop_toBottomOf="@id/patient_info_card"
+            app:layout_constraintTop_toBottomOf="@id/doctor_clinic_info_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 

@@ -66,6 +66,18 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
         return timeSlots != null ? timeSlots.size() : 0;
     }
 
+    public void clearSelection() {
+        int previousSelectedPosition = selectedPosition;
+        selectedPosition = -1;
+        if (previousSelectedPosition >= 0 && previousSelectedPosition < timeSlots.size()) {
+            notifyItemChanged(previousSelectedPosition);
+        }
+    }
+
+    public int getSelectedPosition() {
+        return selectedPosition;
+    }
+
     public static class TimeSlotViewHolder extends RecyclerView.ViewHolder {
         TextView tvTimeSlot;
 

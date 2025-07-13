@@ -1,9 +1,3 @@
-<!--
-📁 ĐƯỜNG DẪN: app/src/main/AndroidManifest.xml
-🎯 CHỨC NĂNG: Cập nhật permissions cho OSMDroid (100% miễn phí)
-⚠️ THAY THẾ: Phần permissions và meta-data trong file hiện tại
--->
-
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
@@ -185,4 +179,3 @@
     </application>
 
 </manifest>
-

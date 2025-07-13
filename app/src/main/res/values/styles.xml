@@ -46,4 +46,15 @@
         <item name="android:padding">12dp</item>
     </style>
 
+    <!-- Application Theme for Project_PRM -->
+    <style name="Theme.Project_PRM" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="Theme.Project_PRM.NoActionBar" parent="Theme.Project_PRM">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>
