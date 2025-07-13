@@ -34,8 +34,13 @@
     <color name="battery_full">#212121</color>
     <color name="battery_border">#212121</color>
 
-    <color name="colorBackground">#FFFFFF</color>
-    <color name="colorOnBackground">#000000</color>
+    <!-- Màu nền riêng cho từng theme -->
+    <color name="light_background">#FFFFFF</color>
+    <color name="dark_background">#121212</color>
+
+    <!-- Màu chữ -->
+    <color name="light_text">#000000</color>
+    <color name="dark_text">#FFFFFF</color>
 
     <!-- Article Meta Colors -->
     <color name="article_date_text">#9E9E9E</color>

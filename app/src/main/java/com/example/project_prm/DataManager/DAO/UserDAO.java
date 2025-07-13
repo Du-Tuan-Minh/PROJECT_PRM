@@ -1,6 +1,7 @@
 package com.example.project_prm.DataManager.DAO;
 
 import com.example.project_prm.DataManager.Entity.User;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 import com.google.android.gms.tasks.Task;
@@ -8,6 +9,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 public class UserDAO {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private  final CollectionReference userRef = db.collection("users");
 
     public void addWithBatch(WriteBatch batch, String userId, User user) {
         batch.set(db.collection("users").document(userId), user.toMap());
@@ -29,4 +32,14 @@ public class UserDAO {
         return db.collection("users").document(userId).get();
     }
 
+
+    public Task<User> getUserById(String userId) {
+        return userRef.document(userId).get().continueWith(task -> {
+            if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
+                return User.fromMap(task.getResult().getData());
+            } else {
+                return null;
+            }
+        });
+    }
 }

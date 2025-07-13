@@ -29,4 +29,19 @@ public class User {
         data.put("created_at", created_at);
         return data;
     }
+    public static User fromMap(Map<String, Object> map) {
+        if (map == null) return null;
+        long id = (map.get("id") instanceof Long) ? (Long) map.get("id") : ((Number) map.get("id")).longValue();
+        String username = (String) map.get("username");
+        String password = (String) map.get("password");
+        String email = (String) map.get("email");
+        String phone = (String) map.get("phone");
+        Object createdAt = map.get("created_at");
+
+        User user = new User(id, username, password, email, phone);
+        user.created_at = createdAt;
+        return user;
+    }
+
+
 }
