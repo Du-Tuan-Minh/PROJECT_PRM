@@ -34,6 +34,9 @@
     <color name="battery_full">#212121</color>
     <color name="battery_border">#212121</color>
 
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorOnBackground">#000000</color>
+
     <!-- Article Meta Colors -->
     <color name="article_date_text">#9E9E9E</color>
 </resources>

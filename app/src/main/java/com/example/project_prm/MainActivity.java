@@ -1,6 +1,7 @@
 package com.example.project_prm;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.widget.ImageView;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.GridLayout;
+
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.viewpager2.widget.ViewPager2;
 import java.util.Arrays;
 
@@ -29,6 +32,8 @@ import com.example.project_prm.MainScreen.ChatbotActivity;
 import com.example.project_prm.MainScreen.DiseaseLibraryActivity;
 import com.example.project_prm.MainScreen.FindClinicActivity;
 import com.example.project_prm.MainScreen.HomeFragment;
+import com.example.project_prm.User_Profile.ProfileActivity;
+import com.example.project_prm.User_Profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.FirebaseApp;
@@ -46,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
+        boolean isDark = prefs.getBoolean("dark_mode", false);
+        AppCompatDelegate.setDefaultNightMode(
+                isDark ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+        );
 
         setContentView(R.layout.activity_main);
 
@@ -129,10 +141,16 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, ArticlesActivity.class);
                 startActivity(intent);
                 return false; // Không chọn tab này vì là màn riêng
+
+            } else if (id == R.id.nav_profile) {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
+            return false; // Vì là màn riêng, không chọn tab
             }
 
 
-            return true;
+
+        return true;
         });
 
 

@@ -79,7 +79,13 @@
         <activity android:name=".MainScreen.NotificationActivity" />
         <activity android:name=".AllUtilitiesActivity" />
 
+
+        <!-- Các màn  datnh.m -->
         <activity android:name=".Article.ArticlesActivity" />
+        <activity android:name=".User_Profile.ProfileActivity" />
+        <activity android:name=".User_Profile.EditProfileActivity" />
+        <activity android:name=".User_Profile.LanguageActivity" />
+        <activity android:name=".User_Profile.SecurityActivity" />
 
 
     </application>
