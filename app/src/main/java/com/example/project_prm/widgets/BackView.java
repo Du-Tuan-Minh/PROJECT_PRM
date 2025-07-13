@@ -23,6 +23,11 @@ public class BackView extends LinearLayout {
     private TextView textBackView;
     private OnBackIconClickListener iconClickListener;
 
+    public BackView(Context context) {
+        super(context);
+        init(context, null);
+        this.context = context;
+    }
 
     public BackView(Context context, AttributeSet attrs) {
         super(context, attrs);

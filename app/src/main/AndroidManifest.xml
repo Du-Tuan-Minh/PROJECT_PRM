@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -14,9 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project_PRM"
         tools:targetApi="31">
-        <activity
-            android:name=".widgets.BackView"
-            android:exported="false" />
+
+        <!-- Google Maps API Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR_GOOGLE_MAPS_API_KEY" />
+
         <activity
             android:name=".ui.auth.LoginOptionActivity"
             android:exported="false" /> <!-- Splash Activity: KHỞI ĐỘNG APP -->
@@ -67,15 +71,10 @@
         <activity
             android:name=".MainScreen.ChatbotActivity"
             android:exported="false" />
+        <activity android:name=".MainScreen.AppointmentHistoryActivity" />
+        <activity android:name=".MainScreen.DoctorProfileActivity" />
 
-        <!-- Main Activity (Dashboard) -->
-        <activity android:name=".MainActivity" android:exported="false" />
 
-        <!-- Các màn chính -->
-        <activity android:name=".MainScreen.DiseaseLibraryActivity" android:exported="false" />
-        <activity android:name=".MainScreen.FindClinicActivity" android:exported="false" />
-        <activity android:name=".MainScreen.BookAppointmentActivity" android:exported="false" />
-        <activity android:name=".MainScreen.ChatbotActivity" android:exported="false" />
         <activity android:name=".MainScreen.NotificationActivity" />
         <activity android:name=".AllUtilitiesActivity" />
 

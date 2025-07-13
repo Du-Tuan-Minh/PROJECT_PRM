@@ -25,6 +25,7 @@
     <color name="category_medical">#009688</color>
     <color name="category_default">#9E9E9E</color>
 
+    <color name="status_cancelled">#FF4D4F</color>
 
     <!-- Status Bar Colors -->
     <color name="status_bar_text">#212121</color>

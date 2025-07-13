@@ -2,6 +2,12 @@
     <style name="BottomNavText" parent="TextAppearance.AppCompat.Caption">
         <item name="android:textSize">11sp</item>
         <item name="android:fontFamily">sans-serif</item>
+    </style>
 
+    <!-- Custom Tab Text Style -->
+    <style name="CustomTabText" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 </resources> 

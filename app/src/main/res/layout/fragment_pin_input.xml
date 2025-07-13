@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="@color/background">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nhập mã PIN của bạn"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_black"
+        android:gravity="center"
+        android:layout_marginBottom="32dp" />
+
+    <!-- PIN Input Fields -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="32dp">
+
+        <EditText
+            android:id="@+id/etPin1"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/pin_input_background"
+            android:gravity="center"
+            android:inputType="numberPassword"
+            android:maxLength="1"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_black" />
+
+        <EditText
+            android:id="@+id/etPin2"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/pin_input_background"
+            android:gravity="center"
+            android:inputType="numberPassword"
+            android:maxLength="1"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_black" />
+
+        <EditText
+            android:id="@+id/etPin3"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/pin_input_background"
+            android:gravity="center"
+            android:inputType="numberPassword"
+            android:maxLength="1"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_black" />
+
+        <EditText
+            android:id="@+id/etPin4"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/pin_input_background"
+            android:gravity="center"
+            android:inputType="numberPassword"
+            android:maxLength="1"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_black" />
+
+    </LinearLayout>
+
+    <!-- Number Pad -->
+    <LinearLayout
+        android:id="@+id/gridNumbers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:orientation="vertical" />
+
+    <!-- Cancel Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hủy"
+        android:textColor="@color/primary_blue"
+        android:background="@android:color/transparent"
+        app:backgroundTint="@null"
+        style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+</LinearLayout> 

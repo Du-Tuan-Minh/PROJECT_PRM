@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="32dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mô tả vấn đề"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_black"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Scrollable Problem Text -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="300dp"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:id="@+id/tvProblem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mô tả chi tiết vấn đề sức khỏe..."
+                android:textSize="16sp"
+                android:textColor="@color/text_black"
+                android:lineSpacingExtra="4dp" />
+
+        </androidx.core.widget.NestedScrollView>
+
+        <!-- Close Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đóng"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_button_primary"
+            app:backgroundTint="@null" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView> 

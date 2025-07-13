@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/ivReviewerAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_general"
+        android:background="@drawable/bg_circle_lightblue"
+        android:scaleType="centerCrop"
+        android:layout_marginEnd="12dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- Header with name and rating -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/tvReviewerName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Charlotte Hanlin"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_black" />
+
+            <!-- Stars -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivStar1"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_star"
+                    android:layout_marginEnd="2dp" />
+
+                <ImageView
+                    android:id="@+id/ivStar2"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_star"
+                    android:layout_marginEnd="2dp" />
+
+                <ImageView
+                    android:id="@+id/ivStar3"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_star"
+                    android:layout_marginEnd="2dp" />
+
+                <ImageView
+                    android:id="@+id/ivStar4"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_star"
+                    android:layout_marginEnd="2dp" />
+
+                <ImageView
+                    android:id="@+id/ivStar5"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_star" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Review text -->
+        <TextView
+            android:id="@+id/tvReviewText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BS. Jenny rất chuyên nghiệp trong công việc và phản hồi nhanh..."
+            android:textSize="14sp"
+            android:textColor="@color/text_black"
+            android:lineSpacingExtra="2dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Footer with likes and time -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_thumb_up"
+                android:tint="@color/text_gray" />
+
+            <TextView
+                android:id="@+id/tvLikes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="198"
+                android:textSize="12sp"
+                android:textColor="@color/text_gray"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="16dp" />
+
+            <TextView
+                android:id="@+id/tvTimeAgo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="4 ngày trước"
+                android:textSize="12sp"
+                android:textColor="@color/text_gray"
+                android:gravity="end" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout> 

@@ -4,4 +4,67 @@
     <string name="login_title">Login</string>
     <string name="register_title">Register</string>
 
+    <!-- Booking strings -->
+    <string name="book_appointment">Đặt lịch khám</string>
+    <string name="patient_details">Thông tin bệnh nhân</string>
+    <string name="review_summary">Xem lại thông tin</string>
+    <string name="enter_pin">Nhập mã PIN</string>
+    <string name="my_appointments">Lịch hẹn của tôi</string>
+    <string name="upcoming">Sắp tới</string>
+    <string name="completed">Đã hoàn thành</string>
+    <string name="cancelled">Đã hủy</string>
+    <string name="cancel_appointment">Hủy lịch hẹn</string>
+    <string name="reschedule">Đổi lịch</string>
+    <string name="book_again">Đặt lịch lại</string>
+    <string name="leave_review">Viết đánh giá</string>
+    <string name="next">Tiếp theo</string>
+    <string name="submit">Gửi</string>
+    <string name="cancel">Hủy</string>
+    <string name="select_date">Chọn ngày</string>
+    <string name="select_time">Chọn giờ</string>
+    <string name="full_name">Họ và tên</string>
+    <string name="gender">Giới tính</string>
+    <string name="age">Tuổi của bạn</string>
+    <string name="problem_description">Mô tả vấn đề của bạn</string>
+    <string name="write_review">Viết đánh giá của bạn</string>
+    <string name="recommend_doctor">Bạn có muốn giới thiệu bác sĩ này cho bạn bè không?</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    
+    <!-- Success messages -->
+    <string name="booking_success_title">Chúc mừng!</string>
+    <string name="booking_success_message">Đặt lịch hẹn thành công. Bạn sẽ nhận được thông báo và bác sĩ bạn chọn sẽ liên hệ với bạn.</string>
+    <string name="cancel_success_title">Hủy lịch hẹn thành công!</string>
+    <string name="cancel_success_message">Chúng tôi rất tiếc vì bạn đã hủy lịch hẹn. Chúng tôi sẽ luôn cải thiện dịch vụ để làm hài lòng bạn trong lần hẹn tiếp theo.</string>
+    <string name="reschedule_success_title">Đổi lịch thành công!</string>
+    <string name="reschedule_success_message">Lịch hẹn đã được thay đổi thành công. Bạn sẽ nhận được thông báo và bác sĩ bạn chọn sẽ liên hệ với bạn.</string>
+    <string name="review_success_title">Gửi đánh giá thành công!</string>
+    <string name="review_success_message">Đánh giá của bạn đã được gửi thành công, cảm ơn bạn rất nhiều!</string>
+    
+    <!-- Error messages -->
+    <string name="booking_failed_title">Oops. Thất bại!</string>
+    <string name="booking_failed_message">Đặt lịch hẹn thất bại. Vui lòng kiểm tra kết nối internet và thử lại.</string>
+    <string name="try_again">Thử lại</string>
+    <string name="view_appointment">Xem lịch hẹn</string>
+    
+    <!-- Cancel confirmation -->
+    <string name="cancel_confirmation_title">Hủy lịch hẹn</string>
+    <string name="cancel_confirmation_message">Bạn có chắc muốn hủy lịch hẹn không?</string>
+    <string name="cancel_confirmation_note">Chỉ 50% số tiền sẽ được hoàn trả vào tài khoản của bạn.</string>
+    <string name="back">Quay lại</string>
+    <string name="yes_cancel">Có, hủy lịch</string>
+    
+    <!-- Reason for cancellation/reschedule -->
+    <string name="reason_cancel_title">Lý do hủy lịch hẹn</string>
+    <string name="reason_reschedule_title">Lý do đổi lịch hẹn</string>
+    <string name="reason_change_doctor">Tôi muốn đổi sang bác sĩ khác</string>
+    <string name="reason_change_package">Tôi muốn đổi gói khám</string>
+    <string name="reason_no_consult">Tôi không muốn tư vấn nữa</string>
+    <string name="reason_recovered">Tôi đã khỏi bệnh</string>
+    <string name="reason_found_medicine">Tôi đã tìm được thuốc phù hợp</string>
+    <string name="reason_schedule_clash">Tôi có lịch trình xung đột</string>
+    <string name="reason_not_available">Tôi không có mặt vào thời gian đã hẹn</string>
+    <string name="reason_important_activity">Tôi có hoạt động không thể bỏ qua</string>
+    <string name="reason_dont_tell">Tôi không muốn nói</string>
+    <string name="reason_other">Khác</string>
 </resources>

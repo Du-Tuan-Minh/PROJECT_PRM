@@ -143,13 +143,17 @@
             android:layout_marginEnd="20dp">
 
             <LinearLayout
+                android:id="@+id/btnBookingInfo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -170,13 +174,17 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnArticles"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -224,13 +232,17 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnChatAI"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -250,13 +262,17 @@
                     android:layout_marginTop="4dp"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/btnBookAppointment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -267,7 +283,100 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Appointment"
+                    android:text="Đặt lịch khám"
+                    android:textSize="13sp"
+                    android:textColor="#222"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnAppointmentHistory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_circle_lightblue"
+                    android:src="@drawable/ic_history"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lịch sử khám"
+                    android:textSize="13sp"
+                    android:textColor="#222"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnSearchDoctor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_circle_lightblue"
+                    android:src="@drawable/ic_search"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tìm bác sĩ"
+                    android:textSize="13sp"
+                    android:textColor="#222"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnSearchClinic"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_circle_lightblue"
+                    android:src="@drawable/ic_work"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tìm phòng khám"
                     android:textSize="13sp"
                     android:textColor="#222"
                     android:gravity="center"

@@ -1,48 +1,32 @@
 package com.example.project_prm.MainScreen;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
-import androidx.annotation.Nullable;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.example.project_prm.R;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import java.util.ArrayList;
-import java.util.List;
 
 public class NotificationActivity extends AppCompatActivity {
+
+    private ImageView ivBack;
+    private TextView tvTitle;
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
-        ImageView ivBack = findViewById(R.id.ivBack);
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initViews();
+        setupListeners();
+    }
 
-        RecyclerView recyclerView = findViewById(R.id.rvNotifications);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    private void initViews() {
+        ivBack = findViewById(R.id.ivBack);
+        tvTitle = findViewById(R.id.tvTitle);
+        tvTitle.setText("Thông báo");
+    }
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("notifications")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Notification> notifications = new ArrayList<>();
-                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                        Notification notification = doc.toObject(Notification.class);
-                        notifications.add(notification);
-                    }
-                    NotificationAdapter adapter = new NotificationAdapter(notifications);
-                    recyclerView.setAdapter(adapter);
-                });
+    private void setupListeners() {
+        ivBack.setOnClickListener(v -> finish());
     }
 } 
