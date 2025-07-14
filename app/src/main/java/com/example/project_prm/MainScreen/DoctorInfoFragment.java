@@ -13,11 +13,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.project_prm.R;
-import com.example.project_prm.Repository.DoctorRepository;
-import com.example.project_prm.Model.DoctorModel;
+import com.example.project_prm.MainScreen.DoctorRepository;
+import com.example.project_prm.MainScreen.DoctorInfoModel;
 import com.example.project_prm.Model.ReviewModel;
 import com.example.project_prm.adapter.ReviewAdapter;
 import java.util.List;
+import com.example.project_prm.Model.DoctorModel;
 
 public class DoctorInfoFragment extends Fragment {
     private ImageView ivDoctorImage;
@@ -73,7 +74,7 @@ public class DoctorInfoFragment extends Fragment {
                     ivDoctorImage.setImageResource(R.drawable.ic_doctor_placeholder);
                 }
                 List<ReviewModel> reviews = doctorRepository.getDoctorReviews(activity.bookingData.doctorId);
-                reviewAdapter = new ReviewAdapter(reviews);
+                reviewAdapter = new ReviewAdapter(getContext(), reviews);
                 rvReviews.setAdapter(reviewAdapter);
             }
         }

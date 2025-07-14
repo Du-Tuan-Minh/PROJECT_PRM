@@ -1,6 +1,6 @@
 package com.example.project_prm.MainScreen;
 
-public class DoctorModel {
+public class DoctorInfoModel {
     public String id;
     public String name;
     public String specialty;
@@ -16,9 +16,9 @@ public class DoctorModel {
     public boolean isAvailable;
     public String description;
     
-    public DoctorModel() {}
+    public DoctorInfoModel() {}
     
-    public DoctorModel(String id, String name, String specialty, String location) {
+    public DoctorInfoModel(String id, String name, String specialty, String location) {
         this.id = id;
         this.name = name;
         this.specialty = specialty;

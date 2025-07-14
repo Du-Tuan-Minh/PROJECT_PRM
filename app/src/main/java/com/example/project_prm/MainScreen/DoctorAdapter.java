@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.project_prm.R;
 import java.util.List;
+import com.example.project_prm.Model.DoctorModel;
 
 public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.DoctorViewHolder> {
     
@@ -66,12 +67,12 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.DoctorView
         }
 
         public void bind(DoctorModel doctor) {
-            tvDoctorName.setText(doctor.name);
-            tvDoctorSpecialty.setText(doctor.specialty);
-            tvDoctorLocation.setText(doctor.location);
-            tvDoctorRating.setText(String.format("%.1f", doctor.rating));
-            tvDoctorReviewCount.setText("(" + doctor.reviewCount + " đánh giá)");
-            tvDoctorExperience.setText(doctor.experienceYears + " năm kinh nghiệm");
+            tvDoctorName.setText(doctor.getName());
+            tvDoctorSpecialty.setText(doctor.getSpecialty());
+            tvDoctorLocation.setText(doctor.getLocation());
+            tvDoctorRating.setText(String.format("%.1f", doctor.getRating()));
+            tvDoctorReviewCount.setText("(" + doctor.getReviewCount() + " đánh giá)");
+            tvDoctorExperience.setText(doctor.getExperienceYears() + " năm kinh nghiệm");
 
             // Load doctor image
             Glide.with(itemView.getContext())

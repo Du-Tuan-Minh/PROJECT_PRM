@@ -115,6 +115,7 @@
             android:layout_marginBottom="24dp">
 
             <!-- Đặt lịch khám -->
+            <!--
             <LinearLayout
                 android:id="@+id/btnBookAppointment"
                 android:layout_width="0dp"
@@ -143,8 +144,10 @@
                     android:gravity="center" />
 
             </LinearLayout>
+            -->
 
             <!-- Tìm kiếm bác sĩ -->
+            <!--
             <LinearLayout
                 android:id="@+id/btnSearchDoctor"
                 android:layout_width="0dp"
@@ -173,6 +176,7 @@
                     android:gravity="center" />
 
             </LinearLayout>
+            -->
 
         </LinearLayout>
 

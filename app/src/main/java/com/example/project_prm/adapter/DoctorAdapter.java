@@ -58,23 +58,21 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.ViewHolder
     class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivDoctorImage;
         private TextView tvDoctorName;
-        private TextView tvSpecialization;
-        private TextView tvHospital;
-        private TextView tvRating;
-        private TextView tvReviewCount;
-        private TextView tvConsultationFee;
-        private RatingBar ratingBar;
+        private TextView tvDoctorSpecialty;
+        private TextView tvDoctorLocation;
+        private TextView tvDoctorRating;
+        private TextView tvDoctorReviewCount;
+        // Không có tvConsultationFee và ratingBar trong layout
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivDoctorImage = itemView.findViewById(R.id.iv_doctor_image);
-            tvDoctorName = itemView.findViewById(R.id.tv_doctor_name);
-            tvSpecialization = itemView.findViewById(R.id.tv_specialization);
-            tvHospital = itemView.findViewById(R.id.tv_hospital);
-            tvRating = itemView.findViewById(R.id.tv_rating);
-            tvReviewCount = itemView.findViewById(R.id.tv_review_count);
-            tvConsultationFee = itemView.findViewById(R.id.tv_consultation_fee);
-            ratingBar = itemView.findViewById(R.id.rating_bar);
+            ivDoctorImage = itemView.findViewById(R.id.ivDoctorImage);
+            tvDoctorName = itemView.findViewById(R.id.tvDoctorName);
+            tvDoctorSpecialty = itemView.findViewById(R.id.tvDoctorSpecialty);
+            tvDoctorLocation = itemView.findViewById(R.id.tvDoctorLocation);
+            tvDoctorRating = itemView.findViewById(R.id.tvDoctorRating);
+            tvDoctorReviewCount = itemView.findViewById(R.id.tvDoctorReviewCount);
+            // Không có tvConsultationFee và ratingBar
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
@@ -86,17 +84,14 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.ViewHolder
 
         public void bind(DoctorModel doctor) {
             tvDoctorName.setText(doctor.getName());
-            tvSpecialization.setText(doctor.getSpecialization());
-            tvHospital.setText(doctor.getHospital());
-            tvRating.setText(String.format("%.1f", doctor.getRating()));
-            tvReviewCount.setText("(" + doctor.getReviewCount() + " reviews)");
-            tvConsultationFee.setText("$" + doctor.getConsultationFee());
-            ratingBar.setRating((float) doctor.getRating());
-
+            tvDoctorSpecialty.setText(doctor.getSpecialty());
+            tvDoctorLocation.setText(doctor.getLocation());
+            tvDoctorRating.setText(String.format("%.1f", doctor.getRating()));
+            tvDoctorReviewCount.setText("(" + doctor.getReviewCount() + " đánh giá)");
             // Load doctor image using Glide
-            if (doctor.getImageUrl() != null && !doctor.getImageUrl().isEmpty()) {
+            if (doctor.getImage() != null && !doctor.getImage().isEmpty()) {
                 Glide.with(context)
-                        .load(doctor.getImageUrl())
+                        .load(doctor.getImage())
                         .placeholder(R.drawable.ic_doctor)
                         .error(R.drawable.ic_doctor)
                         .into(ivDoctorImage);

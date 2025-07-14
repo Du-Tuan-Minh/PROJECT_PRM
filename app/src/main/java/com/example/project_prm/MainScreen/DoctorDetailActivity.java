@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.project_prm.R;
+import com.example.project_prm.Model.DoctorModel;
 import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.List;

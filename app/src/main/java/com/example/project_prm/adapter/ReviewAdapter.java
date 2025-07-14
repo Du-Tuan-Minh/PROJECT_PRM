@@ -51,26 +51,26 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tvPatientName;
-        private TextView tvComment;
-        private TextView tvDate;
+        private TextView tvReviewText;
+        private TextView tvReviewDate;
         private RatingBar ratingBar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvPatientName = itemView.findViewById(R.id.tv_patient_name);
-            tvComment = itemView.findViewById(R.id.tv_comment);
-            tvDate = itemView.findViewById(R.id.tv_date);
-            ratingBar = itemView.findViewById(R.id.rating_bar);
+            tvPatientName = itemView.findViewById(R.id.tvPatientName);
+            tvReviewText = itemView.findViewById(R.id.tvReviewText);
+            tvReviewDate = itemView.findViewById(R.id.tvReviewDate);
+            ratingBar = itemView.findViewById(R.id.ratingBar);
         }
 
         public void bind(ReviewModel review) {
             tvPatientName.setText(review.getPatientName());
-            tvComment.setText(review.getContent());
+            tvReviewText.setText(review.getContent());
             ratingBar.setRating(review.getRating());
             if (review.getDate() != null) {
-                tvDate.setText(review.getDate());
+                tvReviewDate.setText(review.getDate());
             } else {
-                tvDate.setText("");
+                tvReviewDate.setText("");
             }
         }
     }

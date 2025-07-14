@@ -40,4 +40,11 @@
     <color name="blue_dialog">#2F72FE</color>
     <color name="light_blue_bg">#F8F9FF</color>
     <color name="status_cancelled">#FF4D4F</color>
+    <color name="category_health">#4CAF50</color>
+    <color name="category_covid">#FF9800</color>
+    <color name="category_lifestyle">#2196F3</color>
+    <color name="category_medical">#9C27B0</color>
+    <color name="category_default">#BDBDBD</color>
+    <color name="orange">#FFA500</color>
+    <color name="red">#F44336</color>
 </resources>

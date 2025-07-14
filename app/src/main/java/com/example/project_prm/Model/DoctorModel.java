@@ -1,4 +1,4 @@
-package com.example.project_prm.model;
+package com.example.project_prm.Model;
 
 public class DoctorModel {
     private String id;
@@ -9,10 +9,13 @@ public class DoctorModel {
     private int experience;
     private String image;
     private String description;
+    private String location;
+    private int reviewCount;
+    private int experienceYears;
 
     public DoctorModel() {}
 
-    public DoctorModel(String id, String name, String specialty, String hospital, float rating, int experience, String image, String description) {
+    public DoctorModel(String id, String name, String specialty, String hospital, float rating, int experience, String image, String description, String location, int reviewCount, int experienceYears) {
         this.id = id;
         this.name = name;
         this.specialty = specialty;
@@ -21,6 +24,9 @@ public class DoctorModel {
         this.experience = experience;
         this.image = image;
         this.description = description;
+        this.location = location;
+        this.reviewCount = reviewCount;
+        this.experienceYears = experienceYears;
     }
 
     public String getId() { return id; }
@@ -46,4 +52,13 @@ public class DoctorModel {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+
+    public int getReviewCount() { return reviewCount; }
+    public void setReviewCount(int reviewCount) { this.reviewCount = reviewCount; }
+
+    public int getExperienceYears() { return experienceYears; }
+    public void setExperienceYears(int experienceYears) { this.experienceYears = experienceYears; }
 } 

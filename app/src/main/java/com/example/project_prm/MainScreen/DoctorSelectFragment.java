@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.project_prm.R;
-import com.example.project_prm.Repository.DoctorRepository;
+import com.example.project_prm.MainScreen.DoctorRepository;
 import com.example.project_prm.Model.DoctorModel;
 import com.example.project_prm.adapter.DoctorBookingAdapter;
 import java.util.ArrayList;

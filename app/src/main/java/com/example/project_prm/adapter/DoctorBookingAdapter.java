@@ -66,16 +66,16 @@ public class DoctorBookingAdapter extends RecyclerView.Adapter<DoctorBookingAdap
         
         void bind(DoctorModel doctor) {
             tvDoctorName.setText(doctor.getName());
-            tvSpecialty.setText(doctor.getSpecialization());
+            tvSpecialty.setText(doctor.getSpecialty());
             tvHospital.setText(doctor.getHospital());
             tvRating.setText(String.format("%.1f ⭐", doctor.getRating()));
             tvExperience.setText(doctor.getExperience() + " years experience");
             
             // Load doctor image
-            if (doctor.getImageUrl() != null && !doctor.getImageUrl().isEmpty()) {
+            if (doctor.getImage() != null && !doctor.getImage().isEmpty()) {
                 // Use Glide to load image from URL
                 com.bumptech.glide.Glide.with(itemView.getContext())
-                        .load(doctor.getImageUrl())
+                        .load(doctor.getImage())
                         .placeholder(R.drawable.ic_doctor)
                         .error(R.drawable.ic_doctor)
                         .into(ivDoctorImage);

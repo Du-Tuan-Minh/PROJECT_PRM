@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.project_prm.R;
-import com.example.project_prm.Repository.DoctorRepository;
+import com.example.project_prm.MainScreen.DoctorRepository;
 import com.example.project_prm.Model.DoctorModel;
 import com.example.project_prm.adapter.DoctorAdapter;
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public class SearchDoctorActivity extends AppCompatActivity {
             for (DoctorModel doctor : allDoctors) {
                 if (doctor.getName().toLowerCase().contains(lowerQuery) ||
                     doctor.getHospital().toLowerCase().contains(lowerQuery) ||
-                    doctor.getSpecialization().toLowerCase().contains(lowerQuery)) {
+                    doctor.getSpecialty().toLowerCase().contains(lowerQuery)) {
                     filteredDoctors.add(doctor);
                 }
             }
@@ -90,11 +90,11 @@ public class SearchDoctorActivity extends AppCompatActivity {
             Intent intent = new Intent(this, DoctorDetailActivity.class);
             intent.putExtra("doctor_id", doctor.getId());
             intent.putExtra("doctor_name", doctor.getName());
-            intent.putExtra("doctor_specialty", doctor.getSpecialization());
+            intent.putExtra("doctor_specialty", doctor.getSpecialty());
             intent.putExtra("doctor_hospital", doctor.getHospital());
             intent.putExtra("doctor_rating", doctor.getRating());
             intent.putExtra("doctor_experience", doctor.getExperience());
-            intent.putExtra("doctor_image", doctor.getImageUrl());
+            intent.putExtra("doctor_image", doctor.getImage());
             startActivity(intent);
         });
         rvDoctors.setAdapter(adapter);

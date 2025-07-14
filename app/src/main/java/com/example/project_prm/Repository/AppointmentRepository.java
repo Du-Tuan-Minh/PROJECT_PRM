@@ -1,6 +1,7 @@
 package com.example.project_prm.Repository;
 
 import com.example.project_prm.Model.AppointmentModel;
+import com.example.project_prm.Model.DoctorModel;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 

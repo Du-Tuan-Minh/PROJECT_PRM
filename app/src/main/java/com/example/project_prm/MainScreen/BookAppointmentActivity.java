@@ -177,27 +177,27 @@ public class BookAppointmentActivity extends AppCompatActivity {
             int amount = amountStr.isEmpty() ? 0 : Integer.parseInt(amountStr);
             AppointmentModel appointment = new AppointmentModel(
                 generateAppointmentId(),
-                bookingData.doctorName,
-                bookingData.doctorSpecialty,
+                bookingData.patientName, // patientId tạm thời dùng tên bệnh nhân
+                bookingData.doctorId,    // doctorId
                 bookingData.date,
                 bookingData.time,
                 "upcoming",
-                bookingData.packageType,
-                amount,
-                bookingData.patientName,
-                bookingData.patientProblem,
-                bookingData.doctorHospital != null ? bookingData.doctorHospital : "Bệnh viện ABC",
-                bookingData.doctorImage != null ? bookingData.doctorImage : "ic_doctor_placeholder"
+                bookingData.patientProblem // note
             );
-            boolean success = appointmentRepository.addAppointment(appointment);
-            if (success) {
-                Log.d(TAG, "Appointment saved successfully");
-                BookingSuccessDialog dialog = new BookingSuccessDialog();
-                dialog.show(getSupportFragmentManager(), "BookingSuccessDialog");
-            } else {
-                Log.e(TAG, "Failed to save appointment");
-                Toast.makeText(this, "Đặt lịch thất bại. Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
-            }
+            // Lưu lịch hẹn bằng saveAppointment
+            appointmentRepository.saveAppointment(appointment, new AppointmentRepository.OnAppointmentSavedListener() {
+                @Override
+                public void onAppointmentSaved(AppointmentModel appointment) {
+                    Log.d(TAG, "Appointment saved successfully");
+                    BookingSuccessDialog dialog = new BookingSuccessDialog();
+                    dialog.show(getSupportFragmentManager(), "BookingSuccessDialog");
+                }
+                @Override
+                public void onError(String error) {
+                    Log.e(TAG, "Failed to save appointment: " + error);
+                    Toast.makeText(BookAppointmentActivity.this, "Đặt lịch thất bại. Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                }
+            });
         } catch (Exception e) {
             Log.e(TAG, "Error in onAppointmentConfirmed: " + e.getMessage(), e);
             Toast.makeText(this, "Có lỗi xảy ra. Vui lòng thử lại!", Toast.LENGTH_SHORT).show();

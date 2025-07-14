@@ -17,6 +17,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.example.project_prm.R;
 import java.util.ArrayList;
 import java.util.List;
+import com.example.project_prm.Model.DoctorModel;
 
 public class FindDoctorActivity extends AppCompatActivity {
     
@@ -114,10 +115,10 @@ public class FindDoctorActivity extends AppCompatActivity {
             public void onDoctorClick(DoctorModel doctor) {
                 // Open doctor details or booking
                 Intent intent = new Intent(FindDoctorActivity.this, BookAppointmentActivity.class);
-                intent.putExtra("doctor_id", doctor.id);
-                intent.putExtra("doctor_name", doctor.name);
-                intent.putExtra("doctor_specialty", doctor.specialty);
-                intent.putExtra("doctor_location", doctor.location);
+                intent.putExtra("doctor_id", doctor.getId());
+                intent.putExtra("doctor_name", doctor.getName());
+                intent.putExtra("doctor_specialty", doctor.getSpecialty());
+                intent.putExtra("doctor_hospital", doctor.getHospital());
                 startActivity(intent);
             }
         });
