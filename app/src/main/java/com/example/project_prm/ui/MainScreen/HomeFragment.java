@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.project_prm.DataManager.DAO.UserDAO;
+import com.example.project_prm.DataManager.DAO.UserProfileDAO;
 import com.example.project_prm.ui.AllUtilitiesActivity;
 import com.example.project_prm.ui.adapter.BannerAdapter;
 import com.example.project_prm.R;
 import com.example.project_prm.ui.Article.ArticlesActivity;
+import com.example.project_prm.utils.CurrentUser;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.Arrays;
@@ -40,6 +44,9 @@ public class HomeFragment extends Fragment {
     private ImageView btnchat;
     private ImageView btnArticles;
 
+    private TextView tvUserName;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,6 +61,7 @@ public class HomeFragment extends Fragment {
         setupClickListeners();
         setupSearchFunctionality();
         setupBannerViewPager();
+        loadUserName();
     }
 
     private void initializeViews(View view) {
@@ -64,6 +72,8 @@ public class HomeFragment extends Fragment {
         tvSeeAllSpeciality = view.findViewById(R.id.tvSeeAllSpeciality);
         btnchat = view.findViewById(R.id.btnchat);
         btnArticles = view.findViewById(R.id.btnArticles);
+        tvUserName = view.findViewById(R.id.tvUserNameHome);
+
 
         updateNotificationBadge();
     }
@@ -75,6 +85,25 @@ public class HomeFragment extends Fragment {
             notificationBadge.setVisibility(hasNew ? View.VISIBLE : View.GONE);
         }
     }
+
+    private void loadUserName() {
+        String userId = CurrentUser.getUserId(requireContext());
+        if (userId == null) return;
+
+        UserProfileDAO profileDAO = new UserProfileDAO();
+        profileDAO.getByUserId(userId).addOnSuccessListener(doc -> {
+            if (doc != null && doc.exists()) {
+                String name = doc.getString("full_name");
+                if (name != null) {
+                    tvUserName.setText(name);
+                }
+            }
+        }).addOnFailureListener(e -> {
+            Log.e("LoadUserName", "Lỗi khi lấy tên người dùng", e);
+        });
+    }
+
+
 
     private void setupClickListeners() {
         ivNotification.setOnClickListener(v -> {
@@ -121,19 +150,17 @@ public class HomeFragment extends Fragment {
         });
 
         // Setup click listeners for existing utilities
-        View btnArticles = getView().findViewById(R.id.btnArticles);
+
         View btnChatAI = getView().findViewById(R.id.btnChatAI);
 
-        btnArticles.setOnClickListener(v -> {
-            // TODO: Navigate to articles
-            Toast.makeText(getActivity(), "Tính năng Articles đang phát triển", Toast.LENGTH_SHORT).show();
-        });
+
 
         btnChatAI.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ChatbotActivity.class);
             startActivity(intent);
         });
     }
+
 
     private void setupSearchFunctionality() {
         etSearch.addTextChangedListener(new TextWatcher() {
