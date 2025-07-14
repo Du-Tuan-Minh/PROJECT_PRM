@@ -86,5 +86,13 @@ public class StatusPopup extends AppCompatActivity {
     public void dismiss() {
         dialog.dismiss();
     }
+
+    public void hiddenCancelButton(){
+        cancelButton.setVisibility(View.GONE);
+    }
+
+    public void displayCancelButton(){
+        cancelButton.setVisibility(View.VISIBLE);
+    }
 }
 

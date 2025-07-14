@@ -10,8 +10,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.project_prm.DataManager.DAO.UserDAO;
 import com.example.project_prm.R;
 import com.example.project_prm.ui.dialog.StatusPopup;
 import com.example.project_prm.widgets.DropDownFieldView;
@@ -28,9 +30,11 @@ public class SignUpActivity extends AppCompatActivity {
     private DropDownFieldView registerGenderInput, registerRoleInput;
     private Button signUpButton;
     private TextView signInText;
+    private StatusPopup popup;
+    private UserDAO userDAO;
 
 
-    private void bindingView(){
+    private void bindingView() {
         registerEmailInput = findViewById(R.id.registerEmailInput);
         registerPasswordInput = findViewById(R.id.registerPasswordInput);
         signUpButton = findViewById(R.id.signUpButton);
@@ -39,8 +43,11 @@ public class SignUpActivity extends AppCompatActivity {
         registerDateOfBirthInput = findViewById(R.id.registerDateOfBirthInput);
         registerGenderInput = findViewById(R.id.registerGenderInput);
         registerRoleInput = findViewById(R.id.registerRoleInput);
+        popup = new StatusPopup(this);
+        userDAO = new UserDAO();
     }
-    private void bindingAction(){
+
+    private void bindingAction() {
         registerPasswordInput.setOnEndIconClickListener(this::onEyeIconClick);
         signUpButton.setOnClickListener(this::onSignUpClick);
         signInText.setOnClickListener(this::onGoToLoginClick);
@@ -50,7 +57,7 @@ public class SignUpActivity extends AppCompatActivity {
         registerRoleInput.setOnItemSelectedListener(this::onRoleIconClick);
     }
 
-    private void setClearFocus(){
+    private void setClearFocus() {
         registerEmailInput.clearFocus();
         registerFullNameInput.clearFocus();
         registerDateOfBirthInput.clearFocus();
@@ -62,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void onRoleIconClick(String s, int i) {
         Toast.makeText(this, "Role selected: " + s, Toast.LENGTH_SHORT).show();
         // Handle role selection here
-        if(s != null){
+        if (s != null) {
             registerRoleInput.getDropdownItems().setHintEnabled(false);
         }
     }
@@ -70,7 +77,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void onGenderIconClick(String s, int i) {
         Toast.makeText(this, "Gender selected: " + s, Toast.LENGTH_SHORT).show();
         // Handle gender selection here
-        if(s != null){
+        if (s != null) {
             registerGenderInput.getDropdownItems().setHintEnabled(false);
         }
     }
@@ -98,33 +105,62 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void onSignUpClick(View view) {
-        String username = registerEmailInput.getFieldText();
+        String email = registerEmailInput.getFieldText();
         String password = registerPasswordInput.getFieldText();
         String gender = registerGenderInput.getSelectedItem();
         String dateOfBirth = registerDateOfBirthInput.getFieldText();
         String name = registerFullNameInput.getFieldText();
-        String profile = registerDateOfBirthInput.getFieldText();
+        String role = registerRoleInput.getSelectedItem();
 
-        if (username.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+        if (email.isEmpty() || password.isEmpty() ||
+                gender.isEmpty() || dateOfBirth.isEmpty() ||
+                name.isEmpty() || role.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
         if (password.length() < 6) {
-            Toast.makeText(this, "Mật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Mật khẩu phải có ít nhất 6 ký tự",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!username.matches("[a-zA-Z0-9]+")) {
-            Toast.makeText(this, "Tên đăng nhập chỉ được chứa chữ cái và số", Toast.LENGTH_SHORT).show();
+        if (!email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
+            Toast.makeText(this, "Vui lòng nhập đúng định dạng email", Toast.LENGTH_SHORT).show();
             return;
         }
+        userDAO.isEmailExist(email)
+                .addOnSuccessListener(exists -> {
+                    if (exists){
+                        popup.setErrorPopup("Oops, Failed!",
+                                "Email đã tồn tại","Oki");
+                        popup.hiddenCancelButton();
+                        popup.show();
+                        return;
+                    }
+                    userDAO.register(email, password, gender, dateOfBirth, name, role)
+                            .addOnSuccessListener(this::onRegisterSuccess)
+                            .addOnFailureListener(this::onRegisterFailure);
+                })
+                .addOnFailureListener(e -> {
+                    popup.setErrorPopup("Oops, Failed!",
+                            "Đăng ký thất bại, vui lòng thử lại sau","Oki");
+                    popup.hiddenCancelButton();
+                    popup.show();
+                });
+    }
 
-        StatusPopup popup = new StatusPopup(this);
-        popup.setPrimaryClick(v -> popup.dismiss());
-        popup.setCancelClick(v -> popup.dismiss());
-
-        // Success Example
-        popup.setErrorPopup("\"Oops, Failed!", "Desvv...","Oki");
+    private void onRegisterFailure(Exception e) {
+        popup.setErrorPopup("\"Oops, Failed!",
+                "Đăng ký thất bại, vui lòng thử lại sau",
+                "Oki");
+        popup.hiddenCancelButton();
         popup.show();
+    }
+
+    private void onRegisterSuccess(Void unused) {
+        startActivity(new Intent(this, SignInActivity.class));
+        finish();
+
     }
 
     private void onEyeIconClick(EditTextFieldView editTextFieldView) {
@@ -161,11 +197,5 @@ public class SignUpActivity extends AppCompatActivity {
         super.onStart();
         registerRoleInput.clearFocus();
         setClearFocus();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
     }
 }

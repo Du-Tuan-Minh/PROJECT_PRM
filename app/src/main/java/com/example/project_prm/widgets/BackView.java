@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ public class BackView extends LinearLayout {
     }
 
     private Context context;
+    private  LinearLayout backLayout;
     private ImageView backIcon;
     private TextView textBackView;
     private OnBackIconClickListener iconClickListener;
@@ -33,6 +35,7 @@ public class BackView extends LinearLayout {
     private void bindingView(){
         backIcon = findViewById(R.id.backIcon);
         textBackView = findViewById(R.id.textBackView);
+        backLayout = findViewById(R.id.backLayout);
     }
 
     private void setLayout(Context context, AttributeSet attrs){
@@ -48,7 +51,22 @@ public class BackView extends LinearLayout {
         a.recycle();
     }
     private void bindingAction(){
-        backIcon.setOnClickListener(this::onBackIconClick);
+        backLayout.setOnTouchListener(this::onBackIconClick);
+    }
+
+    private boolean onBackIconClick(View view, MotionEvent motionEvent) {
+        if (iconClickListener != null) {
+            iconClickListener.onIconClick(this);
+        }
+        else {
+            setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((Activity) context).onBackPressed();
+                }
+            });
+        }
+        return false;
     }
 
     private void onBackIconClick(View view) {

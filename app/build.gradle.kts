@@ -30,6 +30,13 @@ android { namespace = "com.example.project_prm"
         targetCompatibility = JavaVersion.VERSION_11
     }
 
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/NOTICE.md"
+            excludes += "/META-INF/LICENSE.md"
+        }
+    }
+
 }
 
 dependencies {
@@ -52,5 +59,8 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
     implementation(libs.recyclerview)
+
+    implementation("com.sun.mail:android-mail:1.6.7")
+    implementation("com.sun.mail:android-activation:1.6.7")
     implementation("com.tbuonomo:dotsindicator:4.3")
 }

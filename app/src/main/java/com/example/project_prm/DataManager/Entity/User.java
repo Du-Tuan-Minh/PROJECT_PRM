@@ -1,18 +1,19 @@
 package com.example.project_prm.DataManager.Entity;
 
-import com.google.firebase.firestore.FieldValue;
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class User {
-    public long id;
-    public String username, password, email, phone;
+    public String role, email, password, phone;
     public Object created_at;
 
-    public User(long id, String username, String password, String email, String phone) {
-        this.id = id;
-        this.username = username;
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public User(String role, String email, String password,  String phone) {
+        this.role = role;
         this.password = password;
         this.email = email;
         this.phone = phone;
@@ -21,27 +22,53 @@ public class User {
 
     public java.util.Map<String, Object> toMap() {
         java.util.Map<String, Object> data = new java.util.HashMap<>();
-        data.put("id", id);
-        data.put("username", username);
+        data.put("role", role);
+        data.put("username", email);
         data.put("password", password);
         data.put("email", email);
         data.put("phone", phone);
         data.put("created_at", created_at);
         return data;
     }
-    public static User fromMap(Map<String, Object> map) {
-        if (map == null) return null;
-        long id = (map.get("id") instanceof Long) ? (Long) map.get("id") : ((Number) map.get("id")).longValue();
-        String username = (String) map.get("username");
-        String password = (String) map.get("password");
-        String email = (String) map.get("email");
-        String phone = (String) map.get("phone");
-        Object createdAt = map.get("created_at");
+    public static User fromMap(java.util.Map<String, Object> data) {
+        return new User(
+                (String) data.get("role"),
+                (String) data.get("username"),
+                (String) data.get("email"),
+                (String) data.get("phone")
+        );
+    }
 
-        User user = new User(id, username, password, email, phone);
-        user.created_at = createdAt;
-        return user;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Object getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Object created_at) {
+        this.created_at = created_at;
+    }
 }

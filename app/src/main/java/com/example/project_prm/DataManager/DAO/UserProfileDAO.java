@@ -28,4 +28,16 @@ public class UserProfileDAO {
     public Task<DocumentSnapshot> getById(String profileId) {
         return db.collection("user_profiles").document(profileId).get();
     }
+
+    public Task<DocumentSnapshot> getByUserId(String userId) {
+        return db.collection("user_profiles").whereEqualTo("user_id", userId).get()
+                .continueWithTask(task -> {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            return document.getReference().get();
+                        }
+                    }
+                    return null;
+                });
+    }
 }

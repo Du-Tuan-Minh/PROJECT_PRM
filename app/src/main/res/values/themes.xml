@@ -1,6 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Project_PRM" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Default font for all text -->
+        <item name="android:textViewStyle">@style/DefaultTextView</item>
+        <item name="android:buttonStyle">@style/DefaultButton</item>
+        <item name="android:editTextStyle">@style/DefaultEditText</item>
+        <item name="android:dialogTheme">@style/DefaultDialog</item>
+
+        <!-- Optional: global font family -->
+        <item name="fontFamily">@font/poppins_regular</item>
+
         <!-- Chủ đạo -->
         <item name="colorPrimary">@color/light_text</item>
         <item name="colorSecondary">@color/primary_blue</item>
