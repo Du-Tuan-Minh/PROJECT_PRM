@@ -8,7 +8,7 @@
         <item name="colorSecondary">@color/primary_blue</item>
 
         <!-- Nền và chữ -->
-        <item name="backgroundColor">@color/dark_background</item>
+        <item name="backgroundColor">@color/background</item>
 
     </style>
 </resources>

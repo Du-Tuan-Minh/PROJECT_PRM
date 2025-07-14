@@ -106,6 +106,76 @@
                 android:layout_marginBottom="12dp"/>
         </FrameLayout>
 
+        <!-- Quick Actions Row - THÊM MỚI -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="24dp">
+
+            <!-- Đặt lịch khám -->
+            <LinearLayout
+                android:id="@+id/btnBookAppointment"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_card_primary"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_calendar"
+                    android:layout_marginBottom="8dp"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đặt lịch khám"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+            <!-- Tìm kiếm bác sĩ -->
+            <LinearLayout
+                android:id="@+id/btnSearchDoctor"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_card_secondary"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_doctor"
+                    android:layout_marginBottom="8dp"
+                    app:tint="@color/primary_light" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tìm bác sĩ"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_light"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/tvDoctorSpeciality"
             android:layout_width="wrap_content"

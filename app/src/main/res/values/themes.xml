@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Project_PRM" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Chủ đạo -->
-        <item name="colorPrimary">@color/light_text</item>
+        <item name="colorPrimary">@color/text_light_gray</item>
         <item name="colorSecondary">@color/primary_blue</item>
 
         <!-- Nền và chữ -->
-        <item name="backgroundColor">@color/light_background</item>
+        <item name="backgroundColor">@color/background</item>
     </style>
 
     <style name="Theme.Project_PRM" parent="Base.Theme.Project_PRM" />

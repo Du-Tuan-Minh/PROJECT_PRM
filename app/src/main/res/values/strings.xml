@@ -67,4 +67,24 @@
     <string name="reason_important_activity">Tôi có hoạt động không thể bỏ qua</string>
     <string name="reason_dont_tell">Tôi không muốn nói</string>
     <string name="reason_other">Khác</string>
+
+    <!-- New strings for booking flow -->
+    <string name="select_doctor">Chọn bác sĩ</string>
+    <string name="doctor_info">Thông tin bác sĩ</string>
+    <string name="search_doctor">Tìm kiếm bác sĩ</string>
+    <string name="search_doctor_hospital">Tìm kiếm theo tên bác sĩ, bệnh viện...</string>
+    <string name="book_appointment_home">Đặt lịch khám</string>
+    <string name="find_doctor">Tìm bác sĩ</string>
+    <string name="continue_booking">Tiếp tục đặt lịch</string>
+    <string name="about_doctor">Về bác sĩ</string>
+    <string name="patient_reviews">Đánh giá từ bệnh nhân</string>
+    <string name="select_package">Chọn gói khám</string>
+    <string name="package_message">Nhắn tin - 200,000đ (30 phút)</string>
+    <string name="package_voice">Gọi thoại - 300,000đ (30 phút)</string>
+    <string name="package_video">Gọi video - 500,000đ (45 phút)</string>
+    <string name="package_direct">Khám trực tiếp - 800,000đ (60 phút)</string>
+    <string name="package_general">Khám tổng quát - 1,200,000đ (90 phút)</string>
+    <string name="package_specialist">Tư vấn chuyên sâu - 1,500,000đ (120 phút)</string>
+    <string name="years_experience">năm kinh nghiệm</string>
+    <string name="phone_number">Số điện thoại</string>
 </resources>
