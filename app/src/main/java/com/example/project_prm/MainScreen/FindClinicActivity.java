@@ -33,6 +33,9 @@ import com.google.android.material.chip.ChipGroup;
 import com.example.project_prm.R;
 import java.util.ArrayList;
 import java.util.List;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 
 public class FindClinicActivity extends AppCompatActivity implements OnMapReadyCallback {
     
@@ -193,6 +196,19 @@ public class FindClinicActivity extends AppCompatActivity implements OnMapReadyC
         rvClinics.setAdapter(adapter);
     }
 
+    private Bitmap getBitmapFromVector(int drawableId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(this, drawableId);
+        Bitmap bitmap = Bitmap.createBitmap(
+            vectorDrawable.getIntrinsicWidth(),
+            vectorDrawable.getIntrinsicHeight(),
+            Bitmap.Config.ARGB_8888
+        );
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        vectorDrawable.draw(canvas);
+        return bitmap;
+    }
+
     private void loadClinicsOnMap() {
         if (mMap == null) return;
         
@@ -208,7 +224,7 @@ public class FindClinicActivity extends AppCompatActivity implements OnMapReadyC
                     .position(clinic.getLocation())
                     .title(clinic.getName())
                     .snippet(clinic.getAddress())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_clinic_marker));
+                    .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVector(R.drawable.ic_clinic_marker)));
             
             Marker marker = mMap.addMarker(markerOptions);
             mapMarkers.add(marker);
@@ -228,7 +244,7 @@ public class FindClinicActivity extends AppCompatActivity implements OnMapReadyC
                     .position(clinic.getLocation())
                     .title(clinic.getName())
                     .snippet(clinic.getAddress())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_clinic_marker));
+                    .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVector(R.drawable.ic_clinic_marker)));
             
             Marker marker = mMap.addMarker(markerOptions);
             mapMarkers.add(marker);
