@@ -176,6 +176,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             userDao.update(userId, user)
                                     .addOnSuccessListener(v -> {
                                         Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                        setResult(RESULT_OK); // 👈 Quan trọng
                                         finish();
                                     })
                                     .addOnFailureListener(e -> Toast.makeText(this, "Lỗi cập nhật user: " + e.getMessage(), Toast.LENGTH_SHORT).show());

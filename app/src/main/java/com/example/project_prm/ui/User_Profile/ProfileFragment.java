@@ -1,5 +1,6 @@
 package com.example.project_prm.ui.User_Profile;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -25,6 +28,10 @@ import com.example.project_prm.ui.auth.SignInActivity;
 import com.example.project_prm.utils.CurrentUser;
 
 public class ProfileFragment extends Fragment {
+
+    private View rootView;
+
+
     public ProfileFragment() {
 
     }
@@ -34,17 +41,19 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        // Tách riêng xử lý nút back
-        setupBackToHome(view);
-        setupEditProfileButton(view);
-        setupDarkModeSwitch(view);
+        setupBackToHome(rootView);
+        setupEditProfileButton(rootView);
+        setupDarkModeSwitch(rootView);
+        setupNavigation(rootView);
+        loadUserProfile(rootView); // Lần đầu vào fragment
 
-        setupNavigation(view);
-        loadUserProfile(view);
-        return view;
+        return rootView;
     }
+
+
+
 
 
 
@@ -65,6 +74,9 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
         });
     }
+
+
+
 
     private void setupDarkModeSwitch(View rootView) {
         Switch darkModeSwitch = rootView.findViewById(R.id.dark_mode_switch);
@@ -167,6 +179,16 @@ public class ProfileFragment extends Fragment {
         startActivity(intent);
     }
 
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (rootView != null) {
+            loadUserProfile(rootView); // Reload khi quay lại Fragment
+        }
+    }
 
 
 

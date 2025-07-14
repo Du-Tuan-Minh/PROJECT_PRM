@@ -241,6 +241,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateNotificationBadge();
+        loadUserName();  // Thêm dòng này để cập nhật lại tên người dùng
     }
 
 } 
