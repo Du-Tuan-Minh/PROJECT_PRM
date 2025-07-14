@@ -142,20 +142,18 @@ public class UserDAO {
                 .set(profile.toMap());
     }
 
-    // get user role
-    public Task<String> getUserRole(String userId) {
+    // check is Clinic
+    public Task<Boolean> isClinic(String userId) {
         return db.collection("users")
-                .document(userId)
+                .whereEqualTo("user_id", userId)
+                .whereEqualTo("role", "clinic")
                 .get()
                 .continueWith(task -> {
                     if (!task.isSuccessful()) {
                         throw task.getException();
-                        }
-                    DocumentSnapshot document = task.getResult();
-                    if (document == null || !document.exists()) {
-                        throw new Exception("Không tìm thấy user_id=" + userId);
                     }
-                    return document.getString("role");
+                    QuerySnapshot result = task.getResult();
+                    return result != null && !result.isEmpty();
                 });
     }
 }
