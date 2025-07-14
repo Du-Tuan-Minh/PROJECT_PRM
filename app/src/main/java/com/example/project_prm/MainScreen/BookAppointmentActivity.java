@@ -38,6 +38,8 @@ public class BookAppointmentActivity extends AppCompatActivity {
         public String patientAge;
         public String patientPhone;
         public String patientProblem;
+        public String emergencyContact;
+        public String emergencyPhone;
         @Override
         public String toString() {
             return "BookingData{" +
@@ -147,7 +149,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
         bookingData.time = time;
         showStep(4);
     }
-    public void onPatientDetailsEntered(String fullName, String gender, String age, String phone, String problem, String packageType, String duration, String amount) {
+    public void onPatientDetailsEntered(String fullName, String gender, String age, String phone, String problem, String packageType, String duration, String amount, String emergencyContact, String emergencyPhone) {
         bookingData.patientName = fullName;
         bookingData.patientGender = gender;
         bookingData.patientAge = age;
@@ -156,6 +158,8 @@ public class BookAppointmentActivity extends AppCompatActivity {
         bookingData.packageType = packageType;
         bookingData.duration = duration;
         bookingData.amount = amount;
+        bookingData.emergencyContact = emergencyContact;
+        bookingData.emergencyPhone = emergencyPhone;
         showStep(5);
     }
     public void onAppointmentConfirmed() {
@@ -175,14 +179,27 @@ public class BookAppointmentActivity extends AppCompatActivity {
             Log.d(TAG, "Booking data: " + bookingData);
             String amountStr = bookingData.amount != null ? bookingData.amount.replaceAll("[^0-9]", "") : "0";
             int amount = amountStr.isEmpty() ? 0 : Integer.parseInt(amountStr);
+            long now = System.currentTimeMillis();
             AppointmentModel appointment = new AppointmentModel(
                 generateAppointmentId(),
                 bookingData.patientName, // patientId tạm thời dùng tên bệnh nhân
                 bookingData.doctorId,    // doctorId
+                bookingData.doctorName,  // doctorName
+                bookingData.doctorSpecialty, // specialty
                 bookingData.date,
                 bookingData.time,
+                bookingData.packageType,
+                amount,
+                bookingData.duration,
                 "upcoming",
-                bookingData.patientProblem // note
+                bookingData.patientProblem, // problemDescription
+                bookingData.patientName, // patientName
+                bookingData.patientPhone, // patientPhone
+                bookingData.emergencyContact, // emergencyContact
+                bookingData.emergencyPhone, // emergencyPhone
+                now, // createdAt
+                now, // updatedAt
+                null // note
             );
             // Lưu lịch hẹn bằng saveAppointment
             appointmentRepository.saveAppointment(appointment, new AppointmentRepository.OnAppointmentSavedListener() {

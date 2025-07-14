@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.project_prm.R;
 
 public class PatientDetailsFragment extends Fragment {
-    private EditText etFullName, etAge, etPhone, etProblem;
+    private EditText etFullName, etAge, etPhone, etProblem, etEmergencyContact, etEmergencyPhone;
     private Spinner spGender, spPackage;
     private Button btnNext;
     @Nullable
@@ -35,6 +35,8 @@ public class PatientDetailsFragment extends Fragment {
         etAge = view.findViewById(R.id.etAge);
         etPhone = view.findViewById(R.id.etPhone);
         etProblem = view.findViewById(R.id.etProblem);
+        etEmergencyContact = view.findViewById(R.id.etEmergencyContact);
+        etEmergencyPhone = view.findViewById(R.id.etEmergencyPhone);
         spGender = view.findViewById(R.id.spGender);
         spPackage = view.findViewById(R.id.spPackage);
         btnNext = view.findViewById(R.id.btnNext);
@@ -73,6 +75,8 @@ public class PatientDetailsFragment extends Fragment {
                 String age = etAge.getText().toString().trim();
                 String phone = etPhone.getText().toString().trim();
                 String problem = etProblem.getText().toString().trim();
+                String emergencyContact = etEmergencyContact.getText().toString().trim();
+                String emergencyPhone = etEmergencyPhone.getText().toString().trim();
                 String selectedPackage = spPackage.getSelectedItem().toString();
                 String[] packageInfo = parsePackageInfo(selectedPackage);
                 String packageType = packageInfo[0];
@@ -80,7 +84,7 @@ public class PatientDetailsFragment extends Fragment {
                 String packageDuration = packageInfo[2];
                 BookAppointmentActivity activity = (BookAppointmentActivity) getActivity();
                 if (activity != null) {
-                    activity.onPatientDetailsEntered(fullName, gender, age, phone, problem, packageType, packageDuration, packagePrice);
+                    activity.onPatientDetailsEntered(fullName, gender, age, phone, problem, packageType, packageDuration, packagePrice, emergencyContact, emergencyPhone);
                 }
             }
         });
@@ -145,6 +149,16 @@ public class PatientDetailsFragment extends Fragment {
         if (etProblem.getText().toString().trim().isEmpty()) {
             etProblem.setError("Vui lòng mô tả vấn đề");
             etProblem.requestFocus();
+            return false;
+        }
+        if (etEmergencyContact.getText().toString().trim().isEmpty()) {
+            etEmergencyContact.setError("Vui lòng nhập người liên hệ khẩn cấp");
+            etEmergencyContact.requestFocus();
+            return false;
+        }
+        if (etEmergencyPhone.getText().toString().trim().isEmpty()) {
+            etEmergencyPhone.setError("Vui lòng nhập SĐT khẩn cấp");
+            etEmergencyPhone.requestFocus();
             return false;
         }
         return true;

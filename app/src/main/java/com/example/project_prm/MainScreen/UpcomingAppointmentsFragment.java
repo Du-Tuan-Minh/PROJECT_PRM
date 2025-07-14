@@ -12,12 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.project_prm.R;
 import java.util.ArrayList;
 import java.util.List;
+import com.example.project_prm.Repository.AppointmentRepository;
+import com.example.project_prm.Model.AppointmentModel;
+import android.app.ProgressDialog;
 
 public class UpcomingAppointmentsFragment extends Fragment {
     
     private RecyclerView rvAppointments;
     private AppointmentAdapter adapter;
     private List<AppointmentModel> appointments;
+    private ProgressDialog progressDialog;
+    private AppointmentRepository firestoreRepo;
     
     public static UpcomingAppointmentsFragment newInstance() {
         return new UpcomingAppointmentsFragment();
@@ -30,7 +35,8 @@ public class UpcomingAppointmentsFragment extends Fragment {
         
         initViews(view);
         setupRecyclerView();
-        loadUpcomingAppointments();
+        firestoreRepo = AppointmentRepository.getInstance();
+        loadUpcomingAppointmentsFromFirestore();
         
         return view;
     }
@@ -81,19 +87,71 @@ public class UpcomingAppointmentsFragment extends Fragment {
         rvAppointments.setAdapter(adapter);
     }
     
-    private void loadUpcomingAppointments() {
-        appointments.clear();
-        for (AppointmentModel a : AppointmentRepository.getInstance().getAppointments()) {
-            if ("upcoming".equalsIgnoreCase(a.getStatus())) {
-                appointments.add(a);
+    private void loadUpcomingAppointmentsFromFirestore() {
+        showLoading();
+        String patientId = getCurrentPatientId(); // TODO: Lấy đúng patientId user hiện tại
+        firestoreRepo.getAppointmentsByPatientId(patientId, new AppointmentRepository.OnAppointmentsLoadedListener() {
+            @Override
+            public void onAppointmentsLoaded(java.util.List<AppointmentModel> firestoreAppointments) {
+                appointments.clear();
+                for (AppointmentModel fs : firestoreAppointments) {
+                    if ("upcoming".equalsIgnoreCase(fs.getStatus())) {
+                        // Nếu adapter dùng model khác thì chuyển đổi tại đây, còn không thì add trực tiếp
+                        appointments.add(convertToMainScreenModel(fs));
+                    }
+                }
+                adapter.notifyDataSetChanged();
+                hideLoading();
             }
+            @Override
+            public void onError(String error) {
+                hideLoading();
+                // Hiện thông báo lỗi nếu cần
+            }
+        });
+    }
+    private void showLoading() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Đang tải dữ liệu...");
+            progressDialog.setCancelable(false);
         }
-        adapter.notifyDataSetChanged();
+        progressDialog.show();
+    }
+    private void hideLoading() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+    private String getCurrentPatientId() {
+        // TODO: Lấy patientId thực tế từ user đăng nhập
+        return "test_patient_id";
+    }
+    private AppointmentModel convertToMainScreenModel(AppointmentModel fs) {
+        AppointmentModel m = new AppointmentModel();
+        m.setId(fs.getId());
+        m.setDoctorName(fs.getDoctorName());
+        m.setSpecialty(fs.getSpecialty());
+        m.setDate(fs.getDate());
+        m.setTime(fs.getTime());
+        m.setPackageType(fs.getPackageType());
+        m.setAmount(fs.getAmount());
+        m.setDuration(fs.getDuration());
+        m.setStatus(fs.getStatus());
+        m.setProblemDescription(fs.getProblemDescription());
+        m.setPatientName(fs.getPatientName());
+        m.setPatientPhone(fs.getPatientPhone());
+        m.setEmergencyContact(fs.getEmergencyContact());
+        m.setEmergencyPhone(fs.getEmergencyPhone());
+        m.setCreatedAt(fs.getCreatedAt());
+        m.setUpdatedAt(fs.getUpdatedAt());
+        // Nếu có các trường khác thì bổ sung ở đây
+        return m;
     }
     
     @Override
     public void onResume() {
         super.onResume();
-        loadUpcomingAppointments();
+        loadUpcomingAppointmentsFromFirestore();
     }
 } 

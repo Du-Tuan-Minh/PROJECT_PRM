@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment {
         });
 
         btnSearchDoctor.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), DoctorProfileActivity.class);
+            Intent intent = new Intent(getActivity(), FindDoctorActivity.class);
             startActivity(intent);
         });
 
@@ -99,8 +99,8 @@ public class HomeFragment extends Fragment {
         View btnChatAI = getView().findViewById(R.id.btnChatAI);
 
         btnBookingInfo.setOnClickListener(v -> {
-            // TODO: Show booking information
-            Toast.makeText(getActivity(), "Thông tin đặt lịch khám", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), AppointmentDetailsActivity.class);
+            startActivity(intent);
         });
 
         btnArticles.setOnClickListener(v -> {

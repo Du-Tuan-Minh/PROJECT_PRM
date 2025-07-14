@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Primary Colors - Đồng nhất màu xanh lá -->
-    <color name="primary_color">#2E7D32</color>
-    <color name="primary_light">#4CAF50</color>
+    <color name="primary_color">#2196F3</color>
+    <color name="primary_light">#2196F3</color>
     <color name="primary_dark">#1B5E20</color>
-    <color name="primary_blue">#2E7D32</color>
+    <color name="primary_blue">#2196F3</color>
     
     <!-- Secondary Colors -->
     <color name="secondary_color">#E8F5E8</color>
@@ -21,7 +21,7 @@
     <color name="surface">#FFFFFF</color>
     
     <!-- Status Colors -->
-    <color name="success">#4CAF50</color>
+    <color name="success">#2196F3</color>
     <color name="error">#F44336</color>
     <color name="warning">#FF9800</color>
     <color name="rating_color">#FFB800</color>
@@ -31,16 +31,16 @@
     <color name="shadow_color">#1A000000</color>
     <color name="transparent">#00000000</color>
     <color name="black">#FF000000</color>
-    <color name="colorPrimary">#2E7D32</color>
+    <color name="colorPrimary">#2196F3</color>
     <color name="gray">#9E9E9E</color>
     <color name="input_bg">#F5F7FA</color>
     <color name="red_dialog">#FF5E75</color>
-    <color name="green">#4CAF50</color>
+    <color name="green">#2196F3</color>
     <color name="checkbox_blue">#2979FF</color>
     <color name="blue_dialog">#2F72FE</color>
     <color name="light_blue_bg">#F8F9FF</color>
     <color name="status_cancelled">#FF4D4F</color>
-    <color name="category_health">#4CAF50</color>
+    <color name="category_health">#2196F3</color>
     <color name="category_covid">#FF9800</color>
     <color name="category_lifestyle">#2196F3</color>
     <color name="category_medical">#9C27B0</color>
