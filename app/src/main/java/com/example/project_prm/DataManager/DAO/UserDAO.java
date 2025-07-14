@@ -3,8 +3,10 @@ package com.example.project_prm.DataManager.DAO;
 import com.example.project_prm.DataManager.Entity.User;
 import com.example.project_prm.DataManager.Entity.UserProfile;
 import com.example.project_prm.utils.HashUtil;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 import com.google.android.gms.tasks.Task;
@@ -57,7 +59,7 @@ public class UserDAO {
     public Task<String> login(String email, String password) {
         return db.collection("users")
                 .whereEqualTo("email", email)
-                .whereEqualTo("password", HashUtil.sha256(password))
+                .whereEqualTo("password", password)
                 .get()
                 .continueWith(task -> {
                     if (!task.isSuccessful()) {
@@ -97,4 +99,29 @@ public class UserDAO {
                 });
     }
 
+
+    public Task<DocumentSnapshot> getByUserId(String userId) {
+        return db.collection("user_profiles")
+                .whereEqualTo("user_id", userId)
+                .limit(1)
+                .get()
+                .continueWith(task -> {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    QuerySnapshot result = task.getResult();
+                    if (result == null || result.isEmpty()) {
+                        throw new Exception("Không tìm thấy hồ sơ user_id=" + userId);
+                    }
+                    return result.getDocuments().get(0);
+                });
+    }
+
+
+
+    public Task<Void> update(String docId, UserProfile profile) {
+        return db.collection("user_profiles")
+                .document(docId)
+                .set(profile.toMap());
+    }
 }

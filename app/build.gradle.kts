@@ -53,6 +53,8 @@ dependencies {
 
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    implementation ("androidx.biometric:biometric:1.2.0-alpha05")
+
 
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.database)

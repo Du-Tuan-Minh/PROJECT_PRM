@@ -14,6 +14,8 @@ import com.example.project_prm.ui.Article.ArticlesActivity;
 
 import com.example.project_prm.MainScreen.HomeFragment;
 import com.example.project_prm.ui.User_Profile.ProfileActivity;
+import com.example.project_prm.ui.auth.SignInActivity;
+import com.example.project_prm.utils.CurrentUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -32,6 +34,15 @@ public class MainActivity extends AppCompatActivity {
         );
 
         setContentView(R.layout.activity_main);
+
+
+
+        // ✅ Kiểm tra nếu chưa login thì chuyển về LoginActivity
+        if (!CurrentUser.isLoggedIn(this)) {
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return;
+        }
 
 //        FirebaseApp.initializeApp(this);
 //        FirestoreSeeder.seedAll();
