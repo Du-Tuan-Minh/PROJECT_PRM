@@ -6,4 +6,28 @@
     <string name="facebook_app_id">1796723421265328</string>
     <string name="fb_login_protocol_scheme">fb1796723421265328</string>
 
+    <string name="profile">Hồ sơ</string>
+    <string name="edit_profile">Chỉnh sửa hồ sơ</string>
+    <string name="notification">Thông báo</string>
+    <string name="payment">Thanh toán</string>
+    <string name="security">Bảo mật</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="language_suggested">Gợi ý</string>
+    <string name="dark_mode">Chế độ tối</string>
+    <string name="help_center">Trung tâm trợ giúp</string>
+    <string name="invite_friends">Mời bạn bè</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="name">Tên</string>
+    <string name="date_of_birth">Ngày sinh</string>
+    <string name="email">Email</string>
+    <string name="country">Quốc gia</string>
+    <string name="phone_number">Số điện thoại</string>
+    <string name="gender">Giới tính</string>
+    <string name="update">Cập nhật</string>
+    <string name="change_pin">Đổi mã PIN</string>
+    <string name="change_password">Đổi mật khẩu</string>
+    <string name="remember_me">Ghi nhớ đăng nhập</string>
+    <string name="biometric_id">Xác thực sinh trắc</string>
+    <string name="google_authenticator">Google Authenticator</string>
+    <string name="back">Quay lại</string>
 </resources>

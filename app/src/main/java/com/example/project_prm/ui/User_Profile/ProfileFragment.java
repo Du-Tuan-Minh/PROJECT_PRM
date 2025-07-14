@@ -46,6 +46,8 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+
+
     // ✅ Hàm riêng xử lý nhấn icon để quay về Home
     private void setupBackToHome(View rootView) {
         ImageView ivBackToHome = rootView.findViewById(R.id.ivBackToHome);
