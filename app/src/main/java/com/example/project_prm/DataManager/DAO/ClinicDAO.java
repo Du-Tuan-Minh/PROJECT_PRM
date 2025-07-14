@@ -6,8 +6,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 public class ClinicDAO {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -33,5 +32,16 @@ public class ClinicDAO {
     }
 
 
-
+    public void registerClinic(String name, String phone, String email,
+                               String address, String specialties, String userId) {
+        Clinic clinic = new Clinic(name, phone, email, address, specialties, userId);
+        db.collection("clinics")
+                .add(clinic.toMap())
+                .continueWith(task -> {
+                    if (!task.isSuccessful()) {
+                        throw Objects.requireNonNull(task.getException());
+                    }
+                    return null; // success
+                });
+    }
 }

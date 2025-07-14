@@ -59,7 +59,7 @@ public class SignInActivity extends AppCompatActivity {
         String username = loginEmailInput.getFieldText();
         String password = loginPasswordInput.getFieldText();
         if (username.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter your username and password", Toast.LENGTH_SHORT).show();
             return;
         }
         if (CurrentUser.isLoggedIn(this)) {
@@ -71,7 +71,7 @@ public class SignInActivity extends AppCompatActivity {
         userDAO.login(username, password)
                 .addOnSuccessListener(this::onLoginSuccess)
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Username or password is incorrect", Toast.LENGTH_SHORT).show();
                 });
     }
 

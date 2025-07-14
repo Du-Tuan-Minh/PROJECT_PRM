@@ -77,6 +77,9 @@ public class EditTextFieldView extends LinearLayout {
             case 5:
                 inputField.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                 break;
+            case 6:
+                inputField.setInputType(InputType.TYPE_CLASS_PHONE);
+                break;
             default:
                 inputField.setInputType(InputType.TYPE_CLASS_TEXT);
         }

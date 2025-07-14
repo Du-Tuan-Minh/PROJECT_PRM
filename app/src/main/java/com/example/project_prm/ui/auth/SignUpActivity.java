@@ -18,6 +18,7 @@ import com.example.project_prm.R;
 import com.example.project_prm.ui.dialog.StatusPopup;
 import com.example.project_prm.widgets.DropDownFieldView;
 import com.example.project_prm.widgets.EditTextFieldView;
+import com.example.project_prm.widgets.RegisterClinicView;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -30,6 +31,8 @@ public class SignUpActivity extends AppCompatActivity {
     private DropDownFieldView registerGenderInput, registerRoleInput;
     private Button signUpButton;
     private TextView signInText;
+
+    private RegisterClinicView registerClinicView;
     private StatusPopup popup;
     private UserDAO userDAO;
 
@@ -43,6 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
         registerDateOfBirthInput = findViewById(R.id.registerDateOfBirthInput);
         registerGenderInput = findViewById(R.id.registerGenderInput);
         registerRoleInput = findViewById(R.id.registerRoleInput);
+        registerClinicView = findViewById(R.id.registerClinicView);
         popup = new StatusPopup(this);
         userDAO = new UserDAO();
     }
@@ -55,6 +59,7 @@ public class SignUpActivity extends AppCompatActivity {
         registerDateOfBirthInput.getEditText().setEnabled(false);
         registerGenderInput.setOnItemSelectedListener(this::onGenderIconClick);
         registerRoleInput.setOnItemSelectedListener(this::onRoleIconClick);
+        registerClinicView.hiddenLinearLayout();
     }
 
     private void setClearFocus() {
@@ -67,15 +72,26 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void onRoleIconClick(String s, int i) {
-        Toast.makeText(this, "Role selected: " + s, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Role selected: " + s, Toast.LENGTH_SHORT).show();
         // Handle role selection here
         if (s != null) {
             registerRoleInput.getDropdownItems().setHintEnabled(false);
+            onRoleIconClick(s);
         }
     }
 
+    // Display RegisterClinicView when registerRoleInput selected is Clinic value
+    private void onRoleIconClick(String s) {
+        if (s.equals("Clinic")) {
+            registerClinicView.showLinearLayout();
+        } else {
+            registerClinicView.hiddenLinearLayout();
+        }
+    }
+
+
     private void onGenderIconClick(String s, int i) {
-        Toast.makeText(this, "Gender selected: " + s, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Gender selected: " + s, Toast.LENGTH_SHORT).show();
         // Handle gender selection here
         if (s != null) {
             registerGenderInput.getDropdownItems().setHintEnabled(false);
@@ -84,7 +100,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     private void onDateOfBirthIconClick(EditTextFieldView editTextFieldView) {
-        Toast.makeText(this, "Date of birth icon clicked", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Date of birth icon clicked", Toast.LENGTH_SHORT).show();
         // Handle date of birth icon click event here
         Calendar calendar = Calendar.getInstance();
         new DatePickerDialog(
@@ -115,24 +131,27 @@ public class SignUpActivity extends AppCompatActivity {
         if (email.isEmpty() || password.isEmpty() ||
                 gender.isEmpty() || dateOfBirth.isEmpty() ||
                 name.isEmpty() || role.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin",
+            Toast.makeText(this, "Please fill in all fields",
                     Toast.LENGTH_SHORT).show();
             return;
         }
         if (password.length() < 6) {
-            Toast.makeText(this, "Mật khẩu phải có ít nhất 6 ký tự",
+            Toast.makeText(this, "Password must be at least 6 characters",
                     Toast.LENGTH_SHORT).show();
             return;
         }
         if (!email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
-            Toast.makeText(this, "Vui lòng nhập đúng định dạng email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!registerClinicView.checkValidRegisterClinic(this)) {
             return;
         }
         userDAO.isEmailExist(email)
                 .addOnSuccessListener(exists -> {
                     if (exists){
                         popup.setErrorPopup("Oops, Failed!",
-                                "Email đã tồn tại","Oki");
+                                "This email already exist","Oki");
                         popup.hiddenCancelButton();
                         popup.show();
                         return;
@@ -143,7 +162,7 @@ public class SignUpActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                     popup.setErrorPopup("Oops, Failed!",
-                            "Đăng ký thất bại, vui lòng thử lại sau","Oki");
+                            "Register failed, please try again later","Oki");
                     popup.hiddenCancelButton();
                     popup.show();
                 });
@@ -151,16 +170,26 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void onRegisterFailure(Exception e) {
         popup.setErrorPopup("\"Oops, Failed!",
-                "Đăng ký thất bại, vui lòng thử lại sau",
+                "Register failed, please try again later",
                 "Oki");
         popup.hiddenCancelButton();
         popup.show();
     }
 
     private void onRegisterSuccess(Void unused) {
+        // Register clinic when success pass userId with userId is id of user register
+        if (registerClinicView.getRegisterClinicView().getVisibility() == View.VISIBLE) {
+            userDAO.getUserIdByEmail(registerEmailInput.getFieldText())
+                    .addOnSuccessListener(this::onRegisterClinicSuccess);
+        }
+
         startActivity(new Intent(this, SignInActivity.class));
         finish();
 
+    }
+
+    private void onRegisterClinicSuccess(String s) {
+        registerClinicView.registerClinic(s);
     }
 
     private void onEyeIconClick(EditTextFieldView editTextFieldView) {

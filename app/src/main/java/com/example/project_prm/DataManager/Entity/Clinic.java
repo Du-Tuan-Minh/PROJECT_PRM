@@ -5,7 +5,9 @@ import java.util.Map;
 
 public class Clinic {
     public long id;
-    public String name, address, phone, email, website, specialties, working_hours, image_url;
+    public String name, address, phone, email, website
+            , specialties, working_hours, image_url
+            , user_id;
     public double latitude, longitude, rating;
     public int total_reviews;
 
@@ -27,6 +29,35 @@ public class Clinic {
         this.image_url = image_url;
     }
 
+    public Clinic(long id, String name, String address, double latitude, double longitude,
+                  String phone, String email, String website, String specialties,
+                  String working_hours, double rating, int total_reviews,
+                  String image_url, String user_id) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.phone = phone;
+        this.email = email;
+        this.website = website;
+        this.specialties = specialties;
+        this.working_hours = working_hours;
+        this.rating = rating;
+        this.total_reviews = total_reviews;
+        this.image_url = image_url;
+        this.user_id = user_id;
+    }
+
+    public Clinic(String name, String phone, String email,
+                  String address, String specialties, String userId) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.specialties = specialties;
+        this.user_id = userId;
+    }
+
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
@@ -42,6 +73,7 @@ public class Clinic {
         map.put("rating", rating);
         map.put("total_reviews", total_reviews);
         map.put("image_url", image_url);
+        map.put("user_id", user_id);
         return map;
     }
     public static Clinic fromMap(Map<String, Object> map) {
@@ -58,8 +90,9 @@ public class Clinic {
         double rating = (double) map.get("rating");
         int total_reviews = (int) map.get("total_reviews");
         String image_url = (String) map.get("image_url");
-        return new Clinic(id, name, address, latitude, longitude, phone, email, website
-                , specialties, working_hours, rating, total_reviews, image_url);
+        String user_id = (String) map.get("user_id");
+        return new Clinic(id, name, address, latitude, longitude, phone, email, website,
+                specialties, working_hours, rating, total_reviews, image_url, user_id);
     }
 
     public long getId() {
@@ -164,5 +197,13 @@ public class Clinic {
 
     public void setTotal_reviews(int total_reviews) {
         this.total_reviews = total_reviews;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }

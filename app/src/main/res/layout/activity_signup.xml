@@ -111,6 +111,13 @@
             app:endIconSrc="@drawable/ic_eye_off"
             />
 
+        <!-- Register Information Clinic -->
+        <com.example.project_prm.widgets.RegisterClinicView
+            android:id="@+id/registerClinicView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"/>
+
 
         <!-- Sign Up Button -->
         <Button
@@ -152,6 +159,6 @@
                 android:textColor="@color/primary_blue"
                 android:fontFamily="@font/poppins_bold"
                 android:layout_gravity="center_horizontal"/>
-        </LinearLayout>>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

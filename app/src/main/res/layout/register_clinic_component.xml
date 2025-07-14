@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/registerClinicView"
+        android:paddingTop="10dp"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="ExtraText">
+
+        <!-- Email Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Register Clinic"
+            android:textColor="@color/text_black"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <com.example.project_prm.widgets.EditTextFieldView
+            android:id="@+id/clinicNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:startIconSrc="@drawable/ic_fullname"
+            app:hintText="Name Clinic"
+            app:inputType="text"
+            />
+
+        <com.example.project_prm.widgets.EditTextFieldView
+            android:id="@+id/clinicPhoneInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:startIconSrc="@drawable/ic_phone"
+            app:hintText="Phone Clinic"
+            app:inputType="phone"
+            />
+
+        <com.example.project_prm.widgets.EditTextFieldView
+            android:id="@+id/clinicEmailInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:startIconSrc="@drawable/ic_email_dat"
+            app:hintText="Email address (Optional)"
+            app:inputType="email"
+            />
+
+        <com.example.project_prm.widgets.EditTextFieldView
+            android:id="@+id/clinicAddressInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:startIconSrc="@drawable/ic_address"
+            app:hintText="Clinic Address"
+            app:inputType="text"
+            />
+
+        <com.example.project_prm.widgets.EditTextFieldView
+            android:id="@+id/clinicSpecialInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:startIconSrc="@drawable/ic_articles"
+            app:hintText="Your specialties about clinic"
+            app:inputType="text"
+            />
+    </LinearLayout>
+
+</merge>

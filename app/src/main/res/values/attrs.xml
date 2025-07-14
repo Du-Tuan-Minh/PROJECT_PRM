@@ -12,6 +12,7 @@
             <enum name="password" value="3"/>
             <enum name="date" value="4"/>
             <enum name="personName" value="5"/>
+            <enum name="phone" value="6"/>
         </attr>
         <attr name="endIconSrc" format="reference" />
     </declare-styleable>

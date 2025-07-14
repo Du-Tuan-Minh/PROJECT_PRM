@@ -117,7 +117,24 @@ public class UserDAO {
                 });
     }
 
-
+    // Get userId by email
+    public Task<String> getUserIdByEmail(String email) {
+        return db.collection("users")
+                .whereEqualTo("email", email)
+                .get()
+                .continueWith(task -> {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    QuerySnapshot result = task.getResult();
+                    if (result != null && !result.isEmpty()) {
+                        DocumentSnapshot document = result.getDocuments().get(0);
+                        return document.getId(); // ✅ return document
+                    } else {
+                        throw new Exception("No user found with given email");
+                    }
+                });
+    }
 
     public Task<Void> update(String docId, UserProfile profile) {
         return db.collection("user_profiles")

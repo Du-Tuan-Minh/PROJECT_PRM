@@ -49,7 +49,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         String email = forgetPasswordEmailInput.getFieldText();
         if (email.isEmpty()) {
             popup.setErrorPopup("\"Oops, Failed!",
-                    "Vui lòng nhập đúng định dạng email","Oki");
+                    "Please enter your email!","Oki");
             popup.hiddenCancelButton();
             popup.show();
             return;
@@ -59,7 +59,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 .addOnSuccessListener(exists -> {
                     if (!exists){
                         popup.setErrorPopup("Oops, Failed!",
-                                "Email không tồn tại","Oki");
+                                "Email not exist!","Oki");
                         popup.hiddenCancelButton();
                         popup.show();
                         return;
@@ -72,7 +72,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                     popup.setErrorPopup("Oops, Failed!",
-                            "Email không tồn tại","Oki");
+                            "Please try again or later!","Oki");
                     popup.hiddenCancelButton();
                     popup.show();
                 });
