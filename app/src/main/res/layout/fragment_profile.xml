@@ -80,6 +80,7 @@
             </FrameLayout>
 
             <TextView
+                android:id="@+id/tvUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Andrew Ainsley"
@@ -89,6 +90,7 @@
                 android:layout_marginBottom="8dp" />
 
             <TextView
+                android:id="@+id/tvUserPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+1 111 467 378 399"

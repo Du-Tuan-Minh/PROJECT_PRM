@@ -31,16 +31,17 @@
             android:textColor="#F0F0F0"
             android:textSize="13sp"
             android:layout_marginTop="4dp"/>
+
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnChat"
             android:layout_width="wrap_content"
-            android:layout_height="39dp"
+            android:layout_height="31dp"
             android:layout_marginTop="10dp"
             android:backgroundTint="#FFFFFF"
             app:cornerRadius="18dp"
             android:text="Chat now"
             android:textColor="#1976D2"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"/>
+            app:cornerRadius="18dp" />
     </LinearLayout>
 
     <!-- Ảnh hoặc icon bên phải -->

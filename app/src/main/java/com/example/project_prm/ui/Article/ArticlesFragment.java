@@ -1,4 +1,4 @@
-package com.example.project_prm.Article;
+package com.example.project_prm.ui.Article;
 
 
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.project_prm.MainActivity;
 import com.example.project_prm.R;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;

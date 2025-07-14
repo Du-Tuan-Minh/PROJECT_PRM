@@ -25,6 +25,7 @@ import com.example.project_prm.R;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -155,20 +156,47 @@ public class HomeFragment extends Fragment {
 
     private void setupBannerViewPager() {
         bannerViewPager = getView().findViewById(R.id.bannerViewPager);
-        BannerAdapter bannerAdapter = new BannerAdapter(Arrays.asList(
-            R.layout.banner_kiem_tra_y_te,
-            R.layout.banner_artical,
-            R.layout.banner_chat_ai
-        ));
+
+        List<Integer> layoutIds = Arrays.asList(
+                Integer.valueOf(R.layout.banner_kiem_tra_y_te),
+                Integer.valueOf(R.layout.banner_artical),
+                Integer.valueOf(R.layout.banner_chat_ai)
+        );
+
+        // Danh sách ID của các view có thể click trong banner
+        List<Integer> clickableViewIds = Arrays.asList(
+                Integer.valueOf(R.id.btnChat)
+                // Nếu không có, bạn có thể bỏ dòng này đi
+        );
+
+        // Tạo adapter với callback
+        BannerAdapter bannerAdapter = new BannerAdapter(
+                layoutIds,
+                clickableViewIds,
+                (layoutId, position, clickedView) -> {
+                    int viewId = clickedView.getId();
+
+                    if (layoutId == R.layout.banner_chat_ai && viewId == R.id.btnChat) {
+                        // Mở màn Chatbot
+                        Intent intent = new Intent(getActivity(), ChatbotActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        // Gán adapter vào ViewPager
         bannerViewPager.setAdapter(bannerAdapter);
-        
+
+        // Gán indicator
         DotsIndicator bannerIndicator = getView().findViewById(R.id.bannerIndicator);
         bannerIndicator.setViewPager2(bannerViewPager);
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
         updateNotificationBadge();
     }
+
 } 

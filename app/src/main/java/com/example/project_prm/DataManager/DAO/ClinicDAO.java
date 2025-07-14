@@ -6,6 +6,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ClinicDAO {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -28,4 +31,7 @@ public class ClinicDAO {
     public Task<DocumentSnapshot> getById(String clinicId) {
         return db.collection("clinics").document(clinicId).get();
     }
+
+
+
 }

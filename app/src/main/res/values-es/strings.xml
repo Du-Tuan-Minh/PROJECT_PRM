@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Project_PRM</string>
+
+    <string name="login_title">Login</string>
+    <string name="register_title">Register</string>
+    <string name="facebook_app_id">1796723421265328</string>
+    <string name="fb_login_protocol_scheme">fb1796723421265328</string>
+
+    <string name="profile">Profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="notification">Notification</string>
+    <string name="payment">Payment</string>
+    <string name="security">Security</string>
+    <string name="language">Language</string>
+    <string name="language_suggested">Suggested</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="help_center">Help Center</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="logout">Logout</string>
+    <string name="name">Name</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="email">Email</string>
+    <string name="country">Country</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="gender">Gender</string>
+    <string name="update">Update</string>
+    <string name="change_pin">Change PIN</string>
+    <string name="change_password">Change Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="biometric_id">Biometric ID</string>
+    <string name="google_authenticator">Google Authenticator</string>
+    <string name="back">Back</string>
+</resources>

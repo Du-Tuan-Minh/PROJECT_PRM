@@ -19,7 +19,7 @@ public class FirestoreSeeder {
 
         // Seed user
         String userId = db.collection("users").document().getId();
-        User user = new User(counter++, "john_doe", "SHA256_HASHED_PASSWORD", "john@example.com", "0123456789");
+        User user = new User( "john_doe", "SHA256_HASHED_PASSWORD", "john@example.com", "0123456789");
         new UserDAO().addWithBatch(batch, userId, user);
 
         // Seed user_profile

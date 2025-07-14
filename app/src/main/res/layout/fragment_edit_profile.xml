@@ -27,11 +27,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Edit Profile"
+            android:text="@string/edit_profile"
             android:textColor="#1C1C1E"
             android:textSize="20sp"
             android:textStyle="bold" />
-
     </LinearLayout>
 
     <!-- Content -->
@@ -50,7 +49,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Andrew Ainsley"
+                android:text="@string/name"
                 android:textColor="#8E8E93"
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
@@ -61,27 +60,6 @@
                 android:layout_height="56dp"
                 android:background="#FFFFFF"
                 android:paddingHorizontal="16dp"
-                android:text="Andrew Ainsley"
-                android:textColor="#1C1C1E"
-                android:textSize="16sp"
-                android:layout_marginBottom="24dp" />
-
-            <!-- First Name -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Andrew"
-                android:textColor="#8E8E93"
-                android:textSize="14sp"
-                android:layout_marginBottom="8dp" />
-
-            <EditText
-                android:id="@+id/first_name_edit"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="#FFFFFF"
-                android:paddingHorizontal="16dp"
-                android:text="Andrew"
                 android:textColor="#1C1C1E"
                 android:textSize="16sp"
                 android:layout_marginBottom="24dp" />
@@ -90,7 +68,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12/27/1995"
+                android:text="@string/date_of_birth"
                 android:textColor="#8E8E93"
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
@@ -104,26 +82,30 @@
                 android:paddingHorizontal="16dp"
                 android:layout_marginBottom="24dp">
 
-                <TextView
+                <EditText
+                    android:id="@+id/tv_dob"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="12/27/1995"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:inputType="none"
                     android:textColor="#1C1C1E"
                     android:textSize="16sp" />
 
                 <ImageView
+                    android:id="@+id/calendar_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_calendar_date" />
-
             </LinearLayout>
 
             <!-- Email -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="andrew_ainsley@yourdomain.com"
+                android:text="@string/email"
                 android:textColor="#8E8E93"
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
@@ -137,26 +119,26 @@
                 android:paddingHorizontal="16dp"
                 android:layout_marginBottom="24dp">
 
-                <TextView
+                <EditText
+                    android:id="@+id/tv_email"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="andrew_ainsley@yourdomain.com"
                     android:textColor="#1C1C1E"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:background="@android:color/transparent" />
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_email" />
-
             </LinearLayout>
 
             <!-- Country -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="United States"
+                android:text="@string/country"
                 android:textColor="#8E8E93"
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
@@ -170,22 +152,23 @@
                 android:paddingHorizontal="16dp"
                 android:layout_marginBottom="24dp">
 
-                <TextView
+                <Spinner
+                    android:id="@+id/sp_country"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="United States"
-                    android:textColor="#1C1C1E"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_dropdown" />
-
+                    android:spinnerMode="dropdown" />
             </LinearLayout>
 
             <!-- Phone -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/phone_number"
+                android:textColor="#8E8E93"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -195,30 +178,24 @@
                 android:paddingHorizontal="16dp"
                 android:layout_marginBottom="24dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_flag_us"
-                    android:layout_marginEnd="8dp" />
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_dropdown"
-                    android:layout_marginEnd="12dp" />
-
-                <TextView
+                <EditText
+                    android:id="@+id/tv_phone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="+1 111 467 378 399"
                     android:textColor="#1C1C1E"
-                    android:textSize="16sp" />
-
+                    android:textSize="16sp"
+                    android:background="@android:color/transparent" />
             </LinearLayout>
 
             <!-- Gender -->
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gender"
+                android:textColor="#8E8E93"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -229,23 +206,14 @@
                 android:paddingHorizontal="16dp"
                 android:layout_marginBottom="40dp">
 
-                <TextView
+                <Spinner
+                    android:id="@+id/sp_gender"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Male"
-                    android:textColor="#1C1C1E"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_dropdown" />
-
+                    android:spinnerMode="dropdown" />
             </LinearLayout>
-
         </LinearLayout>
-
     </ScrollView>
 
     <!-- Update Button -->
@@ -259,13 +227,11 @@
             android:id="@+id/update_button"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="Update"
+            android:text="@string/update"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
             android:background="#007AFF"
             android:textAllCaps="false" />
-
     </LinearLayout>
-
 </LinearLayout>
