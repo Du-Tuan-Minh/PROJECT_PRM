@@ -59,7 +59,7 @@ public class UserDAO {
     public Task<String> login(String email, String password) {
         return db.collection("users")
                 .whereEqualTo("email", email)
-                .whereEqualTo("password", password)
+                .whereEqualTo("password", HashUtil.sha256(password))
                 .get()
                 .continueWith(task -> {
                     if (!task.isSuccessful()) {

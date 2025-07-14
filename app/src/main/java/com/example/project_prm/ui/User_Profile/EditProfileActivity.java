@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_prm.DataManager.DAO.UserDAO;
 import com.example.project_prm.DataManager.DAO.UserProfileDAO;
+import com.example.project_prm.DataManager.Entity.User;
 import com.example.project_prm.DataManager.Entity.UserProfile;
 import com.example.project_prm.R;
 import com.example.project_prm.utils.CurrentUser;
@@ -84,26 +85,28 @@ public class EditProfileActivity extends AppCompatActivity {
                 // Lấy thông tin từ user_profiles
                 String fullName = doc.getString("full_name");
                 String dob = doc.getString("date_of_birth");
-                String phone = doc.getString("emergency_contact");  // sửa nếu dùng emergency_contact cho phone
                 String country = doc.getString("allergies");
                 String gender = doc.getString("gender");
 
                 etFullName.setText(fullName);
                 tvDob.setText(dob);
-                tvPhone.setText(phone);
                 setSpinnerSelection(spGender, gender);
                 setSpinnerSelection(spCountry, country);
 
-                // 👉 Lấy thêm email từ bảng users
+                // 👉 Lấy thêm email và phone từ bảng users
                 new UserDAO().getById(userId).addOnSuccessListener(userDoc -> {
                     if (userDoc != null && userDoc.exists()) {
                         String email = userDoc.getString("email");
+                        String phone = userDoc.getString("phone");
+
                         tvEmail.setText(email);
+                        tvPhone.setText(phone);
                     }
                 });
             }
         });
     }
+
 
 
 
@@ -123,12 +126,14 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
 
-    // Lấy dữ liệu từ UI, tạo UserProfile mới và cập nhật lên Firestore
+    // ✅ Hàm cập nhật hồ sơ người dùng cả bảng user_profiles và users
     private void updateProfile() {
         String userId = CurrentUser.getUserId(this);
         if (userId == null) return;
 
         if (!validateInput()) return;
+
+        // Lấy dữ liệu từ UI
         String fullName = etFullName.getText().toString();
         String dob = tvDob.getText().toString();
         String email = tvEmail.getText().toString();
@@ -136,22 +141,47 @@ public class EditProfileActivity extends AppCompatActivity {
         String country = spCountry.getSelectedItem().toString();
         String gender = spGender.getSelectedItem().toString();
 
-        // Tạo object mới và cập nhật Firestore
+        // ✅ Tạo đối tượng UserProfile KHÔNG lưu phone
         UserProfile profile = new UserProfile(
                 0, userId, fullName, dob, gender, "",
-                0, 0, country, email, phone
+                0, 0, country, email, "" // emergency_contact để trống hoặc dùng cho mục khác
         );
 
-        UserProfileDAO dao = new UserProfileDAO();
-        dao.getByUserId(userId).addOnSuccessListener(doc -> {
+        // ✅ Tạo đối tượng User để lưu phone và email
+        User user = new User(null, email, null, phone); // role & password giữ nguyên
+
+        UserProfileDAO profileDao = new UserProfileDAO();
+        UserDAO userDao = new UserDAO();
+
+        // ✅ Cập nhật user_profiles
+        profileDao.getByUserId(userId).addOnSuccessListener(doc -> {
             if (doc != null && doc.exists()) {
-                dao.update(doc.getId(), profile).addOnSuccessListener(unused -> {
-                    Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                    finish();
+                profileDao.update(doc.getId(), profile).addOnSuccessListener(unused -> {
+
+                    // ✅ Lấy thông tin user hiện tại để giữ role và password
+                    userDao.getById(userId).addOnSuccessListener(userDoc -> {
+                        if (userDoc != null && userDoc.exists()) {
+                            String role = userDoc.getString("role");
+                            String password = userDoc.getString("password");
+
+                            user.setRole(role);
+                            user.setPassword(password);
+
+                            // ✅ Cập nhật bảng users (gồm email + phone)
+                            userDao.update(userId, user)
+                                    .addOnSuccessListener(v -> {
+                                        Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e -> Toast.makeText(this, "Lỗi cập nhật user: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                        }
+                    });
                 });
             }
         });
     }
+
+
 
     // Gọi để xử lý chọn ngày sinh
 
