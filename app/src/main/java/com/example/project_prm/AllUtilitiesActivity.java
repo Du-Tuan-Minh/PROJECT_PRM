@@ -14,10 +14,10 @@ import android.content.Intent;
 
 public class AllUtilitiesActivity extends AppCompatActivity {
     private String[] utilityNames = {
-        "Thông tin đặt lịch", "Tìm phòng khám", "Tìm bác sĩ", "Đặt lịch khám", "Articles", "History", "Chat AI"
+        "Tìm phòng khám", "Đặt lịch khám", "Articles", "History", "Chat AI"
     };
     private int[] utilityIcons = {
-        R.drawable.ic_info_booking, R.drawable.ic_clinic_marker, R.drawable.ic_doctor, R.drawable.ic_calendar_vector,
+        R.drawable.ic_clinic_marker, R.drawable.ic_calendar_vector,
         R.drawable.ic_article, R.drawable.ic_history, R.drawable.ic_chat_ai
     };
 

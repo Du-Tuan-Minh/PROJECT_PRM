@@ -85,7 +85,6 @@ public class HomeFragment extends Fragment {
         // Setup click listeners for new appointment features
         View btnBookAppointment = getView().findViewById(R.id.btnBookAppointment);
         View btnAppointmentHistory = getView().findViewById(R.id.btnAppointmentHistory);
-        View btnSearchDoctor = getView().findViewById(R.id.btnSearchDoctor);
         View btnSearchClinic = getView().findViewById(R.id.btnSearchClinic);
 
         btnBookAppointment.setOnClickListener(v -> {
@@ -98,25 +97,14 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
 
-        btnSearchDoctor.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), DoctorProfileActivity.class);
-            startActivity(intent);
-        });
-
         btnSearchClinic.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), FindClinicActivity.class);
             startActivity(intent);
         });
 
         // Setup click listeners for existing utilities
-        View btnBookingInfo = getView().findViewById(R.id.btnBookingInfo);
         View btnArticles = getView().findViewById(R.id.btnArticles);
         View btnChatAI = getView().findViewById(R.id.btnChatAI);
-
-        btnBookingInfo.setOnClickListener(v -> {
-            // TODO: Show booking information
-            Toast.makeText(getActivity(), "Thông tin đặt lịch khám", Toast.LENGTH_SHORT).show();
-        });
 
         btnArticles.setOnClickListener(v -> {
             // TODO: Navigate to articles

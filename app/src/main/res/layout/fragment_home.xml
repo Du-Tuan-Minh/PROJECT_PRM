@@ -232,37 +232,6 @@
             android:layout_marginEnd="20dp">
 
             <LinearLayout
-                android:id="@+id/btnBookingInfo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:padding="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_circle_lightblue"
-                    android:src="@drawable/ic_info_booking"
-                    android:padding="10dp"
-                    android:scaleType="centerInside"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Thông tin đặt lịch"
-                    android:textSize="13sp"
-                    android:textColor="#222"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/btnArticles"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -285,33 +254,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Articles"
-                    android:textSize="13sp"
-                    android:textColor="#222"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:padding="8dp">
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_circle_lightblue"
-                    android:src="@drawable/ic_history"
-                    android:padding="10dp"
-                    android:scaleType="centerInside"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="History"
                     android:textSize="13sp"
                     android:textColor="#222"
                     android:gravity="center"
@@ -404,37 +346,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="History"
-                    android:textSize="13sp"
-                    android:textColor="#222"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/btnSearchDoctor"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:padding="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_circle_lightblue"
-                    android:src="@drawable/ic_search"
-                    android:padding="10dp"
-                    android:scaleType="centerInside"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Tìm bác sĩ"
                     android:textSize="13sp"
                     android:textColor="#222"
                     android:gravity="center"
