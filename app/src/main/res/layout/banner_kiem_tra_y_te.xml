@@ -22,25 +22,27 @@
             android:layout_height="wrap_content"
             android:text="Kiểm Tra Y Tế!"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:textSize="19sp"/>
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="170dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:text="Kiểm tra tình trạng sức khỏe thường xuyên để giảm thiểu nguy cơ mắc bệnh trong tương lai."
             android:textColor="#F0F0F0"
-            android:textSize="13sp"
-            android:layout_marginTop="4dp"/>
+            android:textSize="12sp" />
+
         <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="39dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="2dp"
             android:backgroundTint="#FFFFFF"
-            app:cornerRadius="18dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
             android:text="Đặt lịch khám"
             android:textColor="#1976D2"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"/>
+            app:cornerRadius="18dp" />
     </LinearLayout>
 
     <ImageView

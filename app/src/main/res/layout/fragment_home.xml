@@ -91,7 +91,7 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/bannerViewPager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
             <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
                 android:id="@+id/bannerIndicator"
@@ -160,7 +160,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Thông tin đặt lịch"
+                    android:text="scheduling information"
                     android:textSize="13sp"
                     android:textColor="#222"
                     android:gravity="center"

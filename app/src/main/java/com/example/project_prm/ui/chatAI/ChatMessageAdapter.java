@@ -1,4 +1,4 @@
-package com.example.project_prm.ChatAIScreen;
+package com.example.project_prm.ui.chatAI;
 
 import android.view.LayoutInflater;
 import android.view.View;
