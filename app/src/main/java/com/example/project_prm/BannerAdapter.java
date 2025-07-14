@@ -5,13 +5,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.project_prm.utils.OnBannerActionListener;
+
 import java.util.List;
 
 public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.BannerViewHolder> {
     private List<Integer> layoutIds;
+    private OnBannerActionListener listener;
+    private List<Integer> clickableViewIds;
 
-    public BannerAdapter(List<Integer> layoutIds) {
+    public BannerAdapter(List<Integer> layoutIds, List<Integer> clickableViewIds, OnBannerActionListener listener) {
         this.layoutIds = layoutIds;
+        this.clickableViewIds = clickableViewIds;
+        this.listener = listener;
     }
 
     @NonNull
@@ -23,7 +30,16 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.BannerView
 
     @Override
     public void onBindViewHolder(@NonNull BannerViewHolder holder, int position) {
-        // Không cần bind gì thêm nếu layout tĩnh
+
+        int layoutId = layoutIds.get(position);
+        if (listener != null && clickableViewIds != null) {
+            for (int viewId : clickableViewIds) {
+                View view = holder.itemView.findViewById(viewId);
+                if (view != null) {
+                    view.setOnClickListener(v -> listener.onAction(layoutId, position, v));
+                }
+            }
+        }
     }
 
     @Override
