@@ -27,11 +27,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Edit Profile"
+            android:text="@string/edit_profile"
             android:textColor="#1C1C1E"
             android:textSize="20sp"
             android:textStyle="bold" />
-
     </LinearLayout>
 
     <!-- Content -->
@@ -50,7 +49,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name"
+                android:text="@string/name"
                 android:textColor="#8E8E93"
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
@@ -61,25 +60,20 @@
                 android:layout_height="56dp"
                 android:background="#FFFFFF"
                 android:paddingHorizontal="16dp"
-                android:text="Andrew Ainsley"
                 android:textColor="#1C1C1E"
                 android:textSize="16sp"
                 android:layout_marginBottom="24dp" />
 
-
-
             <!-- Date of Birth -->
             <TextView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ngày Sinh"
+                android:text="@string/date_of_birth"
                 android:textColor="#8E8E93"
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
 
             <LinearLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:orientation="horizontal"
@@ -97,25 +91,21 @@
                     android:clickable="true"
                     android:focusable="false"
                     android:inputType="none"
-                    android:text="12/27/1995"
                     android:textColor="#1C1C1E"
-                    android:textSize="16sp"
-                    />
-
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/calendar_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_calendar_date" />
-
             </LinearLayout>
 
             <!-- Email -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email"
+                android:text="@string/email"
                 android:textColor="#8E8E93"
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
@@ -134,23 +124,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="andrew_ainsley@yourdomain.com"
                     android:textColor="#1C1C1E"
                     android:textSize="16sp"
-                    android:background="@android:color/transparent"/>
+                    android:background="@android:color/transparent" />
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_email" />
-
             </LinearLayout>
 
             <!-- Country -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Quốc Gia"
+                android:text="@string/country"
                 android:textColor="#8E8E93"
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
@@ -169,19 +157,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="United States"
-                    android:textColor="#1C1C1E"
-                    android:textSize="16sp"
-                    android:spinnerMode="dropdown"/>
-
+                    android:spinnerMode="dropdown" />
             </LinearLayout>
 
             <!-- Phone -->
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Số Điện Thoại"
+                android:text="@string/phone_number"
                 android:textColor="#8E8E93"
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
@@ -195,28 +178,21 @@
                 android:paddingHorizontal="16dp"
                 android:layout_marginBottom="24dp">
 
-
-
                 <EditText
                     android:id="@+id/tv_phone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="+1 111 467 378 399"
                     android:textColor="#1C1C1E"
                     android:textSize="16sp"
-                    android:background="@android:color/transparent"/>
-
-
+                    android:background="@android:color/transparent" />
             </LinearLayout>
 
             <!-- Gender -->
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Giới Tính"
+                android:text="@string/gender"
                 android:textColor="#8E8E93"
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
@@ -235,15 +211,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Male"
-                    android:textColor="#1C1C1E"
-                    android:textSize="16sp"
-                    android:spinnerMode="dropdown"/>
-
+                    android:spinnerMode="dropdown" />
             </LinearLayout>
-
         </LinearLayout>
-
     </ScrollView>
 
     <!-- Update Button -->
@@ -257,13 +227,11 @@
             android:id="@+id/update_button"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="Update"
+            android:text="@string/update"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
             android:background="#007AFF"
             android:textAllCaps="false" />
-
     </LinearLayout>
-
 </LinearLayout>

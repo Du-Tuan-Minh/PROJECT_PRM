@@ -1,5 +1,6 @@
 package com.example.project_prm;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.project_prm.ui.Article.ArticlesActivity;
 
 import com.example.project_prm.MainScreen.HomeFragment;
+import com.example.project_prm.ui.User_Profile.LanguageHelper;
 import com.example.project_prm.ui.User_Profile.ProfileActivity;
 import com.example.project_prm.ui.auth.SignInActivity;
 import com.example.project_prm.utils.CurrentUser;
@@ -20,6 +22,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageHelper.wrap(newBase));
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

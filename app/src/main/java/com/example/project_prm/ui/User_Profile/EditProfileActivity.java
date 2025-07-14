@@ -1,6 +1,7 @@
 package com.example.project_prm.ui.User_Profile;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -28,6 +29,10 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditText etFullName;
     private TextView tvDob, tvEmail, tvPhone;
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageHelper.wrap(newBase));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
