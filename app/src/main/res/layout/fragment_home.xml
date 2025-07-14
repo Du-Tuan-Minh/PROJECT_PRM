@@ -403,7 +403,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Lịch sử khám"
+                    android:text="History"
                     android:textSize="13sp"
                     android:textColor="#222"
                     android:gravity="center"

@@ -136,6 +136,16 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
                 return true;
 
+            } else if (id == R.id.nav_appointment) {
+                Intent intent = new Intent(MainActivity.this, com.example.project_prm.MainScreen.BookAppointmentActivity.class);
+                startActivity(intent);
+                return false; // Không chọn tab này vì là màn riêng
+
+            } else if (id == R.id.nav_history) {
+                Intent intent = new Intent(MainActivity.this, com.example.project_prm.MainScreen.AppointmentHistoryActivity.class);
+                startActivity(intent);
+                return false; // Không chọn tab này vì là màn riêng
+
             } else if (id == R.id.nav_articles) {
                 // 👉 Mở màn ArticlesActivity
                 Intent intent = new Intent(MainActivity.this, ArticlesActivity.class);
@@ -143,14 +153,12 @@ public class MainActivity extends AppCompatActivity {
                 return false; // Không chọn tab này vì là màn riêng
 
             } else if (id == R.id.nav_profile) {
-            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-            startActivity(intent);
-            return false; // Vì là màn riêng, không chọn tab
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                return false; // Vì là màn riêng, không chọn tab
             }
 
-
-
-        return true;
+            return true;
         });
 
 
