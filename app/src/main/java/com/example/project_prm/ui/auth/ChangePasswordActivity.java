@@ -1,7 +1,6 @@
 package com.example.project_prm.ui.auth;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -9,13 +8,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import com.example.project_prm.DataManager.DAO.UserDAO;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.project_prm.ui.dialog.StatusPopup;
 
 import com.example.project_prm.R;
+import com.example.project_prm.utils.CurrentUser;
+import com.example.project_prm.utils.HashUtil;
 import com.example.project_prm.widgets.EditTextFieldView;
+
+import java.util.Objects;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
@@ -31,6 +33,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         newPasswordInput = findViewById(R.id.NewPasswordInput);
         confirmNewPasswordInput = findViewById(R.id.confirmNewPasswordInput);
         changePasswordButton = findViewById(R.id.changePasswordButton);
+        userDAO = new UserDAO();
         popup = new StatusPopup(this);
     }
 
@@ -48,25 +51,27 @@ public class ChangePasswordActivity extends AppCompatActivity {
         confirmNewPasswordInput.clearFocus();
     }
 
-    private String getUserPassWord(){
-        String userPassWord = "";
+    private boolean isTruePassWord(String oldPassword){
+        String userPassWord;
         if(getIntent().hasExtra("resetPassword")){
             userPassWord = getIntent().getStringExtra("resetPassword");
-            return userPassWord;
-        }
-        // handle take password from database here
-        SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        int userId = prefs.getInt("userId", -1);
-        if (userId == -1) {
-            popup.setErrorPopup("Oops, Failed!", "Please login to change password...",
-                        "Oki");
-            popup.setPrimaryClick(this::onPrimaryPopupClick);
-            popup.show();
-            return null;
-        }
-        userPassWord = userDAO.getUserById(userId).getPassword();
 
-        return userPassWord;
+            return Objects.equals(userPassWord, oldPassword);
+        }
+
+        if (!CurrentUser.isLoggedIn(this)) {
+            return false;
+        }
+
+        userPassWord = userDAO.getById(CurrentUser.getUserId(this))
+                .continueWith(task -> {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return task.getResult().get("password").toString();
+                }).toString();
+
+        return Objects.equals(userPassWord, HashUtil.sha256(oldPassword));
     }
 
     private void onPrimaryPopupClick(View view) {
@@ -104,7 +109,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             return;
         }
 
-        if(!oldPassword.equals(getUserPassWord())){
+        if(!isTruePassWord(oldPassword)){
             popup.setErrorPopup("Oops, Failed!", "Old password is wrong...","Oki");
             popup.hiddenCancelButton();
             popup.show();
@@ -117,10 +122,29 @@ public class ChangePasswordActivity extends AppCompatActivity {
             popup.show();
             return;
         }
+        // handle change password logic here
+        userDAO.changePassword(CurrentUser.getUserId(this), newPassword)
+                .addOnSuccessListener(this::onChangePasswordSuccess)
+                .addOnFailureListener(this::onChangePasswordFailure);
 
+    }
+
+    private void onChangePasswordFailure(Exception e) {
+        popup.setErrorPopup("Oops, Failed!", "Change password failed...","Oki");
+        popup.setPrimaryClick(v -> popup.dismiss());
+        popup.hiddenCancelButton();
+        popup.show();
+    }
+
+    private void onChangePasswordSuccess(Void unused) {
         popup.setSuccessPopup("Success!", "Change password success","Oki");
         popup.setPrimaryClick(v -> popup.dismiss());
+        popup.hiddenCancelButton();
         popup.show();
+        setClearFocus();
+        startActivity(new Intent(this, SignInActivity.class));
+        finish();
+
     }
 
 

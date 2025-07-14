@@ -29,6 +29,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         forgetButton = findViewById(R.id.forgetButton);
         signInText = findViewById(R.id.signInText);
         popup = new StatusPopup(this);
+        userDAO = new UserDAO();
     }
     private void bindingAction(){
         forgetButton.setOnClickListener(this::onForgetClick);
@@ -53,20 +54,28 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             popup.show();
             return;
         }
-//        boolean isExist = userDAO.IsExistEmail(email);
-//        if (!isExist) {
-//            popup.setErrorPopup("Oops, Failed!",
-//                    "Email không tồn tại","Oki");
-//            popup.hiddenCancelButton();
-//            popup.show();
-//            return;
-//        }
-        // handle forget password logic here
-        popup.setSuccessPopup("Success!",
-                "Please check your mail to get password","Go to change password");
-        popup.setPrimaryClick(this::onPrimaryClick);
-        popup.setCancelClick(v -> popup.dismiss());
-        popup.show();
+
+        userDAO.isEmailExist(email)
+                .addOnSuccessListener(exists -> {
+                    if (!exists){
+                        popup.setErrorPopup("Oops, Failed!",
+                                "Email không tồn tại","Oki");
+                        popup.hiddenCancelButton();
+                        popup.show();
+                        return;
+                    }
+                    popup.setSuccessPopup("Success!",
+                            "Please check your mail to get password","Go to change password");
+                    popup.setPrimaryClick(this::onPrimaryClick);
+                    popup.setCancelClick(v -> popup.dismiss());
+                    popup.show();
+                })
+                .addOnFailureListener(e -> {
+                    popup.setErrorPopup("Oops, Failed!",
+                            "Email không tồn tại","Oki");
+                    popup.hiddenCancelButton();
+                    popup.show();
+                });
     }
 
     private void onPrimaryClick(View view) {

@@ -58,7 +58,7 @@
                     android:layout_marginBottom="4dp" />
 
                 <TextView
-                    android:id="@+id/tv_doctor_specialization"
+                    android:id="@+id/tv_doctor_phone"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="Immunologists"
@@ -66,7 +66,7 @@
                     android:textColor="#666666" />
 
                 <TextView
-                    android:id="@+id/tv_doctor_clinic"
+                    android:id="@+id/tv_doctor_specialization"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="The Valley Hospital in California, US"
@@ -101,6 +101,16 @@
             android:text="16:00 - 16:30 PM (30 minutes)"
             android:textSize="14sp"
             android:textColor="#333333"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Status: Pending"
+            android:textSize="14sp"
+            android:textColor="@color/red_dialog"
+            android:textStyle="bold"
             android:layout_marginBottom="24dp" />
 
         <!-- Patient Info -->
@@ -122,7 +132,7 @@
 
         <TableRow>
             <TextView
-                android:text="Full Name"
+                android:text="Full Name :"
                 android:textColor="#333333"
                 android:textSize="@dimen/font_sm"
                 android:paddingVertical="4dp" />
@@ -138,7 +148,7 @@
 
         <TableRow>
             <TextView
-                android:text="Gender"
+                android:text="Gender :"
                 android:textColor="#333333"
                 android:textSize="@dimen/font_sm"
                 android:paddingVertical="4dp" />
@@ -154,7 +164,7 @@
 
         <TableRow>
             <TextView
-                android:text="Age"
+                android:text="Date of Birth :"
                 android:textColor="#333333"
                 android:textSize="@dimen/font_sm"
                 android:paddingVertical="4dp" />
@@ -170,7 +180,7 @@
 
         <TableRow>
             <TextView
-                android:text="Problem"
+                android:text="Problem :"
                 android:paddingVertical="4dp" />
 
             <TextView
@@ -183,6 +193,24 @@
                 android:paddingStart="8dp"
                 />
         </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:text="Note :"
+                    android:paddingVertical="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_patient_note"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=": Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                    android:paddingVertical="4dp"
+                    android:textAlignment="textStart"
+                    android:paddingStart="8dp"
+                    />
+            </TableRow>
+
+
 
     </TableLayout>
 
