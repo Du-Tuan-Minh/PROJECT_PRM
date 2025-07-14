@@ -10,11 +10,28 @@ import java.util.List;
 import java.util.UUID;
 
 public class AppointmentRepository {
+    private static AppointmentRepository instance;
+    private List<AppointmentModel> appointments = new ArrayList<>();
     private FirebaseFirestore db;
     private static final String COLLECTION_APPOINTMENTS = "appointments";
 
-    public AppointmentRepository() {
+    private AppointmentRepository() {
         db = FirebaseFirestore.getInstance();
+    }
+
+    public static AppointmentRepository getInstance() {
+        if (instance == null) {
+            instance = new AppointmentRepository();
+        }
+        return instance;
+    }
+
+    public void addAppointment(AppointmentModel appointment) {
+        appointments.add(appointment);
+    }
+
+    public List<AppointmentModel> getAppointments() {
+        return appointments;
     }
 
     public void saveAppointment(AppointmentModel appointment, OnAppointmentSavedListener listener) {
@@ -25,7 +42,10 @@ public class AppointmentRepository {
         db.collection(COLLECTION_APPOINTMENTS)
                 .document(appointment.getId())
                 .set(appointment)
-                .addOnSuccessListener(aVoid -> listener.onAppointmentSaved(appointment))
+                .addOnSuccessListener(aVoid -> {
+                    addAppointment(appointment); // Lưu vào RAM khi thành công
+                    listener.onAppointmentSaved(appointment);
+                })
                 .addOnFailureListener(e -> listener.onError(e.getMessage()));
     }
 
@@ -99,10 +119,5 @@ public class AppointmentRepository {
     public interface OnAppointmentDeletedListener {
         void onAppointmentDeleted();
         void onError(String error);
-    }
-
-    // Static method for backward compatibility
-    public static AppointmentRepository getInstance() {
-        return new AppointmentRepository();
     }
 } 

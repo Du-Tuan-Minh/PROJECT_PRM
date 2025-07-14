@@ -193,6 +193,20 @@ public class BookAppointmentActivity extends AppCompatActivity {
                     getSharedPreferences("app_prefs", MODE_PRIVATE)
                         .edit().putBoolean("has_new_notification", true).apply();
                     BookingSuccessDialog dialog = new BookingSuccessDialog();
+                    dialog.setOnActionListener(new BookingSuccessDialog.OnActionListener() {
+                        @Override
+                        public void onViewAppointment() {
+                            Intent intent = new Intent(BookAppointmentActivity.this, AppointmentHistoryActivity.class);
+                            intent.putExtra("tab_index", 0); // 0 = Sắp tới
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intent);
+                            finish();
+                        }
+                        @Override
+                        public void onClose() {
+                            // Đóng dialog, không làm gì
+                        }
+                    });
                     dialog.show(getSupportFragmentManager(), "BookingSuccessDialog");
                 }
                 @Override
