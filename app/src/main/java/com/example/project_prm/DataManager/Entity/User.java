@@ -71,4 +71,9 @@ public class User {
     public void setCreated_at(Object created_at) {
         this.created_at = created_at;
     }
+
+    public enum UserRole {
+        Clinic, Personal
+    }
+
 }

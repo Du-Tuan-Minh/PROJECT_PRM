@@ -141,4 +141,21 @@ public class UserDAO {
                 .document(docId)
                 .set(profile.toMap());
     }
+
+    // get user role
+    public Task<String> getUserRole(String userId) {
+        return db.collection("users")
+                .document(userId)
+                .get()
+                .continueWith(task -> {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                        }
+                    DocumentSnapshot document = task.getResult();
+                    if (document == null || !document.exists()) {
+                        throw new Exception("Không tìm thấy user_id=" + userId);
+                    }
+                    return document.getString("role");
+                });
+    }
 }
