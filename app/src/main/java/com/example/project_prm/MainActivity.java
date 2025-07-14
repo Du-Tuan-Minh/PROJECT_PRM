@@ -4,46 +4,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.EditText;
-import android.view.ViewGroup;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.GridLayout;
-
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.viewpager2.widget.ViewPager2;
-import java.util.Arrays;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 
-import com.example.project_prm.Article.ArticlesActivity;
-import com.example.project_prm.Article.ArticlesFragment;
-import com.example.project_prm.MainScreen.ChatbotActivity;
+import com.example.project_prm.ui.Article.ArticlesActivity;
 
-import com.example.project_prm.MainScreen.DiseaseLibraryActivity;
-import com.example.project_prm.MainScreen.FindClinicActivity;
 import com.example.project_prm.MainScreen.HomeFragment;
-import com.example.project_prm.User_Profile.ProfileActivity;
-import com.example.project_prm.User_Profile.ProfileFragment;
+import com.example.project_prm.ui.User_Profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.button.MaterialButton;
-import com.google.firebase.FirebaseApp;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
-import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
-
-
-
-import androidx.fragment.app.Fragment;
 
 
 public class MainActivity extends AppCompatActivity {

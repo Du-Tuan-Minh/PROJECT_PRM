@@ -81,11 +81,11 @@
 
 
         <!-- Các màn  datnh.m -->
-        <activity android:name=".Article.ArticlesActivity" />
-        <activity android:name=".User_Profile.ProfileActivity" />
-        <activity android:name=".User_Profile.EditProfileActivity" />
-        <activity android:name=".User_Profile.LanguageActivity" />
-        <activity android:name=".User_Profile.SecurityActivity" />
+        <activity android:name=".ui.Article.ArticlesActivity" />
+        <activity android:name=".ui.User_Profile.ProfileActivity" />
+        <activity android:name=".ui.User_Profile.EditProfileActivity" />
+        <activity android:name=".ui.User_Profile.LanguageActivity" />
+        <activity android:name=".ui.User_Profile.SecurityActivity" />
 
 
     </application>

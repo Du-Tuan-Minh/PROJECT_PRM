@@ -1,4 +1,4 @@
-package com.example.project_prm.Article;
+package com.example.project_prm.ui.Article;
 
 
 public class Article {

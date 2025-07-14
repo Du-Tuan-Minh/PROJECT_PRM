@@ -1,4 +1,4 @@
-package com.example.project_prm.User_Profile;
+package com.example.project_prm.ui.User_Profile;
 
 import android.content.Context;
 import android.content.Intent;

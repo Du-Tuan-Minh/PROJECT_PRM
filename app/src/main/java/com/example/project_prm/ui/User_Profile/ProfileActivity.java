@@ -1,4 +1,4 @@
-package com.example.project_prm.User_Profile;
+package com.example.project_prm.ui.User_Profile;
 
 
 
