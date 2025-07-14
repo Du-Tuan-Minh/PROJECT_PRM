@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             app:startIconSrc="@drawable/ic_date_of_birth"
-            app:endIconSrc="@drawable/ic_calendar"
+            app:endIconSrc="@drawable/ic_calendar_date"
             app:hintText="Date of Birth(dd/mm/yyyy)"
             app:inputType="date"
             />
