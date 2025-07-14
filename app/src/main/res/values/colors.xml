@@ -18,4 +18,30 @@
 
     <color name="red_dialog">#FF5E75</color>
     <color name="blue_dialog">#2F72FE</color>
+
+    <color name="category_health">#4CAF50</color>
+    <color name="category_covid">#FF5722</color>
+    <color name="category_lifestyle">#3F51B5</color>
+    <color name="category_medical">#009688</color>
+    <color name="category_default">#9E9E9E</color>
+
+
+    <!-- Status Bar Colors -->
+    <color name="status_bar_text">#212121</color>
+    <color name="signal_bar_active">#212121</color>
+    <color name="signal_bar_inactive">#4D000000</color>
+    <color name="wifi_icon">#212121</color>
+    <color name="battery_full">#212121</color>
+    <color name="battery_border">#212121</color>
+
+    <!-- Màu nền riêng cho từng theme -->
+    <color name="light_background">#FFFFFF</color>
+    <color name="dark_background">#121212</color>
+
+    <!-- Màu chữ -->
+    <color name="light_text">#000000</color>
+    <color name="dark_text">#FFFFFF</color>
+
+    <!-- Article Meta Colors -->
+    <color name="article_date_text">#9E9E9E</color>
 </resources>

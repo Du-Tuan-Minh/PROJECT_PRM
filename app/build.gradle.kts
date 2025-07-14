@@ -51,6 +51,9 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.database)
     implementation(libs.glide)
@@ -59,4 +62,5 @@ dependencies {
 
     implementation("com.sun.mail:android-mail:1.6.7")
     implementation("com.sun.mail:android-activation:1.6.7")
+    implementation("com.tbuonomo:dotsindicator:4.3")
 }

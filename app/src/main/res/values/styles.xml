@@ -24,4 +24,11 @@
         <item name="android:textSize">@dimen/font_md</item>
         <item name="android:fontFamily">@font/poppins_regular</item>
     </style>
+
+    <style name="BottomNavText" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+
 </resources>

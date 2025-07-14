@@ -13,6 +13,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 public class UserDAO {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    private  final CollectionReference userRef = db.collection("users");
+
     public void addWithBatch(WriteBatch batch, String userId, User user) {
         batch.set(db.collection("users").document(userId), user.toMap());
     }

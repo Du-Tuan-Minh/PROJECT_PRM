@@ -94,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            app:startIconSrc="@drawable/ic_email"
+            app:startIconSrc="@drawable/ic_email_dat"
             app:hintText="Email address"
             app:inputType="email"
             />

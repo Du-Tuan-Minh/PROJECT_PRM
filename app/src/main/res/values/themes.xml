@@ -12,6 +12,12 @@
         <!-- Optional: global font family -->
         <item name="fontFamily">@font/poppins_regular</item>
 
+        <!-- Chủ đạo -->
+        <item name="colorPrimary">@color/light_text</item>
+        <item name="colorSecondary">@color/primary_blue</item>
+
+        <!-- Nền và chữ -->
+        <item name="backgroundColor">@color/light_background</item>
     </style>
 
     <style name="Theme.Project_PRM" parent="Base.Theme.Project_PRM" />
