@@ -41,7 +41,8 @@ public class CancelledAppointmentsFragment extends Fragment {
     
     private void setupRecyclerView() {
         appointments = new ArrayList<>();
-        adapter = new AppointmentAdapter(appointments, new AppointmentAdapter.OnAppointmentActionListener() {
+        adapter = new AppointmentAdapter(appointments);
+        adapter.setOnAppointmentActionListener(new AppointmentAdapter.OnAppointmentActionListener() {
             @Override
             public void onAppointmentClick(AppointmentModel appointment) {
                 if (getActivity() instanceof AppointmentHistoryActivity) {

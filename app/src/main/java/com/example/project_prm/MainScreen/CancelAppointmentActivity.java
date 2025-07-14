@@ -2,32 +2,63 @@ package com.example.project_prm.MainScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
 import com.example.project_prm.R;
+import com.example.project_prm.MainScreen.AppointmentRepository;
+import com.example.project_prm.MainScreen.AppointmentModel;
 
 public class CancelAppointmentActivity extends AppCompatActivity {
 
+    private static final String TAG = "CancelActivity";
+    
     private ImageView ivBack;
     private TextView tvTitle;
-    private boolean showConfirmation = true;
+    private String appointmentId;
+    private AppointmentModel appointment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cancel_appointment);
+        try {
+            setContentView(R.layout.activity_cancel_appointment);
+            
+            getIntentData();
+            initViews();
+            setupListeners();
+            showReasonFragment();
+        } catch (Exception e) {
+            Log.e(TAG, "Error in onCreate: " + e.getMessage());
+            Toast.makeText(this, "Lỗi khởi tạo: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
 
-        initViews();
-        setupListeners();
+    private void getIntentData() {
+        appointmentId = getIntent().getStringExtra("appointment_id");
+        if (appointmentId == null) {
+            finish();
+            return;
+        }
 
-        if (showConfirmation) {
-            showConfirmationDialog();
-        } else {
-            showReasonSelection();
+        appointment = AppointmentRepository.getInstance().getAppointmentById(appointmentId);
+        if (appointment == null) {
+            Toast.makeText(this, "Không tìm thấy lịch hẹn", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        if (!appointment.canBeCancelled()) {
+            Toast.makeText(this, "Không thể hủy lịch hẹn này", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
         }
     }
 
@@ -38,75 +69,71 @@ public class CancelAppointmentActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        ivBack.setOnClickListener(v -> finish());
-    }
-
-    private void showConfirmationDialog() {
-        CancelConfirmationDialog dialog = new CancelConfirmationDialog();
-        dialog.setOnActionListener(new CancelConfirmationDialog.OnActionListener() {
-            @Override
-            public void onConfirm() {
-                showConfirmation = false;
-                showReasonSelection();
-            }
-
-            @Override
-            public void onCancel() {
+        ivBack.setOnClickListener(v -> {
+            try {
                 finish();
+            } catch (Exception e) {
+                Log.e(TAG, "Error finishing: " + e.getMessage());
             }
         });
-        dialog.show(getSupportFragmentManager(), "cancel_confirmation");
     }
 
-    private void showReasonSelection() {
-        String[] cancelReasons = {
-                "Tôi muốn đổi sang bác sĩ khác",
-                "Tôi muốn đổi gói khám",
-                "Tôi không muốn tư vấn nữa",
-                "Tôi đã khỏi bệnh",
-                "Tôi đã tìm được thuốc phù hợp",
-                "Tôi không muốn nói",
-                "Khác"
-        };
+    private void showReasonFragment() {
+        try {
+            CancelReasonFragment fragment = new CancelReasonFragment();
+            fragment.setOnReasonSelectedListener((reason, otherReason) -> {
+                try {
+                    String finalReason = "Khác".equals(reason) ? otherReason : reason;
+                    processCancellation(finalReason, otherReason);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error processing reason: " + e.getMessage());
+                }
+            });
 
-        ReasonSelectionFragment fragment = ReasonSelectionFragment.newInstance(
-                "Lý do hủy lịch hẹn",
-                cancelReasons,
-                "Gửi"
-        );
-
-        fragment.setOnReasonSelectedListener((reason, otherReason) -> {
-            // Xử lý hủy lịch hẹn
-            processCancellation(reason, otherReason);
-        });
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, fragment);
-        transaction.commit();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragmentContainer, fragment);
+            transaction.commit();
+        } catch (Exception e) {
+            Log.e(TAG, "Error showing reason fragment: " + e.getMessage());
+        }
     }
 
     private void processCancellation(String reason, String otherReason) {
-        // Gửi request hủy lịch hẹn lên server
-        // Hiển thị loading
-
-        // Mô phỏng delay
-        new android.os.Handler().postDelayed(() -> {
-            showSuccessModal();
-        }, 1000);
+        try {
+            // Gửi request hủy lịch hẹn lên server
+            AppointmentRepository.getInstance().cancelAppointment(appointmentId);
+            
+            // Mô phỏng delay
+            new android.os.Handler().postDelayed(() -> {
+                showSuccessModal();
+            }, 1000);
+        } catch (Exception e) {
+            Log.e(TAG, "Error processing cancellation: " + e.getMessage());
+            Toast.makeText(this, "Lỗi hủy lịch: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showSuccessModal() {
-        CancelSuccessDialog dialog = new CancelSuccessDialog();
-        dialog.setOnActionListener(new CancelSuccessDialog.OnActionListener() {
-            @Override
-            public void onClose() {
-                // Quay về màn hình lịch sử
-                Intent intent = new Intent(CancelAppointmentActivity.this, AppointmentHistoryActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-            }
-        });
-        dialog.show(getSupportFragmentManager(), "cancel_success");
+        try {
+            CancelSuccessDialog dialog = new CancelSuccessDialog();
+            dialog.setOnActionListener(new CancelSuccessDialog.OnActionListener() {
+                @Override
+                public void onClose() {
+                    try {
+                        Intent intent = new Intent(CancelAppointmentActivity.this, AppointmentHistoryActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error closing: " + e.getMessage());
+                        finish();
+                    }
+                }
+            });
+            dialog.show(getSupportFragmentManager(), "cancel_success");
+        } catch (Exception e) {
+            Log.e(TAG, "Error showing success modal: " + e.getMessage());
+            finish();
+        }
     }
 }

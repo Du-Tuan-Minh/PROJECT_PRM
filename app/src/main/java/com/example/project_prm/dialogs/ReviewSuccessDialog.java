@@ -30,11 +30,7 @@ public class ReviewSuccessDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_review_success, container, false);
-        TextView tvTitle = view.findViewById(R.id.tvTitle);
-        TextView tvMessage = view.findViewById(R.id.tvMessage);
         Button btnClose = view.findViewById(R.id.btnClose);
-        tvTitle.setText(R.string.review_success_title);
-        tvMessage.setText(R.string.review_success_message);
         btnClose.setOnClickListener(v -> {
             if (listener != null) listener.onClose();
             dismiss();

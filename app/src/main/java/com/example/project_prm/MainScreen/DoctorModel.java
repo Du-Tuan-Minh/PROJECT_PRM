@@ -14,6 +14,7 @@ public class DoctorModel {
     public String about;
     public String workingTime;
     public boolean isAvailable;
+    public String description;
     
     public DoctorModel() {}
     
@@ -22,6 +23,10 @@ public class DoctorModel {
         this.name = name;
         this.specialty = specialty;
         this.location = location;
+    }
+    
+    public double getRating() {
+        return rating;
     }
     
     public String getFormattedRating() {
@@ -38,4 +43,11 @@ public class DoctorModel {
     public String getFormattedExperience() {
         return experienceYears + "+";
     }
+
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public String getSpecialty() { return specialty; }
+    public String getHospital() { return hospital; }
+    public String getExperience() { return experienceYears + " năm"; }
+    public int getReviewCount() { return reviewCount; }
 } 

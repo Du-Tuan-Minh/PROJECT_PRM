@@ -2,31 +2,62 @@ package com.example.project_prm.MainScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.util.Log;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.example.project_prm.R;
+import com.example.project_prm.MainScreen.AppointmentRepository;
+import com.example.project_prm.MainScreen.AppointmentModel;
 
 public class RescheduleAppointmentActivity extends AppCompatActivity {
 
+    private static final String TAG = "RescheduleActivity";
+    
     private ImageView ivBack;
     private TextView tvTitle;
-    private int currentStep = 1;
-    private String selectedReason;
-    private String selectedDate;
-    private String selectedTime;
+    private String appointmentId;
+    private AppointmentModel appointment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reschedule_appointment);
+        try {
+            setContentView(R.layout.activity_reschedule_appointment);
+            
+            getIntentData();
+            initViews();
+            setupListeners();
+            showDateTimeFragment();
+        } catch (Exception e) {
+            Log.e(TAG, "Error in onCreate: " + e.getMessage());
+            Toast.makeText(this, "Lỗi khởi tạo: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
 
-        initViews();
-        setupListeners();
-        showStep(1);
+    private void getIntentData() {
+        appointmentId = getIntent().getStringExtra("appointment_id");
+        if (appointmentId == null) {
+            finish();
+            return;
+        }
+
+        appointment = AppointmentRepository.getInstance().getAppointmentById(appointmentId);
+        if (appointment == null) {
+            Toast.makeText(this, "Không tìm thấy lịch hẹn", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        if (!appointment.canBeRescheduled()) {
+            Toast.makeText(this, "Không thể đổi lịch hẹn này", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
     }
 
     private void initViews() {
@@ -37,99 +68,68 @@ public class RescheduleAppointmentActivity extends AppCompatActivity {
 
     private void setupListeners() {
         ivBack.setOnClickListener(v -> {
-            if (currentStep > 1) {
-                showStep(currentStep - 1);
-            } else {
+            try {
                 finish();
+            } catch (Exception e) {
+                Log.e(TAG, "Error finishing: " + e.getMessage());
             }
         });
     }
 
-    private void showStep(int step) {
-        currentStep = step;
+    private void showDateTimeFragment() {
+        try {
+            RescheduleDateTimeFragment fragment = new RescheduleDateTimeFragment();
+            fragment.setOnDateTimeSelectedListener((date, time) -> {
+                try {
+                    processReschedule(date, time);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error processing reschedule: " + e.getMessage());
+                }
+            });
 
-        Fragment fragment;
-        switch (step) {
-            case 1:
-                fragment = createReasonSelectionFragment();
-                break;
-            case 2:
-                fragment = new DateTimeSelectionFragment();
-                break;
-            default:
-                return;
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragmentContainer, fragment);
+            transaction.commit();
+        } catch (Exception e) {
+            Log.e(TAG, "Error showing datetime fragment: " + e.getMessage());
         }
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, fragment);
-        transaction.commit();
     }
 
-    private Fragment createReasonSelectionFragment() {
-        String[] rescheduleReasons = {
-                "Tôi có lịch trình xung đột",
-                "Tôi không có mặt vào thời gian đã hẹn",
-                "Tôi có hoạt động không thể bỏ qua",
-                "Tôi không muốn nói",
-                "Khác"
-        };
-
-        ReasonSelectionFragment fragment = ReasonSelectionFragment.newInstance(
-                "Lý do đổi lịch hẹn",
-                rescheduleReasons,
-                "Tiếp theo"
-        );
-
-        fragment.setOnReasonSelectedListener((reason, otherReason) -> {
-            selectedReason = reason.equals("Khác") ? otherReason : reason;
-            showStep(2);
-        });
-
-        return fragment;
-    }
-
-    public void onDateTimeSelected(String date, String time) {
-        selectedDate = date;
-        selectedTime = time;
-
-        // Xử lý đổi lịch hẹn
-        processReschedule();
-    }
-
-    private void processReschedule() {
-        // Gửi request đổi lịch hẹn lên server
-        // Hiển thị loading
-
-        // Mô phỏng delay
-        new android.os.Handler().postDelayed(() -> {
-            showSuccessModal();
-        }, 1000);
+    private void processReschedule(String date, String time) {
+        try {
+            // Gửi request đổi lịch hẹn lên server
+            AppointmentRepository.getInstance().rescheduleAppointment(appointmentId, date, time);
+            
+            // Mô phỏng delay
+            new android.os.Handler().postDelayed(() -> {
+                showSuccessModal();
+            }, 1000);
+        } catch (Exception e) {
+            Log.e(TAG, "Error processing reschedule: " + e.getMessage());
+            Toast.makeText(this, "Lỗi đổi lịch: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showSuccessModal() {
-        RescheduleSuccessDialog dialog = new RescheduleSuccessDialog();
-        dialog.setOnActionListener(new RescheduleSuccessDialog.OnActionListener() {
-            @Override
-            public void onViewAppointment() {
-                Intent intent = new Intent(RescheduleAppointmentActivity.this, AppointmentDetailsActivity.class);
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void onClose() {
-                finish();
-            }
-        });
-        dialog.show(getSupportFragmentManager(), "reschedule_success");
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (currentStep > 1) {
-            showStep(currentStep - 1);
-        } else {
+        try {
+            RescheduleSuccessDialog dialog = new RescheduleSuccessDialog();
+            dialog.setOnActionListener(new RescheduleSuccessDialog.OnActionListener() {
+                @Override
+                public void onClose() {
+                    try {
+                        Intent intent = new Intent(RescheduleAppointmentActivity.this, AppointmentHistoryActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error closing: " + e.getMessage());
+                        finish();
+                    }
+                }
+            });
+            dialog.show(getSupportFragmentManager(), "reschedule_success");
+        } catch (Exception e) {
+            Log.e(TAG, "Error showing success modal: " + e.getMessage());
             finish();
         }
     }

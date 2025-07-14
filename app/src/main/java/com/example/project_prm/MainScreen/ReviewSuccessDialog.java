@@ -15,12 +15,7 @@ public class ReviewSuccessDialog extends DialogFragment {
     private OnActionListener listener;
     
     public interface OnActionListener {
-        void onViewReview();
         void onClose();
-    }
-    
-    public static ReviewSuccessDialog newInstance() {
-        return new ReviewSuccessDialog();
     }
     
     public void setOnActionListener(OnActionListener listener) {
@@ -32,15 +27,7 @@ public class ReviewSuccessDialog extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_review_success, container, false);
         
-        MaterialButton btnViewReview = view.findViewById(R.id.btnPrimary);
-        MaterialButton btnClose = view.findViewById(R.id.btnSecondary);
-        
-        btnViewReview.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onViewReview();
-            }
-            dismiss();
-        });
+        MaterialButton btnClose = view.findViewById(R.id.btnClose);
         
         btnClose.setOnClickListener(v -> {
             if (listener != null) {

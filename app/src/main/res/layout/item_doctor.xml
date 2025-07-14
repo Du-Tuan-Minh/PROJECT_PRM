@@ -1,137 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
+    android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="@color/white">
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="16dp">
 
-        <!-- Doctor Info -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
+        <ImageView
+            android:id="@+id/ivDoctorImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_doctor"
+            android:scaleType="centerCrop"
+            android:background="@drawable/bg_circle" />
 
-            <ImageView
-                android:id="@+id/ivDoctorAvatar"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ic_general"
-                android:background="@drawable/bg_circle_lightblue"
-                android:scaleType="centerCrop"
-                android:layout_marginEnd="16dp" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:id="@+id/tvDoctorName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BS. Nguyễn Văn An"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/tvDoctorSpecialty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tim mạch"
+                android:textSize="14sp"
+                android:textColor="@color/primary_blue"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/tvDoctorLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bệnh viện Tim Hà Nội"
+                android:textSize="12sp"
+                android:textColor="@color/gray"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginTop="2dp" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvDoctorName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="BS. Jenny Watson"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_black" />
-
-                <TextView
-                    android:id="@+id/tvSpecialty"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chuyên khoa Miễn dịch"
-                    android:textSize="14sp"
-                    android:textColor="@color/text_gray"
-                    android:layout_marginTop="4dp" />
-
-                <TextView
-                    android:id="@+id/tvLocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bệnh viện Christ, London"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_gray"
-                    android:layout_marginTop="2dp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Stats -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_star"
-                    android:tint="@color/primary_blue" />
+                android:layout_marginTop="8dp">
 
                 <TextView
-                    android:id="@+id/tvRating"
+                    android:id="@+id/tvDoctorRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4.8"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_black"
-                    android:layout_marginStart="4dp" />
+                    android:textColor="@color/black"
+                    android:drawableStart="@drawable/ic_star"
+                    android:drawablePadding="4dp" />
+
+                <TextView
+                    android:id="@+id/tvDoctorReviewCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(245 đánh giá)"
+                    android:textSize="12sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginStart="8dp" />
+
+                <TextView
+                    android:id="@+id/tvDoctorExperience"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="15 năm kinh nghiệm"
+                    android:textSize="12sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginStart="8dp" />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvPatients"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="5.000+ bệnh nhân"
-                android:textSize="12sp"
-                android:textColor="@color/text_gray"
-                android:gravity="center" />
-
-            <TextView
-                android:id="@+id/tvExperience"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="10+ năm"
-                android:textSize="12sp"
-                android:textColor="@color/text_gray"
-                android:gravity="end" />
-
         </LinearLayout>
-
-        <!-- Book Appointment Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnBookAppointment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Đặt lịch khám"
-            android:textColor="@color/white"
-            android:background="@drawable/bg_button_primary"
-            app:backgroundTint="@null" />
 
     </LinearLayout>
 

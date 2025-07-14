@@ -2,164 +2,151 @@ package com.example.project_prm.MainScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.util.Log;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.bumptech.glide.Glide;
-import com.google.android.material.button.MaterialButton;
 import com.example.project_prm.R;
 import com.example.project_prm.MainScreen.AppointmentRepository;
 import com.example.project_prm.MainScreen.AppointmentModel;
+import com.example.project_prm.widgets.EditTextFieldView;
+import com.google.android.material.button.MaterialButton;
 
 public class WriteReviewActivity extends AppCompatActivity {
 
-    private ImageView ivBack, ivDoctorAvatar;
-    private TextView tvTitle, tvDoctorName, tvQuestion, tvRecommendQuestion;
-    private StarRatingView starRating;
-    private EditText etReviewText;
-    private RadioGroup rgRecommend;
-    private RadioButton rbYes, rbNo;
-    private MaterialButton btnCancel, btnSubmit;
-
-    private String doctorName = "BS. Drake Boeson";
-    private int selectedRating = 0;
+    private static final String TAG = "WriteReviewActivity";
+    
+    private ImageView ivBack;
+    private TextView tvTitle, tvDoctorName, tvDoctorSpecialty;
+    private RatingBar ratingBar;
+    private EditTextFieldView etReview;
+    private MaterialButton btnSubmit;
+    private String appointmentId;
+    private AppointmentModel appointment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_write_review);
+        try {
+            setContentView(R.layout.activity_write_review);
+            
+            getIntentData();
+            initViews();
+            setupListeners();
+            displayAppointmentInfo();
+        } catch (Exception e) {
+            Log.e(TAG, "Error in onCreate: " + e.getMessage());
+            Toast.makeText(this, "Lỗi khởi tạo: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
 
-        initViews();
-        setupListeners();
-        loadDoctorData();
+    private void getIntentData() {
+        appointmentId = getIntent().getStringExtra("appointment_id");
+        if (appointmentId == null) {
+            finish();
+            return;
+        }
+
+        appointment = AppointmentRepository.getInstance().getAppointmentById(appointmentId);
+        if (appointment == null) {
+            Toast.makeText(this, "Không tìm thấy lịch hẹn", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        if (!appointment.canBeReviewed()) {
+            Toast.makeText(this, "Không thể đánh giá lịch hẹn này", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
     }
 
     private void initViews() {
         ivBack = findViewById(R.id.ivBack);
         tvTitle = findViewById(R.id.tvTitle);
-        ivDoctorAvatar = findViewById(R.id.ivDoctorAvatar);
         tvDoctorName = findViewById(R.id.tvDoctorName);
-        tvQuestion = findViewById(R.id.tvQuestion);
-        starRating = findViewById(R.id.starRating);
-        etReviewText = findViewById(R.id.etReviewText);
-        tvRecommendQuestion = findViewById(R.id.tvRecommendQuestion);
-        rgRecommend = findViewById(R.id.rgRecommend);
-        rbYes = findViewById(R.id.rbYes);
-        rbNo = findViewById(R.id.rbNo);
-        btnCancel = findViewById(R.id.btnCancel);
+        tvDoctorSpecialty = findViewById(R.id.tvDoctorSpecialty);
+        ratingBar = findViewById(R.id.ratingBar);
+        etReview = findViewById(R.id.etReview);
         btnSubmit = findViewById(R.id.btnSubmit);
-
+        
         tvTitle.setText("Viết đánh giá");
     }
 
     private void setupListeners() {
-        ivBack.setOnClickListener(v -> finish());
-
-        starRating.setOnRatingChangeListener(rating -> {
-            selectedRating = rating;
-            updateSubmitButton();
-        });
-
-        etReviewText.addTextChangedListener(new android.text.TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                updateSubmitButton();
+        ivBack.setOnClickListener(v -> {
+            try {
+                finish();
+            } catch (Exception e) {
+                Log.e(TAG, "Error finishing: " + e.getMessage());
             }
-
-            @Override
-            public void afterTextChanged(android.text.Editable s) {}
         });
-
-        rgRecommend.setOnCheckedChangeListener((group, checkedId) -> {
-            updateSubmitButton();
+        
+        btnSubmit.setOnClickListener(v -> {
+            try {
+                submitReview();
+            } catch (Exception e) {
+                Log.e(TAG, "Error submitting review: " + e.getMessage());
+                Toast.makeText(this, "Lỗi gửi đánh giá: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
-
-        btnCancel.setOnClickListener(v -> finish());
-
-        btnSubmit.setOnClickListener(v -> submitReview());
     }
 
-    private void loadDoctorData() {
-        // Lấy thông tin bác sĩ từ Intent
-        String appointmentId = getIntent().getStringExtra("appointment_id");
-
-        // Load dữ liệu mẫu
-        tvDoctorName.setText(doctorName);
-        tvQuestion.setText("Trải nghiệm của bạn với " + doctorName + " như thế nào?");
-        tvRecommendQuestion.setText("Bạn có muốn giới thiệu " + doctorName + " cho bạn bè không?");
-
-        // Load avatar
-        Glide.with(this)
-                .load(R.drawable.ic_general) // Placeholder
-                .circleCrop()
-                .into(ivDoctorAvatar);
-
-        // Set placeholder text
-        etReviewText.setHint("BS. " + doctorName + " là một người rất thân thiện và chuyên nghiệp trong công việc. Tôi đã tư vấn với bác sĩ trong 30 phút và bác sĩ luôn phản hồi nhanh chóng và rõ ràng về các khiếu nại của tôi. Tôi rất thích và đặc biệt giới thiệu BS. " + doctorName + " cho bạn 👍");
-    }
-
-    private void updateSubmitButton() {
-        boolean isValid = selectedRating > 0 &&
-                !TextUtils.isEmpty(etReviewText.getText().toString().trim()) &&
-                rgRecommend.getCheckedRadioButtonId() != -1;
-
-        btnSubmit.setEnabled(isValid);
-        btnSubmit.setAlpha(isValid ? 1.0f : 0.5f);
+    private void displayAppointmentInfo() {
+        if (appointment != null) {
+            tvDoctorName.setText(appointment.getDoctorName());
+            tvDoctorSpecialty.setText(appointment.getSpecialty());
+        }
     }
 
     private void submitReview() {
-        if (selectedRating == 0) {
+        float rating = ratingBar.getRating();
+        String review = etReview.getFieldText().trim();
+        
+        if (rating == 0) {
+            Toast.makeText(this, "Vui lòng chọn số sao", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        String reviewText = etReviewText.getText().toString().trim();
-        if (TextUtils.isEmpty(reviewText)) {
+        
+        if (review.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập đánh giá", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        boolean recommend = rgRecommend.getCheckedRadioButtonId() == R.id.rbYes;
-
-        // Xử lý gửi đánh giá
-        processReviewSubmission(selectedRating, reviewText, recommend);
-    }
-
-    private void processReviewSubmission(int rating, String reviewText, boolean recommend) {
-        btnSubmit.setEnabled(false);
-        btnSubmit.setText("Đang gửi...");
-        String appointmentId = getIntent().getStringExtra("appointment_id");
-        AppointmentRepository.getInstance().saveReview(appointmentId, rating, reviewText);
+        
+        // Gửi review lên server
+        AppointmentRepository.getInstance().saveReview(appointmentId, (int)rating, review);
+        
+        // Mô phỏng delay
         new android.os.Handler().postDelayed(() -> {
             showSuccessModal();
         }, 1000);
     }
 
     private void showSuccessModal() {
-        ReviewSuccessDialog dialog = new ReviewSuccessDialog();
-        dialog.setOnActionListener(new ReviewSuccessDialog.OnActionListener() {
-            @Override
-            public void onViewReview() {
-                Intent intent = new Intent(WriteReviewActivity.this, AppointmentHistoryActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void onClose() {
-                Intent intent = new Intent(WriteReviewActivity.this, AppointmentHistoryActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-            }
-        });
-        dialog.show(getSupportFragmentManager(), "review_success");
+        try {
+            ReviewSuccessDialog dialog = new ReviewSuccessDialog();
+            dialog.setOnActionListener(new ReviewSuccessDialog.OnActionListener() {
+                @Override
+                public void onClose() {
+                    try {
+                        Intent intent = new Intent(WriteReviewActivity.this, AppointmentHistoryActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error closing: " + e.getMessage());
+                        finish();
+                    }
+                }
+            });
+            dialog.show(getSupportFragmentManager(), "review_success");
+        } catch (Exception e) {
+            Log.e(TAG, "Error showing success modal: " + e.getMessage());
+            finish();
+        }
     }
 }

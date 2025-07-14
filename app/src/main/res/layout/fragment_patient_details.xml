@@ -1,301 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@color/background">
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Header Section -->
+        <!-- Header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thông tin bệnh nhân"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vui lòng nhập thông tin của bạn"
+            android:textSize="14sp"
+            android:textColor="@color/gray"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Full Name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Họ và tên"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp" />
+
+        <com.example.project_prm.widgets.EditTextFieldView
+            android:id="@+id/etFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Nhập họ và tên"
+            android:inputType="textPersonName" />
+
+        <!-- Gender -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giới tính"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/rgGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/rbMale"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nam"
+                android:textSize="14sp"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/rbFemale"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nữ"
+                android:textSize="14sp" />
+
+        </RadioGroup>
+
+        <!-- Age -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tuổi"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="24dp"
-            android:gravity="center">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
 
-            <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:src="@drawable/ic_general"
-                android:background="@drawable/bg_circle_lightblue"
-                android:padding="16dp"
-                android:layout_marginBottom="12dp" />
+            <SeekBar
+                android:id="@+id/seekBarAge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="100"
+                android:progress="25"
+                android:layout_marginEnd="16dp" />
 
             <TextView
+                android:id="@+id/tvAge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thông tin bệnh nhân"
-                android:textSize="20sp"
+                android:text="25"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_black"
-                android:layout_marginBottom="4dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Vui lòng điền đầy đủ thông tin để đặt lịch khám"
-                android:textSize="14sp"
-                android:textColor="@color/text_gray"
+                android:textColor="@color/black"
+                android:minWidth="40dp"
                 android:gravity="center" />
 
         </LinearLayout>
 
-        <!-- Personal Information Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
+        <!-- Problem Description -->
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/white">
+            android:text="Mô tả vấn đề"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Thông tin cá nhân"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_black"
-                    android:layout_marginBottom="16dp" />
-
-                <!-- Full Name -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilFullName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="Họ và tên"
-                    app:boxBackgroundColor="@color/input_bg"
-                    app:boxStrokeColor="@color/primary_blue"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:hintTextColor="@color/text_gray"
-                    app:startIconDrawable="@drawable/ic_user"
-                    app:startIconTint="@color/primary_blue"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etFullName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Nguyễn Văn A"
-                        android:textColor="@color/text_black"
-                        android:textSize="16sp"
-                        android:inputType="textPersonName" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Gender -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilGender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="Giới tính"
-                    app:boxBackgroundColor="@color/input_bg"
-                    app:boxStrokeColor="@color/primary_blue"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:hintTextColor="@color/text_gray"
-                    app:startIconDrawable="@drawable/ic_gender"
-                    app:startIconTint="@color/primary_blue"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/actvGender"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/text_black"
-                        android:textSize="16sp"
-                        android:inputType="none" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Age -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilAge"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="Tuổi"
-                    app:boxBackgroundColor="@color/input_bg"
-                    app:boxStrokeColor="@color/primary_blue"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:hintTextColor="@color/text_gray"
-                    app:startIconDrawable="@drawable/ic_calendar"
-                    app:startIconTint="@color/primary_blue"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etAge"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="27"
-                        android:textColor="@color/text_black"
-                        android:textSize="16sp"
-                        android:inputType="number" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- Service Information Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/white">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Thông tin dịch vụ"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_black"
-                    android:layout_marginBottom="16dp" />
-
-                <!-- Service Type -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilServiceType"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="Chọn kiểu khám"
-                    app:boxBackgroundColor="@color/input_bg"
-                    app:boxStrokeColor="@color/primary_blue"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:hintTextColor="@color/text_gray"
-                    app:startIconDrawable="@drawable/ic_service"
-                    app:startIconTint="@color/primary_blue"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/actvServiceType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/text_black"
-                        android:textSize="16sp"
-                        android:inputType="none" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Price Display -->
-                <LinearLayout
-                    android:id="@+id/layoutPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/bg_rounded_white"
-                    android:padding="12dp"
-                    android:gravity="center_vertical"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_credit_card"
-                        android:tint="@color/primary_blue"
-                        android:layout_marginEnd="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Giá dịch vụ:"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_gray" />
-
-                    <TextView
-                        android:id="@+id/tvServicePrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="200.000đ"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/primary_blue" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- Problem Description Card -->
-        <androidx.cardview.widget.CardView
+        <com.example.project_prm.widgets.EditTextFieldView
+            android:id="@+id/etProblem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/white">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mô tả vấn đề"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_black"
-                    android:layout_marginBottom="16dp" />
-
-                <!-- Problem Description -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilProblem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Mô tả vấn đề của bạn"
-                    app:boxBackgroundColor="@color/input_bg"
-                    app:boxStrokeColor="@color/primary_blue"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:hintTextColor="@color/text_gray"
-                    app:startIconDrawable="@drawable/ic_message"
-                    app:startIconTint="@color/primary_blue"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etProblem"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Xin chào BS. Jenny, tôi có vấn đề về hệ miễn dịch..."
-                        android:textColor="@color/text_black"
-                        android:textSize="16sp"
-                        android:inputType="textMultiLine"
-                        android:lines="4"
-                        android:gravity="top|start" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
+            android:hint="Mô tả vấn đề của bạn"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:maxLines="5" />
 
         <!-- Next Button -->
         <com.google.android.material.button.MaterialButton
@@ -303,15 +143,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tiếp theo"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@drawable/bg_button_primary"
-            android:minHeight="56dp"
-            app:backgroundTint="@null"
-            app:icon="@drawable/ic_arrow_right"
-            app:iconGravity="end" />
+            app:backgroundTint="@null" />
 
     </LinearLayout>
 
-</androidx.core.widget.NestedScrollView> 
+</ScrollView> 

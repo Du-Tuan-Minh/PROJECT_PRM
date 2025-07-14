@@ -7,39 +7,31 @@ public class ClinicModel {
     private String name;
     private String address;
     private String phone;
-    private String email;
-    private String website;
     private String description;
     private double rating;
     private int reviewCount;
-    private String imageUrl;
     private LatLng location;
-    private String specialties;
-    private String workingHours;
+    private String imageUrl;
     private boolean isOpen;
-    private double distance; // Distance from user location in km
-
-    public ClinicModel() {}
+    private String workingHours;
+    private String specialties;
 
     public ClinicModel(String id, String name, String address, String phone, 
-                      String email, String website, String description, 
-                      double rating, int reviewCount, String imageUrl, 
-                      LatLng location, String specialties, String workingHours) {
+                      String description, double rating, int reviewCount, 
+                      LatLng location, String imageUrl, boolean isOpen, 
+                      String workingHours, String specialties) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
-        this.email = email;
-        this.website = website;
         this.description = description;
         this.rating = rating;
         this.reviewCount = reviewCount;
-        this.imageUrl = imageUrl;
         this.location = location;
-        this.specialties = specialties;
+        this.imageUrl = imageUrl;
+        this.isOpen = isOpen;
         this.workingHours = workingHours;
-        this.isOpen = true; // Default to open
-        this.distance = 0.0;
+        this.specialties = specialties;
     }
 
     // Getters
@@ -47,49 +39,26 @@ public class ClinicModel {
     public String getName() { return name; }
     public String getAddress() { return address; }
     public String getPhone() { return phone; }
-    public String getEmail() { return email; }
-    public String getWebsite() { return website; }
     public String getDescription() { return description; }
     public double getRating() { return rating; }
     public int getReviewCount() { return reviewCount; }
-    public String getImageUrl() { return imageUrl; }
     public LatLng getLocation() { return location; }
-    public String getSpecialties() { return specialties; }
-    public String getWorkingHours() { return workingHours; }
+    public String getImageUrl() { return imageUrl; }
     public boolean isOpen() { return isOpen; }
-    public double getDistance() { return distance; }
+    public String getWorkingHours() { return workingHours; }
+    public String getSpecialties() { return specialties; }
 
     // Setters
     public void setId(String id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setAddress(String address) { this.address = address; }
     public void setPhone(String phone) { this.phone = phone; }
-    public void setEmail(String email) { this.email = email; }
-    public void setWebsite(String website) { this.website = website; }
     public void setDescription(String description) { this.description = description; }
     public void setRating(double rating) { this.rating = rating; }
     public void setReviewCount(int reviewCount) { this.reviewCount = reviewCount; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public void setLocation(LatLng location) { this.location = location; }
-    public void setSpecialties(String specialties) { this.specialties = specialties; }
-    public void setWorkingHours(String workingHours) { this.workingHours = workingHours; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public void setOpen(boolean open) { isOpen = open; }
-    public void setDistance(double distance) { this.distance = distance; }
-
-    // Helper methods
-    public String getFormattedDistance() {
-        if (distance < 1) {
-            return String.format("%.0f m", distance * 1000);
-        } else {
-            return String.format("%.1f km", distance);
-        }
-    }
-
-    public String getFormattedRating() {
-        return String.format("%.1f", rating);
-    }
-
-    public String getFormattedReviewCount() {
-        return reviewCount + " đánh giá";
-    }
+    public void setWorkingHours(String workingHours) { this.workingHours = workingHours; }
+    public void setSpecialties(String specialties) { this.specialties = specialties; }
 } 

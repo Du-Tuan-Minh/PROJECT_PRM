@@ -10,10 +10,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.project_prm.R;
+import com.example.project_prm.MainScreen.AppointmentModel;
+import com.example.project_prm.MainScreen.AppointmentRepository;
+import android.widget.Toast;
+import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompletedAppointmentsFragment extends Fragment {
+
+    private static final String TAG = "CompletedAppointments";
     
     private RecyclerView rvAppointments;
     private AppointmentAdapter adapter;
@@ -41,7 +47,8 @@ public class CompletedAppointmentsFragment extends Fragment {
     
     private void setupRecyclerView() {
         appointments = new ArrayList<>();
-        adapter = new AppointmentAdapter(appointments, new AppointmentAdapter.OnAppointmentActionListener() {
+        adapter = new AppointmentAdapter(appointments);
+        adapter.setOnAppointmentActionListener(new AppointmentAdapter.OnAppointmentActionListener() {
             @Override
             public void onAppointmentClick(AppointmentModel appointment) {
                 if (getActivity() instanceof AppointmentHistoryActivity) {
@@ -68,8 +75,17 @@ public class CompletedAppointmentsFragment extends Fragment {
             
             @Override
             public void onLeaveReview(AppointmentModel appointment) {
-                if (getActivity() instanceof AppointmentHistoryActivity) {
-                    ((AppointmentHistoryActivity) getActivity()).onLeaveReview(appointment.getId());
+                // CHỈ cho phép review nếu appointment đã completed và chưa review
+                if (appointment.canBeReviewed()) {
+                    if (getActivity() instanceof AppointmentHistoryActivity) {
+                        ((AppointmentHistoryActivity) getActivity()).onLeaveReview(appointment.getId());
+                    }
+                } else if (appointment.isReviewed()) {
+                    // Đã review rồi, có thể hiển thị review hoặc không làm gì
+                    Toast.makeText(getContext(), "Bạn đã đánh giá cuộc hẹn này rồi", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Chưa completed, không thể review
+                    Toast.makeText(getContext(), "Chỉ có thể đánh giá sau khi hoàn thành cuộc hẹn", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -79,13 +95,15 @@ public class CompletedAppointmentsFragment extends Fragment {
     }
     
     private void loadCompletedAppointments() {
-        appointments.clear();
-        for (AppointmentModel a : AppointmentRepository.getInstance().getAppointments()) {
-            if ("completed".equalsIgnoreCase(a.getStatus())) {
-                appointments.add(a);
+        try {
+            appointments.clear();
+            appointments.addAll(AppointmentRepository.getInstance().getCompletedAppointments());
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
             }
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading completed appointments: " + e.getMessage());
         }
-        adapter.notifyDataSetChanged();
     }
     
     @Override

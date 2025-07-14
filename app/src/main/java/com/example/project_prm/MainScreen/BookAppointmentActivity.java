@@ -2,9 +2,11 @@ package com.example.project_prm.MainScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,24 +16,34 @@ import com.example.project_prm.MainScreen.AppointmentRepository;
 
 public class BookAppointmentActivity extends AppCompatActivity {
 
+    private static final String TAG = "BookAppointmentActivity";
     private ImageView ivBack;
     private TextView tvTitle;
     private int currentStep = 1;
     public BookingData bookingData;
 
     public static class BookingData {
-        public String selectedDate;
-        public String selectedTime;
-        public String fullName;
-        public String gender;
-        public String age;
-        public String problem;
-        public String doctorName = "BS. Jenny Watson";
-        public String doctorSpecialty = "Chuyên khoa Miễn dịch";
-        public String doctorLocation = "Bệnh viện Christ, London, UK";
-        public String packageType = "Nhắn tin";
-        public String duration = "30 phút";
-        public int amount = 500000; // VND
+        public String doctorId = "";
+        public String doctorName = "";
+        public String doctorSpecialty = "";
+        public String doctorHospital = "";
+        public String date = "";
+        public String time = "";
+        public String packageType = "";
+        public String duration = "";
+        public String amount = "";
+        public String patientName = "";
+        public String patientGender = "";
+        public String patientAge = "";
+        public String patientProblem = "";
+        
+        public BookingData() {}
+        
+        public boolean isComplete() {
+            return !doctorName.isEmpty() && !date.isEmpty() && 
+                   !time.isEmpty() && !patientName.isEmpty() && 
+                   !patientProblem.isEmpty();
+        }
     }
 
     @Override
@@ -40,9 +52,20 @@ public class BookAppointmentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_book_appointment);
 
         bookingData = new BookingData();
+        getIntentData();
         initViews();
         setupListeners();
         showStep(1);
+    }
+
+    private void getIntentData() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            bookingData.doctorId = intent.getStringExtra("doctor_id");
+            bookingData.doctorName = intent.getStringExtra("doctor_name");
+            bookingData.doctorSpecialty = intent.getStringExtra("doctor_specialty");
+            bookingData.doctorHospital = intent.getStringExtra("doctor_hospital");
+        }
     }
 
     private void initViews() {
@@ -72,12 +95,15 @@ public class BookAppointmentActivity extends AppCompatActivity {
                 fragment = new DoctorSelectFragment();
                 break;
             case 2:
-                fragment = new DateTimeSelectionFragment();
+                fragment = new PackageSelectionFragment();
                 break;
             case 3:
-                fragment = new PatientDetailsFragment();
+                fragment = new DateTimeSelectionFragment();
                 break;
             case 4:
+                fragment = new PatientDetailsFragment();
+                break;
+            case 5:
                 fragment = new AppointmentSummaryFragment();
                 break;
             default:
@@ -93,86 +119,117 @@ public class BookAppointmentActivity extends AppCompatActivity {
         String title;
         switch (currentStep) {
             case 1: title = "Chọn bác sĩ"; break;
-            case 2: title = "Chọn ngày & giờ"; break;
-            case 3: title = "Thông tin bệnh nhân"; break;
-            case 4: title = "Xem lại thông tin"; break;
+            case 2: title = "Chọn gói khám"; break;
+            case 3: title = "Chọn ngày và giờ"; break;
+            case 4: title = "Thông tin bệnh nhân"; break;
+            case 5: title = "Xem lại thông tin"; break;
             default: title = "Đặt lịch khám"; break;
         }
         tvTitle.setText(title);
     }
 
-    public void onDoctorSelected(String doctor, String specialty, String location) {
-        bookingData.doctorName = doctor;
+    public void onDoctorSelected(String doctorId, String doctorName, String specialty, String hospital) {
+        bookingData.doctorId = doctorId;
+        bookingData.doctorName = doctorName;
         bookingData.doctorSpecialty = specialty;
-        bookingData.doctorLocation = location;
+        bookingData.doctorHospital = hospital;
         showStep(2);
     }
 
     public void onDateTimeSelected(String date, String time) {
-        bookingData.selectedDate = date;
-        bookingData.selectedTime = time;
-        showStep(3);
-    }
-
-    public void onPatientDetailsSubmitted(String fullName, String gender, String age, String problem) {
-        bookingData.fullName = fullName;
-        bookingData.gender = gender;
-        bookingData.age = age;
-        bookingData.problem = problem;
+        bookingData.date = date;
+        bookingData.time = time;
         showStep(4);
     }
 
-    public void onSummaryConfirmed() {
-        // Bỏ bước nhập mã PIN, chuyển thẳng sang dialog thành công
-        showSuccessModal();
+    public void onPatientDetailsEntered(String fullName, String gender, String age, String problem) {
+        bookingData.patientName = fullName;
+        bookingData.patientGender = gender;
+        bookingData.patientAge = age;
+        bookingData.patientProblem = problem;
+        showStep(5);
     }
 
-    public void onPinComplete(String pin) {
-        // Mô phỏng quá trình đặt lịch
-        // Trong app thực tế: xác thực PIN, tạo cuộc hẹn trong Firebase
-        showSuccessModal();
+    public void onAppointmentConfirmed() {
+        Log.d(TAG, "onAppointmentConfirmed called");
+        try {
+            // Kiểm tra dữ liệu đầu vào
+            if (bookingData.doctorName == null || bookingData.doctorName.isEmpty() ||
+                bookingData.doctorSpecialty == null || bookingData.doctorSpecialty.isEmpty() ||
+                bookingData.date == null || bookingData.date.isEmpty() ||
+                bookingData.time == null || bookingData.time.isEmpty() ||
+                bookingData.packageType == null || bookingData.packageType.isEmpty() ||
+                bookingData.patientName == null || bookingData.patientName.isEmpty() ||
+                bookingData.patientProblem == null || bookingData.patientProblem.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin trước khi xác nhận!", Toast.LENGTH_LONG).show();
+                Log.e(TAG, "Thiếu dữ liệu bắt buộc khi đặt lịch: " + bookingData);
+                return;
+            }
+
+            // Log booking data for debugging
+            Log.d(TAG, "Booking data: " + bookingData.doctorName + ", " + bookingData.doctorSpecialty + 
+                  ", " + bookingData.date + ", " + bookingData.time + ", " + bookingData.packageType + 
+                  ", " + bookingData.amount + ", " + bookingData.patientName + ", " + bookingData.patientProblem);
+            
+            // Create new appointment với dynamic data
+            String amountStr = bookingData.amount != null ? bookingData.amount.replaceAll("[^0-9]", "") : "0";
+            int amount = amountStr.isEmpty() ? 0 : Integer.parseInt(amountStr);
+            
+            Log.d(TAG, "Parsed amount: " + amount);
+            
+            AppointmentModel appointment = AppointmentRepository.getInstance().createNewAppointment(
+                bookingData.doctorName,
+                bookingData.doctorSpecialty,
+                bookingData.date,
+                bookingData.time,
+                bookingData.packageType,
+                amount,
+                bookingData.patientName,
+                "", // phone - optional
+                bookingData.patientProblem
+            );
+            
+            Log.d(TAG, "Appointment created successfully: " + appointment.getId());
+            showSuccessModal();
+        } catch (Exception e) {
+            Log.e(TAG, "Error in onAppointmentConfirmed: " + e.getMessage(), e);
+            Toast.makeText(this, "Có lỗi xảy ra: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            showSuccessModal();
+        }
     }
 
     private void showSuccessModal() {
-        // Tạo lịch hẹn mới và lưu vào repository
-        AppointmentModel.PatientInfo patient = new AppointmentModel.PatientInfo(
-            bookingData.fullName, bookingData.gender, bookingData.age, bookingData.problem
-        );
-        String id = String.valueOf(System.currentTimeMillis());
-        AppointmentModel appointment = new AppointmentModel(
-            id,
-            bookingData.doctorName,
-            bookingData.doctorSpecialty,
-            bookingData.doctorLocation,
-            bookingData.packageType,
-            bookingData.amount,
-            bookingData.selectedDate,
-            bookingData.selectedTime,
-            "upcoming",
-            patient,
-            false
-        );
-        AppointmentRepository.getInstance().addAppointment(appointment);
+        Log.d(TAG, "showSuccessModal called");
+        try {
+            // Appointment đã được tạo trong onAppointmentConfirmed()
 
-        BookingSuccessDialog dialog = new BookingSuccessDialog();
-        dialog.setOnActionListener(new BookingSuccessDialog.OnActionListener() {
-            @Override
-            public void onViewAppointment() {
-                Intent intent = new Intent(BookAppointmentActivity.this, AppointmentHistoryActivity.class);
-                startActivity(intent);
-                finish();
-            }
+            BookingSuccessDialog dialog = new BookingSuccessDialog();
+            dialog.setOnActionListener(new BookingSuccessDialog.OnActionListener() {
+                @Override
+                public void onViewAppointment() {
+                    Log.d(TAG, "onViewAppointment called");
+                    try {
+                        Intent intent = new Intent(BookAppointmentActivity.this, AppointmentHistoryActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error in onViewAppointment: " + e.getMessage(), e);
+                        finish();
+                    }
+                }
 
-            @Override
-            public void onClose() {
-                finish();
-            }
-        });
-        dialog.show(getSupportFragmentManager(), "success_dialog");
-    }
-
-    public BookingData getBookingData() {
-        return bookingData;
+                @Override
+                public void onClose() {
+                    Log.d(TAG, "onClose called");
+                    finish();
+                }
+            });
+            dialog.show(getSupportFragmentManager(), "success_dialog");
+        } catch (Exception e) {
+            Log.e(TAG, "Error in showSuccessModal: " + e.getMessage(), e);
+            Toast.makeText(this, "Có lỗi hiển thị dialog: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
 
     @Override

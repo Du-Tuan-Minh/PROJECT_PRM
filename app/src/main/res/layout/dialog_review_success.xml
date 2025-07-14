@@ -13,77 +13,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="32dp"
-        android:gravity="center_horizontal">
+        android:gravity="center"
+        android:padding="32dp">
 
-        <!-- Icon Container -->
-        <FrameLayout
-            android:id="@+id/iconContainer"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/circle_blue_background"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/ivStatusIcon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_check_circle"
-                android:tint="@color/white" />
-
-        </FrameLayout>
+        <!-- Success Icon -->
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_success_dialog"
+            android:layout_marginBottom="16dp" />
 
         <!-- Title -->
         <TextView
-            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đánh giá thành công!"
+            android:text="Gửi đánh giá thành công"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="@color/text_black"
-            android:gravity="center"
-            android:layout_marginBottom="8dp" />
+            android:textColor="@color/black"
+            android:layout_marginBottom="16dp" />
 
         <!-- Message -->
         <TextView
-            android:id="@+id/tvMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cảm ơn bạn đã đánh giá bác sĩ. Đánh giá của bạn sẽ giúp chúng tôi cải thiện dịch vụ."
-            android:textSize="14sp"
-            android:textColor="@color/text_gray"
-            android:gravity="center"
-            android:lineSpacingExtra="2dp"
-            android:layout_marginBottom="24dp" />
-
-        <!-- Primary Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Xem đánh giá"
+            android:text="Cảm ơn bạn đã chia sẻ trải nghiệm. Đánh giá của bạn sẽ giúp chúng tôi cải thiện dịch vụ."
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:background="@drawable/bg_button_primary"
-            android:minHeight="48dp"
-            app:backgroundTint="@null"
-            android:layout_marginBottom="12dp" />
+            android:textColor="@color/gray"
+            android:gravity="center"
+            android:layout_marginBottom="32dp" />
 
-        <!-- Secondary Button -->
+        <!-- Close Button -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSecondary"
+            android:id="@+id/btnClose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Đóng"
-            android:textSize="16sp"
-            android:textColor="@color/primary_blue"
-            android:background="@drawable/bg_button_outline"
-            android:minHeight="48dp"
-            app:backgroundTint="@null"
-            android:visibility="gone" />
+            android:textColor="@color/white"
+            android:background="@drawable/bg_button_primary"
+            app:backgroundTint="@null" />
 
     </LinearLayout>
 

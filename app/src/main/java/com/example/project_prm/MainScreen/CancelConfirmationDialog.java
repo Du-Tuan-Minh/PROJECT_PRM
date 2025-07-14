@@ -33,7 +33,7 @@ public class CancelConfirmationDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_cancel_confirmation, container, false);
         
         MaterialButton btnConfirm = view.findViewById(R.id.btnConfirm);
-        MaterialButton btnCancel = view.findViewById(R.id.btnCancel);
+        MaterialButton btnBack = view.findViewById(R.id.btnBack);
         
         btnConfirm.setOnClickListener(v -> {
             if (listener != null) {
@@ -42,7 +42,7 @@ public class CancelConfirmationDialog extends DialogFragment {
             dismiss();
         });
         
-        btnCancel.setOnClickListener(v -> {
+        btnBack.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onCancel();
             }

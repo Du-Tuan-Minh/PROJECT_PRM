@@ -1,5 +1,6 @@
 package com.example.project_prm.MainScreen;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +19,6 @@ public class CancelSuccessDialog extends DialogFragment {
         void onClose();
     }
     
-    public static CancelSuccessDialog newInstance() {
-        return new CancelSuccessDialog();
-    }
-    
     public void setOnActionListener(OnActionListener listener) {
         this.listener = listener;
     }
@@ -29,7 +26,7 @@ public class CancelSuccessDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_simple_success, container, false);
+        View view = inflater.inflate(R.layout.dialog_cancel_success, container, false);
         
         MaterialButton btnClose = view.findViewById(R.id.btnClose);
         

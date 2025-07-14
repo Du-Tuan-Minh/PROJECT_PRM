@@ -4,18 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.project_prm.R;
-import android.widget.Button;
-import android.widget.TextView;
+import com.google.android.material.button.MaterialButton;
 
 public class AppointmentSummaryFragment extends Fragment {
     
-    public static AppointmentSummaryFragment newInstance() {
-        return new AppointmentSummaryFragment();
-    }
+    private TextView tvDoctorName, tvDoctorSpecialty;
+    private TextView tvDate, tvTime, tvPackage, tvDuration, tvAmount;
+    private TextView tvPatientName, tvPatientGender, tvPatientAge, tvPatientProblem;
+    private MaterialButton btnConfirm;
     
     @Nullable
     @Override
@@ -26,54 +27,52 @@ public class AppointmentSummaryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Initialize views and setup listeners
-        Button btnNext = view.findViewById(R.id.btnNext);
-
-        // Lấy bookingData từ activity
-        BookAppointmentActivity activity = (BookAppointmentActivity) getActivity();
-        if (activity != null) {
-            BookAppointmentActivity.BookingData data = activity.getBookingData();
-            // Doctor info (tĩnh)
-            TextView tvDoctorName = view.findViewById(R.id.tvDoctorName);
-            TextView tvDoctorSpecialty = view.findViewById(R.id.tvDoctorSpecialty);
-            // Schedule info
-            TextView tvDate = view.findViewById(R.id.tvDate);
-            TextView tvTime = view.findViewById(R.id.tvTime);
-            TextView tvPackage = view.findViewById(R.id.tvPackage);
-            TextView tvDuration = view.findViewById(R.id.tvDuration);
-            TextView tvAmount = view.findViewById(R.id.tvAmount);
-            TextView tvDurationPrice = view.findViewById(R.id.tvDurationPrice);
-            TextView tvTotal = view.findViewById(R.id.tvTotal);
-            // Patient info
-            TextView tvPatientName = view.findViewById(R.id.tvPatientName);
-            TextView tvPatientGender = view.findViewById(R.id.tvPatientGender);
-            TextView tvPatientAge = view.findViewById(R.id.tvPatientAge);
-            TextView tvPatientProblem = view.findViewById(R.id.tvPatientProblem);
-
-            // Set doctor info (tĩnh)
-            tvDoctorName.setText(data.doctorName);
-            tvDoctorSpecialty.setText(data.doctorSpecialty);
-            // Set schedule info
-            tvDate.setText(data.selectedDate != null ? data.selectedDate : "");
-            tvTime.setText(data.selectedTime != null ? data.selectedTime : "");
-            tvPackage.setText(data.packageType != null ? data.packageType : "");
-            tvDuration.setText(data.duration != null ? data.duration : "");
-            String priceStr = String.format("%,dđ", data.amount);
-            tvAmount.setText(priceStr);
-            tvDurationPrice.setText("1 x " + priceStr);
-            tvTotal.setText(priceStr);
-            // Set patient info
-            tvPatientName.setText(data.fullName != null ? data.fullName : "");
-            tvPatientGender.setText(data.gender != null ? data.gender : "");
-            tvPatientAge.setText(data.age != null ? data.age : "");
-            tvPatientProblem.setText(data.problem != null ? data.problem : "");
-        }
-
-        btnNext.setOnClickListener(v -> {
-            BookAppointmentActivity activity1 = (BookAppointmentActivity) getActivity();
-            if (activity1 != null) {
-                activity1.onSummaryConfirmed();
+        
+        initViews(view);
+        setupListeners();
+        displayBookingData();
+    }
+    
+    private void initViews(View view) {
+        tvDoctorName = view.findViewById(R.id.tvDoctorName);
+        tvDoctorSpecialty = view.findViewById(R.id.tvDoctorSpecialty);
+        tvDate = view.findViewById(R.id.tvDate);
+        tvTime = view.findViewById(R.id.tvTime);
+        tvPackage = view.findViewById(R.id.tvPackage);
+        tvDuration = view.findViewById(R.id.tvDuration);
+        tvAmount = view.findViewById(R.id.tvAmount);
+        tvPatientName = view.findViewById(R.id.tvPatientName);
+        tvPatientGender = view.findViewById(R.id.tvPatientGender);
+        tvPatientAge = view.findViewById(R.id.tvPatientAge);
+        tvPatientProblem = view.findViewById(R.id.tvPatientProblem);
+        btnConfirm = view.findViewById(R.id.btnNext);
+    }
+    
+    private void setupListeners() {
+        btnConfirm.setOnClickListener(v -> {
+            BookAppointmentActivity activity = (BookAppointmentActivity) getActivity();
+            if (activity != null) {
+                activity.onAppointmentConfirmed();
             }
         });
+    }
+    
+    private void displayBookingData() {
+        BookAppointmentActivity activity = (BookAppointmentActivity) getActivity();
+        if (activity != null && activity.bookingData != null) {
+            BookAppointmentActivity.BookingData data = activity.bookingData;
+            
+            tvDoctorName.setText(data.doctorName);
+            tvDoctorSpecialty.setText(data.doctorSpecialty);
+            tvDate.setText(data.date);
+            tvTime.setText(data.time);
+            tvPackage.setText(data.packageType);
+            tvDuration.setText(data.duration);
+            tvAmount.setText(data.amount);
+            tvPatientName.setText(data.patientName);
+            tvPatientGender.setText(data.patientGender);
+            tvPatientAge.setText(data.patientAge);
+            tvPatientProblem.setText(data.patientProblem);
+        }
     }
 } 

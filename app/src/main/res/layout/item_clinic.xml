@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
+    android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="@color/white">
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,16 +13,14 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <!-- Clinic Image -->
         <ImageView
             android:id="@+id/ivClinicImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/ic_general"
             android:scaleType="centerCrop"
-            android:background="@drawable/bg_image_placeholder" />
+            android:background="@drawable/bg_circle" />
 
-        <!-- Clinic Info -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -31,152 +28,99 @@
             android:orientation="vertical"
             android:layout_marginStart="12dp">
 
-            <!-- Clinic Name and Status -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="4dp">
-
-                <TextView
-                    android:id="@+id/tvClinicName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Bệnh viện Bạch Mai"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_black"
-                    android:maxLines="1"
-                    android:ellipsize="end" />
-
-                <View
-                    android:id="@+id/layoutOpenStatus"
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
-                    android:background="@drawable/bg_circle_green"
-                    android:layout_marginStart="8dp" />
-
-            </LinearLayout>
-
-            <!-- Address -->
             <TextView
-                android:id="@+id/tvAddress"
+                android:id="@+id/tvClinicName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="78 Giải Phóng, Đống Đa, Hà Nội"
+                android:text="Phòng khám Đa khoa"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/tvClinicAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="123 Đường ABC, Quận XYZ, Hà Nội"
                 android:textSize="14sp"
-                android:textColor="@color/text_gray"
-                android:maxLines="1"
+                android:textColor="@color/gray"
+                android:maxLines="2"
                 android:ellipsize="end"
-                android:layout_marginBottom="4dp" />
+                android:layout_marginTop="4dp" />
 
-            <!-- Specialties -->
-            <TextView
-                android:id="@+id/tvSpecialties"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Tim mạch, Thần kinh, Ung bướu"
-                android:textSize="12sp"
-                android:textColor="@color/primary_blue"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:layout_marginBottom="4dp" />
-
-            <!-- Rating and Reviews -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="4dp">
+                android:layout_marginTop="8dp">
 
                 <TextView
-                    android:id="@+id/tvRating"
+                    android:id="@+id/tvClinicRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4.5"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/primary_blue" />
+                    android:textColor="@color/black"
+                    android:drawableStart="@drawable/ic_star"
+                    android:drawablePadding="4dp" />
 
                 <TextView
+                    android:id="@+id/tvClinicReviewCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="★"
+                    android:text="(156 đánh giá)"
                     android:textSize="12sp"
-                    android:textColor="@color/primary_blue"
-                    android:layout_marginStart="2dp" />
-
-                <TextView
-                    android:id="@+id/tvReviewCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1250 đánh giá"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_gray"
+                    android:textColor="@color/gray"
                     android:layout_marginStart="8dp" />
 
             </LinearLayout>
 
-            <!-- Distance and Working Hours -->
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvClinicSpecialties"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:text="Tim mạch, Nội tổng quát"
+                android:textSize="12sp"
+                android:textColor="@color/gray"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginTop="4dp" />
 
-                <TextView
-                    android:id="@+id/tvDistance"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="2.1 km"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_gray" />
-
-                <TextView
-                    android:id="@+id/tvWorkingHours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="24/7"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_gray" />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tvClinicWorkingHours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="7:00 - 20:00"
+                android:textSize="12sp"
+                android:textColor="@color/gray"
+                android:layout_marginTop="2dp" />
 
         </LinearLayout>
 
-        <!-- Action Buttons -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="8dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCall"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_circle"
-                android:elevation="2dp"
-                app:icon="@drawable/ic_phone"
-                app:iconSize="16dp"
-                app:iconTint="@color/primary_blue"
-                app:backgroundTint="@color/white"
+            <ImageView
+                android:id="@+id/ivCall"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_call"
+                android:background="@drawable/bg_circle_blue"
+                android:padding="6dp"
                 android:layout_marginBottom="8dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDirection"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_circle"
-                android:elevation="2dp"
-                app:icon="@drawable/ic_location"
-                app:iconSize="16dp"
-                app:iconTint="@color/primary_blue"
-                app:backgroundTint="@color/white" />
+            <ImageView
+                android:id="@+id/ivDirection"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_directions"
+                android:background="@drawable/bg_circle_green"
+                android:padding="6dp" />
 
         </LinearLayout>
 

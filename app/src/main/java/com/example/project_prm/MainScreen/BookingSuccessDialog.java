@@ -3,6 +3,7 @@ package com.example.project_prm.MainScreen;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.example.project_prm.R;
 
 public class BookingSuccessDialog extends DialogFragment {
     
+    private static final String TAG = "BookingSuccessDialog";
     private OnActionListener listener;
     
     public interface OnActionListener {
@@ -32,25 +34,47 @@ public class BookingSuccessDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_booking_success, container, false);
-        
-        MaterialButton btnViewAppointment = view.findViewById(R.id.btnViewAppointment);
-        MaterialButton btnClose = view.findViewById(R.id.btnCancel);
-        
-        btnViewAppointment.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onViewAppointment();
+        try {
+            Log.d(TAG, "onCreateView called");
+            View view = inflater.inflate(R.layout.dialog_booking_success, container, false);
+            
+            MaterialButton btnViewAppointment = view.findViewById(R.id.btnViewAppointment);
+            MaterialButton btnClose = view.findViewById(R.id.btnCancel);
+            
+            if (btnViewAppointment != null) {
+                btnViewAppointment.setOnClickListener(v -> {
+                    Log.d(TAG, "btnViewAppointment clicked");
+                    try {
+                        if (listener != null) {
+                            listener.onViewAppointment();
+                        }
+                        dismiss();
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error in btnViewAppointment click: " + e.getMessage(), e);
+                        dismiss();
+                    }
+                });
             }
-            dismiss();
-        });
-        
-        btnClose.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onClose();
+            
+            if (btnClose != null) {
+                btnClose.setOnClickListener(v -> {
+                    Log.d(TAG, "btnClose clicked");
+                    try {
+                        if (listener != null) {
+                            listener.onClose();
+                        }
+                        dismiss();
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error in btnClose click: " + e.getMessage(), e);
+                        dismiss();
+                    }
+                });
             }
-            dismiss();
-        });
-        
-        return view;
+            
+            return view;
+        } catch (Exception e) {
+            Log.e(TAG, "Error in onCreateView: " + e.getMessage(), e);
+            return null;
+        }
     }
 } 

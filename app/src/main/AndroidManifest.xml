@@ -8,7 +8,10 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -66,6 +69,9 @@
             android:name=".MainScreen.FindClinicActivity"
             android:exported="false" />
         <activity
+            android:name=".MainScreen.FindDoctorActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainScreen.BookAppointmentActivity"
             android:exported="false" />
         <activity
@@ -73,8 +79,10 @@
             android:exported="false" />
         <activity android:name=".MainScreen.AppointmentHistoryActivity" />
         <activity android:name=".MainScreen.DoctorProfileActivity" />
-
-
+        <activity android:name=".MainScreen.WriteReviewActivity" />
+        <activity android:name=".MainScreen.RescheduleAppointmentActivity" />
+        <activity android:name=".MainScreen.CancelAppointmentActivity" />
+        <activity android:name=".MainScreen.AppointmentDetailsActivity" />
         <activity android:name=".MainScreen.NotificationActivity" />
         <activity android:name=".AllUtilitiesActivity" />
 

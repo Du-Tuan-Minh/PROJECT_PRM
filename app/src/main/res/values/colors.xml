@@ -45,4 +45,11 @@
 
     <!-- Article Meta Colors -->
     <color name="article_date_text">#9E9E9E</color>
+    
+    <!-- Additional colors for new layout -->
+    <color name="orange">#FF9800</color>
+    <color name="green">#4CAF50</color>
+    <color name="red">#F44336</color>
+    <color name="light_blue_bg">#F8F9FF</color>
+    
 </resources>

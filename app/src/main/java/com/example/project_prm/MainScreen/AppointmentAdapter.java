@@ -4,20 +4,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
+import com.example.project_prm.MainScreen.AppointmentModel;
 import com.example.project_prm.R;
 import java.util.List;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.AppointmentViewHolder> {
-    
+
     private List<AppointmentModel> appointments;
     private OnAppointmentActionListener listener;
-    
+
     public interface OnAppointmentActionListener {
         void onAppointmentClick(AppointmentModel appointment);
         void onCancelAppointment(AppointmentModel appointment);
@@ -25,73 +24,73 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         void onBookAgain(AppointmentModel appointment);
         void onLeaveReview(AppointmentModel appointment);
     }
-    
-    public AppointmentAdapter(List<AppointmentModel> appointments, OnAppointmentActionListener listener) {
+
+    public AppointmentAdapter(List<AppointmentModel> appointments) {
         this.appointments = appointments;
+    }
+
+    public void setOnAppointmentActionListener(OnAppointmentActionListener listener) {
         this.listener = listener;
     }
-    
+
     @NonNull
     @Override
     public AppointmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_appointment, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_appointment, parent, false);
         return new AppointmentViewHolder(view);
     }
-    
+
     @Override
     public void onBindViewHolder(@NonNull AppointmentViewHolder holder, int position) {
-        AppointmentModel appointment = appointments.get(position);
-        holder.bind(appointment);
+        holder.bind(appointments.get(position));
     }
-    
+
     @Override
     public int getItemCount() {
         return appointments.size();
     }
-    
+
+    public void updateAppointments(List<AppointmentModel> newAppointments) {
+        this.appointments = newAppointments;
+        notifyDataSetChanged();
+    }
+
     class AppointmentViewHolder extends RecyclerView.ViewHolder {
-        
-        private ImageView ivDoctorAvatar, ivPackageIcon;
-        private TextView tvDoctorName, tvDoctorSpecialty, tvDateTime, tvStatus, tvPackageType;
+        private TextView tvDoctorName, tvSpecialty, tvDateTime, tvPackage, tvStatus, tvPrice;
+        private ImageView ivPackageIcon, ivDoctorAvatar;
         private MaterialButton btnPrimary, btnSecondary;
-        private LinearLayout layoutButtons;
-        
+
         public AppointmentViewHolder(@NonNull View itemView) {
             super(itemView);
             
-            ivDoctorAvatar = itemView.findViewById(R.id.ivDoctorAvatar);
-            ivPackageIcon = itemView.findViewById(R.id.ivPackageIcon);
             tvDoctorName = itemView.findViewById(R.id.tvDoctorName);
-            tvDoctorSpecialty = itemView.findViewById(R.id.tvDoctorSpecialty);
+            tvSpecialty = itemView.findViewById(R.id.tvSpecialty);
             tvDateTime = itemView.findViewById(R.id.tvDateTime);
+            tvPackage = itemView.findViewById(R.id.tvPackage);
             tvStatus = itemView.findViewById(R.id.tvStatus);
-            tvPackageType = itemView.findViewById(R.id.tvPackageType);
+            tvPrice = itemView.findViewById(R.id.tvPrice);
+            ivPackageIcon = itemView.findViewById(R.id.ivPackageIcon);
+            ivDoctorAvatar = itemView.findViewById(R.id.ivDoctorAvatar);
             btnPrimary = itemView.findViewById(R.id.btnPrimary);
             btnSecondary = itemView.findViewById(R.id.btnSecondary);
-            layoutButtons = itemView.findViewById(R.id.layoutButtons);
         }
-        
+
         public void bind(AppointmentModel appointment) {
-            // Set basic info
+            // Basic info
             tvDoctorName.setText(appointment.getDoctorName());
-            tvDoctorSpecialty.setText(appointment.getDoctorSpecialty());
-            tvDateTime.setText("Hôm nay, " + appointment.getDate() + " | " + appointment.getTime());
-            tvStatus.setText(appointment.getStatusText());
-            tvPackageType.setText(appointment.getPackageType());
+            tvSpecialty.setText(appointment.getSpecialty());
+            tvDateTime.setText(appointment.getDate() + " • " + appointment.getTime());
+            tvPackage.setText(appointment.getPackageType());
+            tvPrice.setText(String.format("%,d đ", appointment.getAmount()));
+
+            // Status
+            setStatusDisplay(appointment.getStatus());
             
-            // Set status color
-            tvStatus.setTextColor(itemView.getContext().getResources().getColor(appointment.getStatusColor()));
-            
-            // Load avatar
-            Glide.with(itemView.getContext())
-                .load(R.drawable.ic_general)
-                .circleCrop()
-                .into(ivDoctorAvatar);
-            
-            // Set package icon
+            // Package icon
             setPackageIcon(appointment.getPackageType());
             
-            // Setup buttons based on status
+            // Setup buttons based on status and review status
             setupButtons(appointment);
             
             // Click listener
@@ -102,17 +101,43 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             });
         }
         
+        private void setStatusDisplay(String status) {
+            switch (status.toLowerCase()) {
+                case "upcoming":
+                    tvStatus.setText("Sắp tới");
+                    tvStatus.setTextColor(itemView.getContext().getColor(R.color.orange));
+                    break;
+                case "completed":
+                    tvStatus.setText("Đã hoàn thành");
+                    tvStatus.setTextColor(itemView.getContext().getColor(R.color.green));
+                    break;
+                case "cancelled":
+                    tvStatus.setText("Đã hủy");
+                    tvStatus.setTextColor(itemView.getContext().getColor(R.color.red));
+                    break;
+                default:
+                    tvStatus.setText("Chờ xác nhận");
+                    tvStatus.setTextColor(itemView.getContext().getColor(R.color.text_gray));
+                    break;
+            }
+        }
+        
         private void setPackageIcon(String packageType) {
             int iconRes;
             switch (packageType) {
                 case "Nhắn tin":
                     iconRes = R.drawable.ic_message;
                     break;
+                case "Gọi thoại":
                 case "Cuộc gọi thoại":
                     iconRes = R.drawable.ic_phone;
                     break;
+                case "Gọi video":
                 case "Cuộc gọi video":
                     iconRes = R.drawable.ic_video;
+                    break;
+                case "Khám trực tiếp":
+                    iconRes = R.drawable.ic_hospital;
                     break;
                 default:
                     iconRes = R.drawable.ic_message;
@@ -122,69 +147,86 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         }
         
         private void setupButtons(AppointmentModel appointment) {
-            switch (appointment.getStatus()) {
+            // Reset buttons
+            btnPrimary.setVisibility(View.VISIBLE);
+            btnSecondary.setVisibility(View.VISIBLE);
+            
+            switch (appointment.getStatus().toLowerCase()) {
                 case "upcoming":
-                    btnSecondary.setText("Hủy lịch hẹn");
-                    btnPrimary.setText("Đổi lịch");
-                    
-                    btnSecondary.setOnClickListener(v -> {
-                        if (listener != null) {
-                            listener.onCancelAppointment(appointment);
-                        }
-                    });
-                    
-                    btnPrimary.setOnClickListener(v -> {
-                        if (listener != null) {
-                            listener.onRescheduleAppointment(appointment);
-                        }
-                    });
+                    setupUpcomingButtons(appointment);
                     break;
-                    
                 case "completed":
-                    btnSecondary.setText("Đặt lịch lại");
-                    
-                    // Kiểm tra xem đã có review chưa
-                    if (appointment.hasReview()) {
-                        btnPrimary.setText("Đã đánh giá");
-                        btnPrimary.setEnabled(false);
-                        btnPrimary.setAlpha(0.5f);
-                    } else {
-                        btnPrimary.setText("Viết đánh giá");
-                        btnPrimary.setEnabled(true);
-                        btnPrimary.setAlpha(1.0f);
-                    }
-                    
-                    btnSecondary.setOnClickListener(v -> {
-                        if (listener != null) {
-                            listener.onBookAgain(appointment);
-                        }
-                    });
-                    
-                    btnPrimary.setOnClickListener(v -> {
-                        if (listener != null && !appointment.hasReview()) {
-                            listener.onLeaveReview(appointment);
-                        }
-                    });
+                    setupCompletedButtons(appointment);
                     break;
-                    
                 case "cancelled":
-                    // Only show one button for cancelled
+                    setupCancelledButtons(appointment);
+                    break;
+                default:
+                    // Hide buttons for pending/other statuses
+                    btnPrimary.setVisibility(View.GONE);
                     btnSecondary.setVisibility(View.GONE);
-                    btnPrimary.setText("Đặt lịch lại");
-                    
-                    // Adjust layout for single button
-                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) btnPrimary.getLayoutParams();
-                    params.weight = 0;
-                    params.width = LinearLayout.LayoutParams.MATCH_PARENT;
-                    btnPrimary.setLayoutParams(params);
-                    
-                    btnPrimary.setOnClickListener(v -> {
-                        if (listener != null) {
-                            listener.onBookAgain(appointment);
-                        }
-                    });
                     break;
             }
+        }
+
+        private void setupUpcomingButtons(AppointmentModel appointment) {
+            // Primary: Reschedule
+            btnPrimary.setText("Đổi lịch");
+            btnPrimary.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onRescheduleAppointment(appointment);
+                }
+            });
+
+            // Secondary: Cancel
+            btnSecondary.setText("Hủy lịch");
+            btnSecondary.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onCancelAppointment(appointment);
+                }
+            });
+        }
+
+        private void setupCompletedButtons(AppointmentModel appointment) {
+            // Primary: Book Again
+            btnPrimary.setText("Đặt lịch lại");
+            btnPrimary.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onBookAgain(appointment);
+                }
+            });
+
+            // Secondary: Leave Review (ONLY if not reviewed yet)
+            if (appointment.isReviewed()) {
+                // Already reviewed - show "Đã đánh giá"
+                btnSecondary.setText("Đã đánh giá");
+                btnSecondary.setEnabled(false);
+                btnSecondary.setAlpha(0.6f);
+                btnSecondary.setOnClickListener(null);
+            } else {
+                // Not reviewed yet - show "Viết đánh giá"
+                btnSecondary.setText("Viết đánh giá");
+                btnSecondary.setEnabled(true);
+                btnSecondary.setAlpha(1.0f);
+                btnSecondary.setOnClickListener(v -> {
+                    if (listener != null) {
+                        listener.onLeaveReview(appointment);
+                    }
+                });
+            }
+        }
+
+        private void setupCancelledButtons(AppointmentModel appointment) {
+            // Primary: Book Again
+            btnPrimary.setText("Đặt lịch lại");
+            btnPrimary.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onBookAgain(appointment);
+                }
+            });
+
+            // Hide secondary button for cancelled appointments
+            btnSecondary.setVisibility(View.GONE);
         }
     }
 } 

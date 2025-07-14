@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<com.google.android.material.button.MaterialButton
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/btnTimeSlot"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp">
-
-    <TextView
-        android:id="@+id/tvTime"
-        android:layout_width="96dp"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="09:00 AM"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:background="@drawable/time_slot_selector"
-        android:textColor="@drawable/time_slot_text_selector"
-        android:padding="0dp"
-        android:clickable="false"
-        android:focusable="false" />
-
-</FrameLayout> 
+    android:text="09:00"
+    android:textSize="14sp"
+    android:textColor="@color/primary_blue"
+    android:background="@drawable/bg_button_outline"
+    android:minHeight="48dp"
+    android:layout_margin="4dp"
+    app:backgroundTint="@null" /> 

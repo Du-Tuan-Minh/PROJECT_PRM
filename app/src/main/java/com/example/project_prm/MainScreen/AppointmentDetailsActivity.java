@@ -1,5 +1,6 @@
 package com.example.project_prm.MainScreen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,7 +17,7 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
     private TextView tvDoctorName, tvDoctorSpecialty, tvDoctorLocation;
     private TextView tvAppointmentTime, tvPatientName, tvPatientGender, tvPatientAge, tvPatientProblem;
     private TextView tvPackageType, tvPackagePrice;
-    private MaterialButton btnAction;
+    private MaterialButton btnAction, btnReschedule, btnReview;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         tvPackageType = findViewById(R.id.tvPackageType);
         tvPackagePrice = findViewById(R.id.tvPackagePrice);
         btnAction = findViewById(R.id.btnAction);
+        btnReschedule = findViewById(R.id.btnReschedule);
+        btnReview = findViewById(R.id.btnReview);
     }
     
     private void setupToolbar() {
@@ -130,6 +133,24 @@ public class AppointmentDetailsActivity extends AppCompatActivity {
         btnAction.setOnClickListener(v -> {
             // Handle message action
             // This could open chat screen or video call
+        });
+        
+        btnReschedule.setOnClickListener(v -> {
+            // Open reschedule activity
+            Intent intent = new Intent(this, RescheduleAppointmentActivity.class);
+            intent.putExtra("appointment_id", getIntent().getStringExtra("appointment_id"));
+            intent.putExtra("doctor_name", tvDoctorName.getText().toString());
+            intent.putExtra("current_date", getIntent().getStringExtra("appointment_date"));
+            intent.putExtra("current_time", getIntent().getStringExtra("appointment_time"));
+            startActivity(intent);
+        });
+        
+        btnReview.setOnClickListener(v -> {
+            // Open review activity
+            Intent intent = new Intent(this, WriteReviewActivity.class);
+            intent.putExtra("appointment_id", getIntent().getStringExtra("appointment_id"));
+            intent.putExtra("doctor_name", tvDoctorName.getText().toString());
+            startActivity(intent);
         });
         
         // Handle "view more" for patient problem
