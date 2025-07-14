@@ -189,6 +189,9 @@ public class BookAppointmentActivity extends AppCompatActivity {
                 @Override
                 public void onAppointmentSaved(AppointmentModel appointment) {
                     Log.d(TAG, "Appointment saved successfully");
+                    // Set cờ notification mới
+                    getSharedPreferences("app_prefs", MODE_PRIVATE)
+                        .edit().putBoolean("has_new_notification", true).apply();
                     BookingSuccessDialog dialog = new BookingSuccessDialog();
                     dialog.show(getSupportFragmentManager(), "BookingSuccessDialog");
                 }

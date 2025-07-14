@@ -33,6 +33,7 @@ public class HomeFragment extends Fragment {
     private GridLayout gridSpeciality;
     private TextView tvSeeAllSpeciality;
     private ImageView ivNotification;
+    private View notificationBadge;
 
     @Nullable
     @Override
@@ -52,13 +53,27 @@ public class HomeFragment extends Fragment {
 
     private void initializeViews(View view) {
         ivNotification = view.findViewById(R.id.ivNotification);
+        notificationBadge = view.findViewById(R.id.notificationBadge);
         etSearch = view.findViewById(R.id.etSearch);
         gridSpeciality = view.findViewById(R.id.gridSpeciality);
         tvSeeAllSpeciality = view.findViewById(R.id.tvSeeAllSpeciality);
+        updateNotificationBadge();
+    }
+
+    private void updateNotificationBadge() {
+        boolean hasNew = requireActivity().getSharedPreferences("app_prefs", 0)
+                .getBoolean("has_new_notification", false);
+        if (notificationBadge != null) {
+            notificationBadge.setVisibility(hasNew ? View.VISIBLE : View.GONE);
+        }
     }
 
     private void setupClickListeners() {
         ivNotification.setOnClickListener(v -> {
+            // Khi vào NotificationActivity thì ẩn badge
+            requireActivity().getSharedPreferences("app_prefs", 0)
+                .edit().putBoolean("has_new_notification", false).apply();
+            updateNotificationBadge();
             Intent intent = new Intent(getActivity(), NotificationActivity.class);
             startActivity(intent);
         });
@@ -161,5 +176,11 @@ public class HomeFragment extends Fragment {
         
         DotsIndicator bannerIndicator = getView().findViewById(R.id.bannerIndicator);
         bannerIndicator.setViewPager2(bannerViewPager);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateNotificationBadge();
     }
 } 

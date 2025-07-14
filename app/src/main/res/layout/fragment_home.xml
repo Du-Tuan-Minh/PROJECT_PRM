@@ -54,12 +54,27 @@
                     android:textColor="#222222"/>
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/ivNotification"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_notification"
-                android:layout_marginEnd="12dp"/>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivNotification"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_notification"
+                    android:layout_marginEnd="12dp"/>
+
+                <View
+                    android:id="@+id/notificationBadge"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:background="@drawable/bg_circle_red"
+                    android:layout_gravity="top|end"
+                    android:visibility="gone"
+                    android:translationX="4dp"
+                    android:translationY="-4dp"/>
+            </FrameLayout>
         </LinearLayout>
 
         <EditText
