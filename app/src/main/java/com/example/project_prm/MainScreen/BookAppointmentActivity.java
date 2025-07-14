@@ -175,9 +175,15 @@ public class BookAppointmentActivity extends AppCompatActivity {
             Log.d(TAG, "Booking data: " + bookingData);
             String amountStr = bookingData.amount != null ? bookingData.amount.replaceAll("[^0-9]", "") : "0";
             int amount = amountStr.isEmpty() ? 0 : Integer.parseInt(amountStr);
+            // Lấy userId từ SharedPreferences (kiểu String)
+            String userId = getSharedPreferences("MyAppPrefs", MODE_PRIVATE).getString("userId", null);
+            if (userId == null) {
+                Toast.makeText(this, "Không tìm thấy thông tin người dùng!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             AppointmentModel appointment = new AppointmentModel(
                 generateAppointmentId(),
-                bookingData.patientName, // patientId tạm thời dùng tên bệnh nhân
+                userId, // patientId đúng kiểu String
                 bookingData.doctorId,    // doctorId
                 bookingData.date,
                 bookingData.time,

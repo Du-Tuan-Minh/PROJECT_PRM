@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.content.Intent;
 
 public class AllUtilitiesActivity extends AppCompatActivity {
     private String[] utilityNames = {
@@ -56,6 +57,21 @@ public class AllUtilitiesActivity extends AppCompatActivity {
                 TextView tv = item.findViewById(R.id.tvUtilityName);
                 tv.setText(name);
                 item.<android.widget.ImageView>findViewById(R.id.ivUtilityIcon).setImageResource(utilityIcons[i]);
+
+                // Thêm sự kiện click cho từng tiện ích
+                int finalI = i;
+                item.setOnClickListener(v -> {
+                    switch (utilityNames[finalI]) {
+                        case "Đặt lịch khám":
+                            startActivity(new Intent(this, com.example.project_prm.MainScreen.BookAppointmentActivity.class));
+                            break;
+                        case "History":
+                            startActivity(new Intent(this, com.example.project_prm.MainScreen.AppointmentHistoryActivity.class));
+                            break;
+                        // Có thể thêm case cho các tiện ích khác nếu muốn
+                    }
+                });
+
                 grid.addView(item);
                 count++;
             }
