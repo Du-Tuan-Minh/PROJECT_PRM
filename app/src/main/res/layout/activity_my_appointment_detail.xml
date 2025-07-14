@@ -36,7 +36,7 @@
             <ImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:src="@drawable/ic_hospital"
+                android:src="@drawable/ic_hospital_1"
                 android:scaleType="centerCrop"
                 android:background="@drawable/bg_dialog_rounded"
                 android:layout_marginEnd="12dp" />

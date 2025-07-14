@@ -40,8 +40,7 @@
             android:backgroundTint="#FFFFFF"
             app:cornerRadius="18dp"
             android:text="Chat now"
-            android:textColor="#1976D2"
-            app:cornerRadius="18dp" />
+            android:textColor="#1976D2" />
     </LinearLayout>
 
     <!-- Ảnh hoặc icon bên phải -->

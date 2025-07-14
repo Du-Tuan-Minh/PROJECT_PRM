@@ -30,13 +30,13 @@
             android:exported="false" /> <!-- Splash Activity: KHỞI ĐỘNG APP -->
 
         <activity
-            android:name=".widgets.BackView"s
+            android:name=".widgets.BackView"
             android:exported="false"
             tools:ignore="Instantiatable" />
  <!-- Splash Activity: KHỞI ĐỘNG APP -->
 
         <activity
-            android:name=".DashBoardScreen.SplashActivity"
+            android:name=".ui.DashBoardScreen.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,13 +45,13 @@
             </intent-filter>
         </activity> <!-- Onboarding Screens -->
         <activity
-            android:name=".DashBoardScreen.Onboarding1Activity"
+            android:name=".ui.DashBoardScreen.Onboarding1Activity"
             android:exported="false" />
         <activity
-            android:name=".DashBoardScreen.Onboarding2Activity"
+            android:name=".ui.DashBoardScreen.Onboarding2Activity"
             android:exported="false" />
         <activity
-            android:name=".DashBoardScreen.Onboarding3Activity"
+            android:name=".ui.DashBoardScreen.Onboarding3Activity"
             android:exported="false" /> <!-- Authentication Screens -->
         <activity
             android:name=".ui.auth.SignUpActivity"
@@ -74,30 +74,30 @@
             android:name=".MainActivity"
             android:exported="false" /> <!-- Các màn chính -->
         <activity
-            android:name=".MainScreen.DiseaseLibraryActivity"
+            android:name=".ui.MainScreen.DiseaseLibraryActivity"
             android:exported="false" />
         <activity
-            android:name=".MainScreen.FindClinicActivity"
+            android:name=".ui.MainScreen.FindClinicActivity"
             android:exported="false" />
         <activity
-            android:name=".MainScreen.FindDoctorActivity"
+            android:name=".ui.MainScreen.FindDoctorActivity"
             android:exported="false" />
         <activity
-            android:name=".MainScreen.BookAppointmentActivity"
+            android:name=".ui.MainScreen.BookAppointmentActivity"
             android:exported="false" />
         <activity
-            android:name=".MainScreen.ChatbotActivity"
+            android:name=".ui.MainScreen.ChatbotActivity"
             android:exported="false" />
-        <activity android:name=".MainScreen.AppointmentHistoryActivity" />
-        <activity android:name=".MainScreen.DoctorProfileActivity" />
-        <activity android:name=".MainScreen.WriteReviewActivity" />
-        <activity android:name=".MainScreen.RescheduleAppointmentActivity" />
-        <activity android:name=".MainScreen.CancelAppointmentActivity" />
-        <activity android:name=".MainScreen.AppointmentDetailsActivity" />
-        <activity android:name=".MainScreen.NotificationActivity" />
-        <activity android:name=".AllUtilitiesActivity" />
+        <activity android:name=".ui.MainScreen.AppointmentHistoryActivity" />
+        <activity android:name=".ui.MainScreen.DoctorProfileActivity" />
+        <activity android:name=".ui.MainScreen.WriteReviewActivity" />
+        <activity android:name=".ui.MainScreen.RescheduleAppointmentActivity" />
+        <activity android:name=".ui.MainScreen.CancelAppointmentActivity" />
+        <activity android:name=".ui.MainScreen.AppointmentDetailsActivity" />
+        <activity android:name=".ui.MainScreen.NotificationActivity" />
+        <activity android:name=".ui.AllUtilitiesActivity" />
         <activity
-            android:name=".MainScreen.SearchDoctorActivity"
+            android:name=".ui.MainScreen.SearchDoctorActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 

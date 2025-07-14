@@ -13,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_prm.ui.Article.ArticlesActivity;
 
-import com.example.project_prm.MainScreen.HomeFragment;
+import com.example.project_prm.ui.MainScreen.HomeFragment;
+import com.example.project_prm.ui.MainScreen.AppointmentHistoryActivity;
+import com.example.project_prm.ui.MainScreen.BookAppointmentActivity;
 import com.example.project_prm.ui.User_Profile.LanguageHelper;
 import com.example.project_prm.ui.User_Profile.ProfileActivity;
 import com.example.project_prm.ui.auth.SignInActivity;
@@ -127,12 +129,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             } else if (id == R.id.nav_appointment) {
-                Intent intent = new Intent(MainActivity.this, com.example.project_prm.MainScreen.BookAppointmentActivity.class);
+                Intent intent = new Intent(MainActivity.this, BookAppointmentActivity.class);
                 startActivity(intent);
                 return false; // Không chọn tab này vì là màn riêng
 
             } else if (id == R.id.nav_history) {
-                Intent intent = new Intent(MainActivity.this, com.example.project_prm.MainScreen.AppointmentHistoryActivity.class);
+                Intent intent = new Intent(MainActivity.this, AppointmentHistoryActivity.class);
                 startActivity(intent);
                 return false; // Không chọn tab này vì là màn riêng
 

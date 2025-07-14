@@ -25,7 +25,6 @@
     <string name="select_date">Chọn ngày</string>
     <string name="select_time">Chọn giờ</string>
     <string name="full_name">Họ và tên</string>
-    <string name="gender">Giới tính</string>
     <string name="age">Tuổi của bạn</string>
     <string name="problem_description">Mô tả vấn đề của bạn</string>
     <string name="write_review">Viết đánh giá của bạn</string>
@@ -53,7 +52,6 @@
     <string name="cancel_confirmation_title">Hủy lịch hẹn</string>
     <string name="cancel_confirmation_message">Bạn có chắc muốn hủy lịch hẹn không?</string>
     <string name="cancel_confirmation_note">Chỉ 50% số tiền sẽ được hoàn trả vào tài khoản của bạn.</string>
-    <string name="back">Quay lại</string>
     <string name="yes_cancel">Có, hủy lịch</string>
     
     <!-- Reason for cancellation/reschedule -->
@@ -88,7 +86,6 @@
     <string name="package_general">Khám tổng quát - 1,200,000đ (90 phút)</string>
     <string name="package_specialist">Tư vấn chuyên sâu - 1,500,000đ (120 phút)</string>
     <string name="years_experience">năm kinh nghiệm</string>
-    <string name="phone_number">Số điện thoại</string>
     <string name="profile">Hồ sơ</string>
     <string name="edit_profile">Chỉnh sửa hồ sơ</string>
     <string name="notification">Thông báo</string>

@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="32dp"
-    android:gravity="center"
     android:background="@android:color/white">
 
-    <ImageView
-        android:id="@+id/imgDoc"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        android:layout_marginBottom="24dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/doc1" />
-
-    <TextView
-        android:id="@+id/txtDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:gravity="center"
-        android:paddingHorizontal="12dp"
-        android:text="Thousands of doctors &amp; experts to help your health!"
-        android:textAlignment="center"
-        android:textColor="#2196F3"
-        android:textSize="28sp"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/btnNext"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Next"
-        android:backgroundTint="#1976D2"
-        android:textColor="@android:color/white"/>
-</LinearLayout>
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imgDoc"
+            android:layout_width="400dp"
+            android:layout_height="380dp"
+            android:layout_marginBottom="24dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/doc1" />
+
+        <TextView
+            android:id="@+id/txtDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:text="Thousands of doctors &amp; experts to help your health!"
+            android:textAlignment="center"
+            android:textColor="#2196F3"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:backgroundTint="#1976D2"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+</ScrollView>

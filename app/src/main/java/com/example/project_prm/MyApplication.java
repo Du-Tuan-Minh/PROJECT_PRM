@@ -4,8 +4,8 @@ import android.app.Application;
 import android.util.Log;
 
 import com.example.project_prm.DataManager.PatientDataManager;
-import com.example.project_prm.MainScreen.AppointmentRepository;
-import com.example.project_prm.MainScreen.DoctorRepository;
+import com.example.project_prm.ui.MainScreen.AppointmentRepository;
+import com.example.project_prm.ui.MainScreen.DoctorRepository;
 
 public class MyApplication extends Application {
 

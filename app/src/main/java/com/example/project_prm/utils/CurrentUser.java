@@ -7,7 +7,22 @@ import android.content.SharedPreferences;
 
 public class CurrentUser {
 
+    public static void clearOldUserIdInt(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        if (prefs.contains("userId")) {
+            try {
+                // Try to get as int, if it fails, ignore
+                int oldId = prefs.getInt("userId", -1);
+                // If it was an int, remove it
+                prefs.edit().remove("userId").apply();
+            } catch (ClassCastException ignored) {
+                // Already a String, do nothing
+            }
+        }
+    }
+
     public static void login(Context context, String userId) {
+        clearOldUserIdInt(context);
         SharedPreferences prefs = context.getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("userId", userId);
