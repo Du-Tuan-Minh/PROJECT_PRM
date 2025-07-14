@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Primary Colors - Đồng nhất màu xanh lá -->
-    <color name="primary_color">#2E7D32</color>
-    <color name="primary_light">#4CAF50</color>
-    <color name="primary_dark">#1B5E20</color>
-    <color name="primary_blue">#2E7D32</color>
+    <color name="primary_color">#246BFD</color>
+    <color name="primary_light">#246BFD</color>
+    <color name="primary_dark">#2962FF</color>
+    <color name="primary_blue">#246BFD</color>
     
     <!-- Secondary Colors -->
     <color name="secondary_color">#E8F5E8</color>
