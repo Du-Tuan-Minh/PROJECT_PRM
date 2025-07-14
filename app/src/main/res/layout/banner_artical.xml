@@ -27,7 +27,7 @@
         <TextView
             android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:text="Khám phá các bài viết hữu ích về sức khỏe, cập nhật kiến thức mỗi ngày."
+            android:text="Discover useful health articles, update knowledge every day."
             android:textColor="#F0F0F0"
             android:textSize="13sp"
             android:layout_marginTop="4dp"/>
@@ -37,7 +37,7 @@
             android:layout_marginTop="10dp"
             android:backgroundTint="#FFFFFF"
             app:cornerRadius="18dp"
-            android:text="Xem Bài Viết"
+            android:text="View article"
             android:textColor="#1976D2"
             android:paddingLeft="18dp"
             android:paddingRight="18dp"/>

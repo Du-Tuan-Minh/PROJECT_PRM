@@ -27,7 +27,7 @@
         <TextView
             android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:text="Trò chuyện với AI để được tư vấn sức khỏe, giải đáp thắc mắc nhanh chóng."
+            android:text="Chat with AI for health advice and quick answers to questions."
             android:textColor="#F0F0F0"
             android:textSize="13sp"
             android:layout_marginTop="4dp"/>
@@ -37,7 +37,7 @@
             android:layout_marginTop="10dp"
             android:backgroundTint="#FFFFFF"
             app:cornerRadius="18dp"
-            android:text="Chat Ngay"
+            android:text="Chat now"
             android:textColor="#1976D2"
             android:paddingLeft="18dp"
             android:paddingRight="18dp"/>
