@@ -45,7 +45,7 @@ public class AppointmentSummaryFragment extends Fragment {
         tvPatientGender = view.findViewById(R.id.tvPatientGender);
         tvPatientAge = view.findViewById(R.id.tvPatientAge);
         tvPatientProblem = view.findViewById(R.id.tvPatientProblem);
-        btnConfirm = view.findViewById(R.id.btnNext);
+        btnConfirm = view.findViewById(R.id.btnConfirm);
     }
     
     private void setupListeners() {

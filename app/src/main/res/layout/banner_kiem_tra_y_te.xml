@@ -20,14 +20,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kiểm Tra Y Tế!"
+            android:text="Medical checkup!"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             android:textSize="19sp"/>
         <TextView
             android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:text="Kiểm tra tình trạng sức khỏe thường xuyên để giảm thiểu nguy cơ mắc bệnh trong tương lai."
+            android:text="Regular health check-ups to reduce the risk of future illness."
             android:textColor="#F0F0F0"
             android:textSize="13sp"
             android:layout_marginTop="4dp"/>
@@ -37,7 +37,7 @@
             android:layout_marginTop="10dp"
             android:backgroundTint="#FFFFFF"
             app:cornerRadius="18dp"
-            android:text="Đặt lịch khám"
+            android:text="Appointment"
             android:textColor="#1976D2"
             android:paddingLeft="18dp"
             android:paddingRight="18dp"/>

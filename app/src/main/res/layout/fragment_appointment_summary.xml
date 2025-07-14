@@ -342,7 +342,7 @@
 
         <!-- Confirm Button -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnNext"
+            android:id="@+id/btnConfirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Xác nhận đặt lịch"

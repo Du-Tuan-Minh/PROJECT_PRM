@@ -179,10 +179,15 @@ public class BookAppointmentActivity extends AppCompatActivity {
             Log.d(TAG, "Booking data: " + bookingData);
             String amountStr = bookingData.amount != null ? bookingData.amount.replaceAll("[^0-9]", "") : "0";
             int amount = amountStr.isEmpty() ? 0 : Integer.parseInt(amountStr);
-            long now = System.currentTimeMillis();
+            // Lấy userId từ SharedPreferences (kiểu String)
+            String userId = getSharedPreferences("MyAppPrefs", MODE_PRIVATE).getString("userId", null);
+            if (userId == null) {
+                Toast.makeText(this, "Không tìm thấy thông tin người dùng!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             AppointmentModel appointment = new AppointmentModel(
                 generateAppointmentId(),
-                bookingData.patientName, // patientId tạm thời dùng tên bệnh nhân
+                userId, // patientId đúng kiểu String
                 bookingData.doctorId,    // doctorId
                 bookingData.doctorName,  // doctorName
                 bookingData.doctorSpecialty, // specialty
@@ -206,7 +211,24 @@ public class BookAppointmentActivity extends AppCompatActivity {
                 @Override
                 public void onAppointmentSaved(AppointmentModel appointment) {
                     Log.d(TAG, "Appointment saved successfully");
+                    // Set cờ notification mới
+                    getSharedPreferences("app_prefs", MODE_PRIVATE)
+                        .edit().putBoolean("has_new_notification", true).apply();
                     BookingSuccessDialog dialog = new BookingSuccessDialog();
+                    dialog.setOnActionListener(new BookingSuccessDialog.OnActionListener() {
+                        @Override
+                        public void onViewAppointment() {
+                            Intent intent = new Intent(BookAppointmentActivity.this, AppointmentHistoryActivity.class);
+                            intent.putExtra("tab_index", 0); // 0 = Sắp tới
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intent);
+                            finish();
+                        }
+                        @Override
+                        public void onClose() {
+                            // Đóng dialog, không làm gì
+                        }
+                    });
                     dialog.show(getSupportFragmentManager(), "BookingSuccessDialog");
                 }
                 @Override

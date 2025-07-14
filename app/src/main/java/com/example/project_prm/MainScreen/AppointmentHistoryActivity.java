@@ -29,6 +29,15 @@ public class AppointmentHistoryActivity extends AppCompatActivity {
         initViews();
         setupListeners();
         setupTabs();
+
+        // Nhận tab_index từ intent để chuyển tab
+        int tabIndex = getIntent().getIntExtra("tab_index", -1);
+        if (tabIndex >= 0 && tabLayout != null) {
+            tabLayout.post(() -> {
+                TabLayout.Tab tab = tabLayout.getTabAt(tabIndex);
+                if (tab != null) tab.select();
+            });
+        }
     }
 
     private void initViews() {

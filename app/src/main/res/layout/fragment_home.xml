@@ -54,12 +54,27 @@
                     android:textColor="#222222"/>
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/ivNotification"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_notification"
-                android:layout_marginEnd="12dp"/>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivNotification"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_notification"
+                    android:layout_marginEnd="12dp"/>
+
+                <View
+                    android:id="@+id/notificationBadge"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:background="@drawable/bg_circle_red"
+                    android:layout_gravity="top|end"
+                    android:visibility="gone"
+                    android:translationX="4dp"
+                    android:translationY="-4dp"/>
+            </FrameLayout>
         </LinearLayout>
 
         <EditText
@@ -159,101 +174,6 @@
 
             <!-- Thông tin đặt lịch -->
             <LinearLayout
-                android:id="@+id/btnBookingInfo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:padding="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_circle_blue"
-                    android:src="@drawable/ic_info_booking"
-                    android:padding="10dp"
-                    android:scaleType="centerInside"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Thông tin đặt lịch"
-                    android:textSize="13sp"
-                    android:textColor="#1976D2"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
-
-            <!-- Đặt lịch khám -->
-            <LinearLayout
-                android:id="@+id/btnBookAppointment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:padding="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_circle_blue"
-                    android:src="@drawable/ic_calendar_vector"
-                    android:padding="10dp"
-                    android:scaleType="centerInside"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Đặt lịch khám"
-                    android:textSize="13sp"
-                    android:textColor="#1976D2"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
-
-            <!-- Tìm bác sĩ -->
-            <LinearLayout
-                android:id="@+id/btnSearchDoctor"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:padding="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_circle_blue"
-                    android:src="@drawable/ic_doctor"
-                    android:padding="10dp"
-                    android:scaleType="centerInside"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Tìm bác sĩ"
-                    android:textSize="13sp"
-                    android:textColor="#1976D2"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/btnArticles"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -276,33 +196,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Articles"
-                    android:textSize="13sp"
-                    android:textColor="#222"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:padding="8dp">
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_circle_lightblue"
-                    android:src="@drawable/ic_history"
-                    android:padding="10dp"
-                    android:scaleType="centerInside"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="History"
                     android:textSize="13sp"
                     android:textColor="#222"
                     android:gravity="center"
@@ -364,7 +257,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Lịch sử khám"
+                    android:text="History"
                     android:textSize="13sp"
                     android:textColor="#222"
                     android:gravity="center"
