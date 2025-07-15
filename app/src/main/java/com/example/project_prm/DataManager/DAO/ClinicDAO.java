@@ -4,6 +4,7 @@ import com.example.project_prm.DataManager.Entity.Clinic;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.Objects;
@@ -42,6 +43,17 @@ public class ClinicDAO {
                         throw Objects.requireNonNull(task.getException());
                     }
                     return null; // success
+                });
+    }
+
+    // get all clinic in database
+    public Task<QuerySnapshot> getAllClinics() {
+        return db.collection("clinics").get()
+                .continueWith(task -> {
+                    if (!task.isSuccessful()) {
+                        throw Objects.requireNonNull(task.getException());
+                    }
+                    return task.getResult();
                 });
     }
 }

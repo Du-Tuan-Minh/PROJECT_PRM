@@ -86,13 +86,11 @@ public class Clinic {
         String email = (String) map.get("email");
         String website = (String) map.get("website");
         String specialties = (String) map.get("specialties");
-        String working_hours = (String) map.get("working_hours");
         double rating = (double) map.get("rating");
-        int total_reviews = (int) map.get("total_reviews");
         String image_url = (String) map.get("image_url");
         String user_id = (String) map.get("user_id");
         return new Clinic(id, name, address, latitude, longitude, phone, email, website,
-                specialties, working_hours, rating, total_reviews, image_url, user_id);
+                specialties, "", rating, 1, image_url, user_id);
     }
 
     public long getId() {

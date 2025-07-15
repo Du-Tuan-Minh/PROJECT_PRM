@@ -9,6 +9,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.project_prm.DataManager.DAO.AppointmentDAO;
+import com.example.project_prm.DataManager.Entity.Appointment;
 import com.example.project_prm.R;
 import com.example.project_prm.Repository.AppointmentRepository;
 import com.example.project_prm.Model.AppointmentModel;
@@ -20,6 +23,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
     private int currentStep = 1;
     private AppointmentRepository appointmentRepository;
     public BookingData bookingData = new BookingData();
+    private final AppointmentDAO appointmentDAO = new AppointmentDAO();
 
     public static class BookingData {
         public String doctorId;
@@ -120,8 +124,8 @@ public class BookAppointmentActivity extends AppCompatActivity {
     private void updateTitle() {
         String title;
         switch (currentStep) {
-            case 1: title = "Chọn bác sĩ"; break;
-            case 2: title = "Thông tin bác sĩ"; break;
+            case 1: title = "Chọn phòng khám"; break;
+            case 2: title = "Thông tin phòng khám"; break;
             case 3: title = "Chọn ngày và giờ"; break;
             case 4: title = "Thông tin bệnh nhân"; break;
             case 5: title = "Xác nhận thông tin"; break;
@@ -189,6 +193,18 @@ public class BookAppointmentActivity extends AppCompatActivity {
                 "upcoming",
                 bookingData.patientProblem // note
             );
+            Appointment appointmentEntity = new Appointment(
+                    1, userId,
+                    bookingData.doctorId,
+                    bookingData.doctorName,
+                    bookingData.patientProblem,
+                    bookingData.date,
+                    bookingData.time,
+                    "upcoming",
+                    "");
+
+            appointmentDAO.add(appointmentEntity);
+
             // Lưu lịch hẹn bằng saveAppointment
             appointmentRepository.saveAppointment(appointment, new AppointmentRepository.OnAppointmentSavedListener() {
                 @Override
