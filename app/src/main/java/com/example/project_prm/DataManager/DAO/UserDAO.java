@@ -141,4 +141,19 @@ public class UserDAO {
                 .document(docId)
                 .set(profile.toMap());
     }
+
+    // check is Clinic
+    public Task<Boolean> isClinic(String userId) {
+        return db.collection("users")
+                .whereEqualTo("user_id", userId)
+                .whereEqualTo("role", "clinic")
+                .get()
+                .continueWith(task -> {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    QuerySnapshot result = task.getResult();
+                    return result != null && !result.isEmpty();
+                });
+    }
 }

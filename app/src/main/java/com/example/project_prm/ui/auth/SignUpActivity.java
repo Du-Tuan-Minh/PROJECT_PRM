@@ -144,7 +144,8 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!registerClinicView.checkValidRegisterClinic(this)) {
+        if (registerClinicView.getRegisterClinicView().getVisibility() == View.VISIBLE &&
+                !registerClinicView.checkValidRegisterClinic(this)) {
             return;
         }
         userDAO.isEmailExist(email)
