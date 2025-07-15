@@ -1,6 +1,7 @@
 package com.example.project_prm.utils;
 
 import java.security.SecureRandom;
+import java.util.Random;
 
 public class PasswordGenerator {
 
@@ -42,6 +43,15 @@ public class PasswordGenerator {
             chars[j] = temp;
         }
         return new String(chars);
+    }
+
+    public static String getRandomString(String[] array) {
+        if (array == null || array.length == 0) {
+            return null;  // or throw exception based on your needs
+        }
+        Random random = new Random();
+        int index = random.nextInt(array.length);
+        return array[index];
     }
 }
 

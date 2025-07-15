@@ -2,12 +2,21 @@ package com.example.project_prm.ui.MainScreen;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+
+import com.example.project_prm.DataManager.DAO.ClinicDAO;
+import com.example.project_prm.DataManager.Entity.Clinic;
 import com.example.project_prm.Model.DoctorModel;
 import com.example.project_prm.Model.ReviewModel;
+import com.example.project_prm.utils.PasswordGenerator;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 public class DoctorRepository {
     private static DoctorRepository instance;
     private List<DoctorModel> doctors;
+
+    private final ClinicDAO clinicDAO = new ClinicDAO();
 
     private DoctorRepository() {
         doctors = new ArrayList<>();
@@ -23,18 +32,42 @@ public class DoctorRepository {
 
     private void initializeSampleData() {
         doctors.clear();
-        doctors.add(new DoctorModel("doc_001", "BS. Nguyễn Văn An", "Tim mạch", "Bệnh viện Tim Hà Nội", 4.8f, 15, "", "Chuyên gia tim mạch với 15 năm kinh nghiệm, chuyên điều trị các bệnh tim mạch, tăng huyết áp, suy tim.", "Hà Nội", 120, 15));
-        doctors.add(new DoctorModel("doc_002", "BS. Trần Thị Bình", "Da liễu", "Bệnh viện Da liễu Trung ương", 4.6f, 12, "", "Bác sĩ da liễu chuyên điều trị các bệnh về da, dị ứng, mụn trứng cá và các bệnh da liễu khác.", "Hà Nội", 98, 12));
-        doctors.add(new DoctorModel("doc_003", "BS. Phạm Minh Cường", "Nội tổng quát", "Bệnh viện Bạch Mai", 4.7f, 18, "", "Bác sĩ nội tổng quát với kinh nghiệm điều trị các bệnh nội khoa, khám sức khỏe tổng quát.", "Hà Nội", 110, 18));
-        doctors.add(new DoctorModel("doc_004", "BS. Lê Thị Hương", "Miễn dịch học", "Bệnh viện Đại học Y Hà Nội", 4.9f, 20, "", "Chuyên gia miễn dịch học, chuyên điều trị các bệnh tự miễn, dị ứng và rối loạn miễn dịch.", "Hà Nội", 135, 20));
-        doctors.add(new DoctorModel("doc_005", "BS. Hoàng Văn Đức", "Thần kinh", "Viện Thần kinh Quốc gia", 4.8f, 16, "", "Bác sĩ thần kinh chuyên điều trị đau đầu, động kinh, đột quỵ và các bệnh thần kinh khác.", "Hà Nội", 105, 16));
-        doctors.add(new DoctorModel("doc_006", "BS. Vũ Thị Lan", "Nhi khoa", "Bệnh viện Nhi Trung ương", 4.7f, 14, "", "Bác sĩ nhi khoa chuyên khám và điều trị các bệnh ở trẻ em từ 0-18 tuổi.", "Hà Nội", 90, 14));
-        doctors.add(new DoctorModel("doc_007", "BS. Nguyễn Đức Minh", "Ngoại khoa", "Bệnh viện Việt Đức", 4.6f, 17, "", "Bác sĩ ngoại khoa chuyên phẫu thuật các bệnh về tiêu hóa, gan mật.", "Hà Nội", 112, 17));
-        doctors.add(new DoctorModel("doc_008", "BS. Trần Văn Hùng", "Tâm thần", "Bệnh viện Tâm thần Trung ương", 4.5f, 13, "", "Bác sĩ tâm thần chuyên điều trị trầm cảm, lo âu, rối loạn tâm thần.", "Hà Nội", 87, 13));
-        doctors.add(new DoctorModel("doc_009", "BS. Lê Thị Mai", "Sản phụ khoa", "Bệnh viện Phụ sản Trung ương", 4.8f, 15, "", "Bác sĩ sản phụ khoa chuyên khám thai, sinh nở và các bệnh phụ khoa.", "Hà Nội", 101, 15));
-        doctors.add(new DoctorModel("doc_010", "BS. Phạm Văn Tuấn", "Mắt", "Bệnh viện Mắt Trung ương", 4.7f, 16, "", "Bác sĩ nhãn khoa chuyên điều trị các bệnh về mắt, phẫu thuật mắt.", "Hà Nội", 95, 16));
-        doctors.add(new DoctorModel("doc_011", "BS. Hoàng Thị Thảo", "Tai mũi họng", "Bệnh viện Tai mũi họng Trung ương", 4.6f, 12, "", "Bác sĩ tai mũi họng chuyên điều trị các bệnh về tai, mũi, họng.", "Hà Nội", 80, 12));
-        doctors.add(new DoctorModel("doc_012", "BS. Nguyễn Văn Sơn", "Răng hàm mặt", "Bệnh viện Răng hàm mặt Trung ương", 4.8f, 14, "", "Bác sĩ răng hàm mặt chuyên nhổ răng, trồng răng, chỉnh nha.", "Hà Nội", 99, 14));
+        String[] specialties = {"Tim mạch", "Da liễu", "Nội tổng quát", "Miễn dịch học",
+                "Thần kinh", "Nhi khoa", "Ngoại khoa", "Tâm thần",
+                "Sản phụ khoa", "Mắt", "Tai mũi họng", "Răng hàm mặt"};
+        Random random = new Random();
+        clinicDAO.getAllClinics()
+                .addOnSuccessListener(querySnapshot -> {
+                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                        Clinic clinic = Clinic.fromMap(Objects.requireNonNull(document.getData()));
+                        doctors.add(new DoctorModel(
+                                document.getId(),
+                                clinic.getName(),
+                                PasswordGenerator.getRandomString(specialties),
+                                "Đang mở",
+                                (float) clinic.getRating() < 4 ? 4.5f : (float) clinic.getRating(),
+                                15,
+                                clinic.getImage_url(),
+                                clinic.getSpecialties(),
+                                clinic.getAddress(),
+                                random.nextInt(40),
+                                random.nextInt(10)
+                        ));
+                    }
+                });
+//        doctors.add(new DoctorModel("doc_001", "BS. Nguyễn Văn An", "Tim mạch", "Bệnh viện Tim Hà Nội", 4.8f, 15, "", "Chuyên gia tim mạch với 15 năm kinh nghiệm, chuyên điều trị các bệnh tim mạch, tăng huyết áp, suy tim.", "Hà Nội", 120, 15));
+//        doctors.add(new DoctorModel("doc_002", "BS. Trần Thị Bình", "Da liễu", "Bệnh viện Da liễu Trung ương", 4.6f, 12, "", "Bác sĩ da liễu chuyên điều trị các bệnh về da, dị ứng, mụn trứng cá và các bệnh da liễu khác.", "Hà Nội", 98, 12));
+//        doctors.add(new DoctorModel("doc_003", "BS. Phạm Minh Cường", "Nội tổng quát", "Bệnh viện Bạch Mai", 4.7f, 18, "", "Bác sĩ nội tổng quát với kinh nghiệm điều trị các bệnh nội khoa, khám sức khỏe tổng quát.", "Hà Nội", 110, 18));
+//        doctors.add(new DoctorModel("doc_004", "BS. Lê Thị Hương", "Miễn dịch học", "Bệnh viện Đại học Y Hà Nội", 4.9f, 20, "", "Chuyên gia miễn dịch học, chuyên điều trị các bệnh tự miễn, dị ứng và rối loạn miễn dịch.", "Hà Nội", 135, 20));
+//        doctors.add(new DoctorModel("doc_005", "BS. Hoàng Văn Đức", "Thần kinh", "Viện Thần kinh Quốc gia", 4.8f, 16, "", "Bác sĩ thần kinh chuyên điều trị đau đầu, động kinh, đột quỵ và các bệnh thần kinh khác.", "Hà Nội", 105, 16));
+//        doctors.add(new DoctorModel("doc_006", "BS. Vũ Thị Lan", "Nhi khoa", "Bệnh viện Nhi Trung ương", 4.7f, 14, "", "Bác sĩ nhi khoa chuyên khám và điều trị các bệnh ở trẻ em từ 0-18 tuổi.", "Hà Nội", 90, 14));
+//        doctors.add(new DoctorModel("doc_007", "BS. Nguyễn Đức Minh", "Ngoại khoa", "Bệnh viện Việt Đức", 4.6f, 17, "", "Bác sĩ ngoại khoa chuyên phẫu thuật các bệnh về tiêu hóa, gan mật.", "Hà Nội", 112, 17));
+//        doctors.add(new DoctorModel("doc_008", "BS. Trần Văn Hùng", "Tâm thần", "Bệnh viện Tâm thần Trung ương", 4.5f, 13, "", "Bác sĩ tâm thần chuyên điều trị trầm cảm, lo âu, rối loạn tâm thần.", "Hà Nội", 87, 13));
+//        doctors.add(new DoctorModel("doc_009", "BS. Lê Thị Mai", "Sản phụ khoa", "Bệnh viện Phụ sản Trung ương", 4.8f, 15, "", "Bác sĩ sản phụ khoa chuyên khám thai, sinh nở và các bệnh phụ khoa.", "Hà Nội", 101, 15));
+//        doctors.add(new DoctorModel("doc_010", "BS. Phạm Văn Tuấn", "Mắt", "Bệnh viện Mắt Trung ương", 4.7f, 16, "", "Bác sĩ nhãn khoa chuyên điều trị các bệnh về mắt, phẫu thuật mắt.", "Hà Nội", 95, 16));
+//        doctors.add(new DoctorModel("doc_011", "BS. Hoàng Thị Thảo", "Tai mũi họng", "Bệnh viện Tai mũi họng Trung ương", 4.6f, 12, "", "Bác sĩ tai mũi họng chuyên điều trị các bệnh về tai, mũi, họng.", "Hà Nội", 80, 12));
+//        doctors.add(new DoctorModel("doc_012", "BS. Nguyễn Văn Sơn", "Răng hàm mặt", "Bệnh viện Răng hàm mặt Trung ương", 4.8f, 14, "", "Bác sĩ răng hàm mặt chuyên nhổ răng, trồng răng, chỉnh nha.", "Hà Nội", 99, 14));
+
     }
 
     public List<DoctorModel> getAllDoctors() {

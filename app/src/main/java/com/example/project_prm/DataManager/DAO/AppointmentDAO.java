@@ -22,4 +22,9 @@ public class AppointmentDAO {
     public Task<DocumentSnapshot> getById(String appointmentId) {
         return db.collection("appointments").document(appointmentId).get();
     }
+
+    // add new appointment
+    public Task<DocumentReference> add(Appointment appointment) {
+        return db.collection("appointments").add(appointment.toMap());
+    }
 }

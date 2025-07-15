@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="Chọn bác sĩ"
+            android:hint="Chọn phòng khám"
             app:boxBackgroundColor="@color/white"
             app:boxStrokeColor="@color/primary_blue"
             app:boxStrokeWidthFocused="2dp"

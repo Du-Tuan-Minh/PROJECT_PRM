@@ -69,8 +69,8 @@
     <string name="reason_other">Khác</string>
 
     <!-- New strings for booking flow -->
-    <string name="select_doctor">Chọn bác sĩ</string>
-    <string name="doctor_info">Thông tin bác sĩ</string>
+    <string name="select_doctor">Chọn phòng khám</string>
+    <string name="doctor_info">Thông tin phòng khám</string>
     <string name="search_doctor">Tìm kiếm bác sĩ</string>
     <string name="search_doctor_hospital">Tìm kiếm theo tên bác sĩ, bệnh viện...</string>
     <string name="book_appointment_home">Đặt lịch khám</string>
